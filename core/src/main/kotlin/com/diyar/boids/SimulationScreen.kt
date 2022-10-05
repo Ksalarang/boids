@@ -24,7 +24,7 @@ class SimulationScreen(private val core: Core): ScreenAdapter() {
     }
 
     private fun createBoid() {
-        val boid = Boid(Texture(Gdx.files.internal("square-16.png")))
+        val boid = Boid(Texture(Gdx.files.internal("boid-16.png")))
         val x = Random.nextInt((WIDTH - boid.width).toInt()).toFloat()
         val y = Random.nextInt((HEIGHT - boid.height).toInt()).toFloat()
         boid.setPosition(x, y)
