@@ -19,11 +19,11 @@ class SimulationScreen(private val core: Core): ScreenAdapter() {
 
     init {
         repeat(10) {
-            createBoid()
+            spawnBoid()
         }
     }
 
-    private fun createBoid() {
+    private fun spawnBoid() {
         val boid = Boid(Texture(Gdx.files.internal("boid-16.png")))
         val x = Random.nextInt((WIDTH - boid.width).toInt()).toFloat()
         val y = Random.nextInt((HEIGHT - boid.height).toInt()).toFloat()
