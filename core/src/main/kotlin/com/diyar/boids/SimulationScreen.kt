@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.diyar.boids.WorldBoundingMode.BounceOff
+import com.diyar.boids.WorldBoundingMode.WrapAround
 
 class SimulationScreen(private val core: Core): ScreenAdapter() {
     private val boidAmount = 20
@@ -21,7 +23,7 @@ class SimulationScreen(private val core: Core): ScreenAdapter() {
 
     init {
         Boid.setWorldBounds(WIDTH, HEIGHT)
-        Boid.isWorldWrapEnabled = true
+//        Boid.worldBoundingMode = BounceOff
         repeat(boidAmount) {
             spawnBoid()
         }
