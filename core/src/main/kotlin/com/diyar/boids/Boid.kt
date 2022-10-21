@@ -6,16 +6,16 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.utils.Align
 import com.diyar.boids.WorldBoundingMode.*
 
 const val ROTATION_CONSTANT = 57.295776f
 
 class Boid(private val textureRegion: TextureRegion): Actor() {
     private val velocity = Vector2(0f, 0f)
-    private var rightX = x + width
-    private var upperY = y + height
 
     init {
+        setOrigin(Align.center)
         setSize(textureRegion.regionWidth.toFloat(), textureRegion.regionHeight.toFloat())
     }
 
@@ -29,7 +29,7 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
         when (worldBoundingMode) {
             NoBound -> {}
             WrapAround -> wrapAroundWorld()
-            BounceOff -> bounceOffWalls()
+            BounceOff -> {}
         }
         moveBy(velocity.x * delta, velocity.y * delta)
         super.act(delta)
@@ -38,11 +38,6 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch?.draw(textureRegion, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
     }
-
-    override fun sizeChanged() {
-        rightX = x + width
-        upperY = y + height
-    }
     //endregion
 
     private fun updateMotionAngle() {
@@ -50,13 +45,13 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
     }
 
     private fun wrapAroundWorld() {
-        if (rightX <= 0) {
+        if (x + width <= 0) {
             x = worldBounds.width
         }
         if (x > worldBounds.width) {
             x = -width
         }
-        if (upperY <= 0) {
+        if (y + height <= 0) {
             y = worldBounds.height
         }
         if (y > worldBounds.height) {
@@ -64,10 +59,9 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
         }
     }
 
+    //todo
     private fun bounceOffWalls() {
-        if (x < 0) {
 
-        }
     }
 
     companion object {

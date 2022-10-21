@@ -17,7 +17,7 @@ class Core: Game() {
     override fun create() {
         batch = SpriteBatch()
         font = BitmapFont()
-        setScreen(MainMenu(this))
+        setScreen(SimulationScreen(this))
     }
 
     override fun dispose() {
