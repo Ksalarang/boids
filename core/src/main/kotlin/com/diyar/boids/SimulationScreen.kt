@@ -28,9 +28,12 @@ class SimulationScreen(private val core: Core): ScreenAdapter() {
     private val uiGroup = Group()
     private lateinit var respawnButton: TextButton
 
-    private val boidAmount = 20
+    private val boidAmount = 30
     private val boids = Array<Boid>()
     private val boidTexture = Texture(Gdx.files.internal("boid-16.png"))
+
+    private var meanX = 0f
+    private var meanY = 0f
 
     init {
         Gdx.input.inputProcessor = stage
@@ -90,6 +93,14 @@ class SimulationScreen(private val core: Core): ScreenAdapter() {
 
     private fun update(delta: Float) {
         stage.act(delta)
+        var rs = 0f
+        for (boid in boids) {
+            rs += boid.rotation
+        }
+        val mr = rs / boids.size
+        for (boid in boids) {
+            boid.rotateBy(mr * delta)
+        }
     }
 
     private fun draw() {

@@ -13,6 +13,10 @@ const val ROTATION_CONSTANT = 57.295776f
 
 class Boid(private val textureRegion: TextureRegion): Actor() {
     private val velocity = Vector2(0f, 0f)
+    val velocityX: Float
+        get() = velocity.x
+    val velocityY: Float
+        get() = velocity.y
 
     init {
         setOrigin(Align.center)
@@ -21,6 +25,10 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
 
     fun setVelocity(x: Float, y: Float) {
         velocity.set(x, y)
+    }
+
+    fun addVelocity(x: Float, y: Float) {
+        velocity.add(x, y)
     }
 
     //region override
@@ -36,7 +44,10 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch?.draw(textureRegion, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
+        batch?.draw(textureRegion, x, y,
+            originX, originY,
+            width, height,
+            scaleX, scaleY, rotation)
     }
     //endregion
 
@@ -60,9 +71,7 @@ class Boid(private val textureRegion: TextureRegion): Actor() {
     }
 
     //todo
-    private fun bounceOffWalls() {
-
-    }
+    private fun bounceOffWalls() {}
 
     companion object {
         private val worldBounds = Rectangle()
