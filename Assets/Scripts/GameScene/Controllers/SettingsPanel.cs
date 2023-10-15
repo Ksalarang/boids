@@ -7,19 +7,31 @@ namespace GameScene.Controllers {
 public class SettingsPanel : MonoBehaviour {
     [SerializeField] RectTransform rectTransform;
     [SerializeField] Image image;
+    [Header("Toggles")]
+    [SerializeField] Toggle showMousePositionToggle;
 
-    [Inject] new Camera camera;
+    [Inject] InputController inputController;
 
     Log log;
-    float minX;
+    
+    public float minX { get; private set; }
 
     void Awake() {
         log = new Log(GetType());
         minX = rectTransform.position.x - rectTransform.rect.width / 2;
+        addListeners();
     }
 
-    void Update() {
-        image.enabled = Input.mousePosition.x > minX;
+    void addListeners() {
+        showMousePositionToggle.onValueChanged.AddListener(toggleShowMousePosition);
+    }
+
+    void toggleShowMousePosition(bool value) {
+        inputController.onToggleShowMousePosition(value);
+    }
+
+    public void onMousePositionChanged(Vector3 screenMousePosition) {
+        gameObject.SetActive(screenMousePosition.x > minX);
     }
 }
 }
