@@ -77,10 +77,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalConfig:
     logConfig:
-      serviceManager: 1
+      serviceManager: 0
       soundService: 0
       vibrationService: 0
-      saveService: 1
+      saveService: 0
   audioSources:
     sounds: []
     soundtracks: []

@@ -5,6 +5,8 @@ public static class RectTransformExtensions {
     // temp variable to retrieve world corners' coordinates which are stored starting from the bottom left corner clock-wise
     static readonly Vector3[] corners = new Vector3[4];
 
+    // this method returns rect in screen pixels instead of world values!
+    //todo
     public static Rect getWorldRect(this RectTransform rectTransform, float canvasScale = 1f) {
         rectTransform.GetWorldCorners(corners);
         for (var i = 0; i < corners.Length; i++) corners[i].z = 0;
