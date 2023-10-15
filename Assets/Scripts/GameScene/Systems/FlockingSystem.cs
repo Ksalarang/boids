@@ -7,16 +7,20 @@ public class FlockingSystem : System {
     readonly Boid[] boids;
     readonly FlockSettings settings;
     readonly List<Boid> nearbyBoids;
+    readonly GameObject localCenter;
 
-    public FlockingSystem(Boid[] boids, FlockSettings settings) {
+    public FlockingSystem(Boid[] boids, FlockSettings settings, GameObject localCenter) {
         this.boids = boids;
         this.settings = settings;
+        this.localCenter = localCenter;
         nearbyBoids = new List<Boid>(settings.count);
     }
 
     public void update(float deltaTime) {
-        foreach (var currentBoid in boids) {
+        for (var i = 0; i < boids.Length; i++) {
+            var currentBoid = boids[i];
             findNearbyBoids(currentBoid);
+            if (i == 0) localCenter.transform.position = currentBoid.transform.position;
             if (nearbyBoids.Count == 0) continue;
             // find average vectors
             var averageDirection = Vector3.zero;
@@ -42,9 +46,10 @@ public class FlockingSystem : System {
             }
             if (settings.cohesionEnabled) {
                 resultingVector += averagePosition;
+                if (i == 0) localCenter.transform.position = averagePosition;
                 count++;
             }
-            if (settings.avoidanceEnabled) {
+            if (settings.separationEnabled) {
                 resultingVector += separationForce;
                 count++;
             }
@@ -65,7 +70,7 @@ public class FlockingSystem : System {
         foreach (var boid in boids) {
             if (boid == current) continue;
             boid.distanceTemp = boid.transform.position.distanceTo(position);
-            if (boid.distanceTemp < settings.localDistance) {
+            if (boid.distanceTemp < settings.viewDistance) {
                 nearbyBoids.Add(boid);
             }
         }

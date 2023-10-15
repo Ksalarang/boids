@@ -9,6 +9,7 @@ using Zenject;
 namespace GameScene.Controllers {
 public class SystemManager : MonoBehaviour {
     [SerializeField] GameObject boidPrefab;
+    [SerializeField] GameObject localCenter;
     
     [Inject] new Camera camera;
     [Inject] GameSettings settings;
@@ -31,6 +32,8 @@ public class SystemManager : MonoBehaviour {
         var boidSize = settings.boids.size;
         for (var i = 0; i < boids.Length; i++) {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
+            boid.name = $"boid_{i}";
+            // size
             boid.transform.localScale = new Vector3(boidSize, boidSize);
             // position
             boid.transform.position = new Vector3(
@@ -39,6 +42,13 @@ public class SystemManager : MonoBehaviour {
             );
             // rotation
             boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
+            // view area size
+            var viewAreaDiameter = 2 * settings.flock.viewDistance / boidSize;
+            boid.viewArea.transform.localScale = new Vector3(viewAreaDiameter, viewAreaDiameter);
+            // misc
+            if (i == 0) {
+                boid.GetComponent<SpriteRenderer>().color = Color.black;
+            }
             boids[i] = boid;
         }
     }
@@ -46,7 +56,7 @@ public class SystemManager : MonoBehaviour {
     void createSystems() {
         systemDict.Add(typeof(MovementSystem), new MovementSystem(boids, settings.boids.speed));
         systemDict.Add(typeof(BorderSystem), new BorderSystem(boids, camera.getBottomLeft(), camera.getTopRight(), settings.boids.size));
-        systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings.flock));
+        systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings.flock, localCenter));
         
         createSystemArray();
     }
@@ -68,6 +78,10 @@ public class SystemManager : MonoBehaviour {
         foreach (var system in systemArray) {
             system.update(delta);
         }
+    }
+
+    public void onToggleLocalCenter(bool value) {
+        localCenter.gameObject.SetActive(value);
     }
 }
 }

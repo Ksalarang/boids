@@ -19,8 +19,8 @@ public class FlockSettings {
     public int count;
     public bool alignmentEnabled;
     public bool cohesionEnabled;
-    public bool avoidanceEnabled;
-    public float localDistance;
+    public bool separationEnabled;
+    public float viewDistance;
     public float avoidanceDistance;
 }
 

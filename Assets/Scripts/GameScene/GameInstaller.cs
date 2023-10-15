@@ -9,7 +9,6 @@ public class GameInstaller : MonoInstaller {
     [Header("Controllers")]
     [SerializeField] GameController gameController;
     [SerializeField] SystemManager systemManager;
-    [SerializeField] DebugManager debugManager;
     [SerializeField] InputController inputController;
     [Header("Views")]
     [SerializeField] SettingsPanel settingsPanel;
@@ -21,7 +20,6 @@ public class GameInstaller : MonoInstaller {
         // controllers
         bind(gameController);
         bind(systemManager);
-        bind(debugManager);
         bind(inputController);
         // views
         bind(settingsPanel);
