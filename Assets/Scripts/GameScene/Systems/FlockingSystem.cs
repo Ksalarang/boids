@@ -60,7 +60,7 @@ public class FlockingSystem : System {
             currentBoid.transform.rotation = Quaternion.RotateTowards(
                 currentBoid.transform.rotation,
                 Quaternion.Euler(0, 0, targetAngle),
-                targetAngle * deltaTime);
+                targetAngle * deltaTime * settings.alignmentForce);
         }
     }
 

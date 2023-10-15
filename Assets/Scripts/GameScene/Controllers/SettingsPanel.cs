@@ -14,7 +14,11 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
-
+    [Header("Slider")]
+    [SerializeField] Slider alignmentForceSlider;
+    [SerializeField] Slider cohesionForceSlider;
+    [SerializeField] Slider separationForceSlider;
+    
     [Inject] SystemManager systemManager;
     [Inject] InputController inputController;
     [Inject] GameSettings settings;
@@ -26,18 +30,23 @@ public class SettingsPanel : MonoBehaviour {
     void Awake() {
         log = new Log(GetType());
         minX = rectTransform.position.x - rectTransform.rect.width / 2;
-        addToggleListeners();
+        addListeners();
     }
 
-    void addToggleListeners() {
+    void addListeners() {
+        // toggles
         mousePositionToggle.onValueChanged.AddListener(toggleMousePosition);
         viewAreaToggle.onValueChanged.AddListener(toggleViewArea);
         localCenterToggle.onValueChanged.AddListener(toggleLocalCenter);
         alignmentToggle.onValueChanged.AddListener(toggleAlignment);
         cohesionToggle.onValueChanged.AddListener(toggleCohesion);
         separationToggle.onValueChanged.AddListener(toggleSeparation);
+        // sliders
+        alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
+        cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
+        separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
     }
-
+    
     #region toggle listeners
     void toggleMousePosition(bool value) {
         inputController.onToggleShowMousePosition(value);
@@ -64,6 +73,20 @@ public class SettingsPanel : MonoBehaviour {
     
     void toggleSeparation(bool value) {
         settings.flock.separationEnabled = value;
+    }
+    #endregion
+
+    #region slider listeners
+    void onAlignmentForceChanged(float value) {
+        settings.flock.alignmentForce = value;
+    }
+
+    void onCohesionForceChanged(float value) {
+        settings.flock.cohesionForce = value;
+    }
+
+    void onSeparationForceChanged(float value) {
+        settings.flock.separationForce = value;
     }
     #endregion
 

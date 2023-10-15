@@ -20,6 +20,9 @@ public class FlockSettings {
     public bool alignmentEnabled;
     public bool cohesionEnabled;
     public bool separationEnabled;
+    public float alignmentForce;
+    public float cohesionForce;
+    public float separationForce;
     public float viewDistance;
     public float avoidanceDistance;
 }
