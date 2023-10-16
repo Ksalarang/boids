@@ -69,7 +69,8 @@ public class VibrationService : Service, SaveLoadListener {
     }
 
     void doNotCallThisMethod() {
-        Handheld.Vibrate(); // for vibration permission
+        // commented out for the PC build, otherwise throws a build error
+        // Handheld.Vibrate(); // for vibration permission
     }
 }
 

@@ -84,7 +84,7 @@ public class SystemManager : MonoBehaviour {
     }
 
     void Update() {
-        var delta = Time.deltaTime;
+        var delta = Time.deltaTime * settings.gameSpeed;
         foreach (var system in systemArray) {
             system.update(delta);
         }

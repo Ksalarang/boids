@@ -21,57 +21,78 @@ public class FlockingSystem : System {
     }
 
     public void update(float deltaTime) {
+        if (settings.showLocalCenter) { // reset debug boid indicators
+            var debugBoid = boids[0];
+            var debugBoidPosition = debugBoid.transform.position;
+            var debugBoidRotation = debugBoid.transform.rotation;
+            localCenter.transform.position = debugBoidPosition;
+            alignmentArrow.transform.position = debugBoidPosition;
+            separationArrow.transform.position = debugBoidPosition;
+            alignmentArrow.transform.rotation = debugBoidRotation;
+            separationArrow.transform.rotation = debugBoidRotation;
+        }
+        
         for (var i = 0; i < boids.Length; i++) {
             var currentBoid = boids[i];
             findNearbyBoids(currentBoid);
-            if (i == 0) {
-                var currentBoidPosition = currentBoid.transform.position;
-                var currentBoidRotation = currentBoid.transform.rotation;
-                localCenter.transform.position = currentBoidPosition;
-                alignmentArrow.transform.position = currentBoidPosition;
-                separationArrow.transform.position = currentBoidPosition;
-                alignmentArrow.transform.rotation = currentBoidRotation;
-                separationArrow.transform.rotation = currentBoidRotation;
-            }
             if (nearbyBoids.Count == 0) continue;
-            // find average values
-            var averageDirection = Vector3.zero;
+            
+            // calculate average values and separation force
+            var averageVelocity = Vector3.zero;
             var averagePosition = Vector3.zero;
             var separationForce = Vector3.zero;
+            var currentBoidPosition = currentBoid.transform.position;
+            var separationCount = 0;
             foreach (var boid in nearbyBoids) {
-                averageDirection += boid.velocity;
-                averagePosition += boid.transform.position;
+                averageVelocity += boid.velocity;
+                var boidPosition = boid.transform.position;
+                averagePosition += boidPosition;
                 if (boid.distanceTemp < settings.separationDistance) {
-                    var toNeighbor = currentBoid.transform.position - boid.transform.position;
-                    separationForce += toNeighbor.normalized / toNeighbor.magnitude;
+                    var fromNeighbor = currentBoidPosition - boidPosition;
+                    separationForce += fromNeighbor.normalized / fromNeighbor.magnitude;
+                    separationCount++;
                 }
             }
-            averageDirection /= nearbyBoids.Count;
+            averageVelocity /= nearbyBoids.Count;
             averagePosition /= nearbyBoids.Count;
+            
             // apply the rules
             if (settings.alignmentEnabled) { // alignment
-                var angle = Mathf.Atan2(averageDirection.y, averageDirection.x) * Mathf.Rad2Deg;
+                var angle = Mathf.Atan2(averageVelocity.y, averageVelocity.x) * Mathf.Rad2Deg;
+                if (angle < 0) angle += 360;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     angle * deltaTime * settings.alignmentForce);
-                if (i == 0) alignmentArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+                if (i == 0) {
+                    alignmentArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
             }
             if (settings.cohesionEnabled) { // cohesion
-                var angle = Mathf.Atan2(averagePosition.y, averagePosition.x) * Mathf.Rad2Deg;
+                var cohesionForce = averagePosition - currentBoidPosition;
+                var angle = Mathf.Atan2(cohesionForce.y, cohesionForce.x) * Mathf.Rad2Deg;
+                if (angle < 0) angle += 360;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     angle * deltaTime * settings.cohesionForce);
-                if (i == 0) localCenter.transform.position = averagePosition;
+
+                if (i == 0) {
+                    localCenter.transform.position = averagePosition;
+                }
             }
             if (settings.separationEnabled) { // separation
                 var angle = Mathf.Atan2(separationForce.y, separationForce.x) * Mathf.Rad2Deg;
+                if (angle < 0) angle += 360;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     angle * deltaTime * settings.separationForce);
-                if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+                if (i == 0 && separationCount > 0) {
+                    separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
             }
         }
     }

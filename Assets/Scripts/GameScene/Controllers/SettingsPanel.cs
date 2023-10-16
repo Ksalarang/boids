@@ -20,9 +20,11 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Slider alignmentForceSlider;
     [SerializeField] Slider cohesionForceSlider;
     [SerializeField] Slider separationForceSlider;
+    [SerializeField] Slider gameSpeedSlider;
     [SerializeField] TMP_Text alignmentForceLabel;
     [SerializeField] TMP_Text cohesionForceLabel;
     [SerializeField] TMP_Text separationForceLabel;
+    [SerializeField] TMP_Text gameSpeedLabel;
 
     [SerializeField] Button resetButton;
 
@@ -54,7 +56,8 @@ public class SettingsPanel : MonoBehaviour {
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
         cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
         separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
-        
+        gameSpeedSlider.onValueChanged.AddListener(onGameSpeedChanged);
+        // buttons
         resetButton.onClick.AddListener(onReset);
     }
 
@@ -70,9 +73,11 @@ public class SettingsPanel : MonoBehaviour {
         alignmentForceSlider.value = settings.alignmentForce;
         cohesionForceSlider.value = settings.cohesionForce;
         separationForceSlider.value = settings.separationForce;
+        gameSpeedSlider.value = settings.gameSpeed;
         alignmentForceLabel.text = settings.alignmentForce.ToString("F");
         cohesionForceLabel.text = settings.cohesionForce.ToString("F");
         separationForceLabel.text = settings.separationForce.ToString("F");
+        gameSpeedLabel.text = settings.gameSpeed.ToString("F");
     }
     
     #region toggle listeners
@@ -121,6 +126,11 @@ public class SettingsPanel : MonoBehaviour {
     void onSeparationForceChanged(float value) {
         settings.separationForce = value;
         separationForceLabel.text = value.ToString("F");
+    }
+
+    void onGameSpeedChanged(float value) {
+        settings.gameSpeed = value;
+        gameSpeedLabel.text = value.ToString("F");
     }
     #endregion
 

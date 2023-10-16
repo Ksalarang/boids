@@ -15,19 +15,21 @@ public class GameSettings {
     public float separationForce;
     
     public float size;
-    public float viewDistance;
     public float separationDistance;
+    public float viewDistance;
 
     public bool showMousePosition;
     public bool showViewArea;
     public bool showLocalCenter;
+
+    public float gameSpeed;
 
     public GameSettings() {
         reset();
     }
     
     public void reset() {
-        count = 100;
+        count = 200;
         speed = 2f;
         alignmentEnabled = true;
         cohesionEnabled = true;
@@ -35,12 +37,13 @@ public class GameSettings {
         alignmentForce = 1f;
         cohesionForce = 1f;
         separationForce = 1f;
-        size = 0.4f;
-        viewDistance = 1.2f;
-        separationDistance = 0.8f;
+        size = 0.2f;
+        separationDistance = 0.25f;
+        viewDistance = 0.4f;
         showMousePosition = false;
         showViewArea = false;
         showLocalCenter = false;
+        gameSpeed = 1f;
     }
 }
 }

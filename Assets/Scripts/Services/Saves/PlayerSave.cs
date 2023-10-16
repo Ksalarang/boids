@@ -5,8 +5,8 @@ using UnityEngine;
 namespace Services.Saves {
 [Serializable]
 public class PlayerSave {
-    public AudioSave audio;
-    public GameSettings settings;
+    public AudioSave audio = new();
+    public GameSettings settings = new();
 
     public string toJson() => JsonUtility.ToJson(this);
 
