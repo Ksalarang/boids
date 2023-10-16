@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Utils.Extensions;
 
 namespace GameScene.Systems {
 public class FlockingSystem : System {
     readonly Boid[] boids;
-    readonly FlockSettings settings;
+    readonly GameSettings settings;
     readonly List<Boid> nearbyBoids;
     readonly GameObject localCenter;
 
-    public FlockingSystem(Boid[] boids, FlockSettings settings, GameObject localCenter) {
+    public FlockingSystem(Boid[] boids, GameSettings settings, GameObject localCenter) {
         this.boids = boids;
         this.settings = settings;
         this.localCenter = localCenter;

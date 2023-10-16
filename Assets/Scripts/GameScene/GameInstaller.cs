@@ -13,7 +13,6 @@ public class GameInstaller : MonoInstaller {
     [Header("Views")]
     [SerializeField] SettingsPanel settingsPanel;
     [Header("Misc")]
-    [SerializeField] GameSettings gameSettings;
     [SerializeField] new Camera camera;
 
     public override void InstallBindings() {
@@ -24,9 +23,6 @@ public class GameInstaller : MonoInstaller {
         // views
         bind(settingsPanel);
         // settings
-        bind(gameSettings);
-        bind(gameSettings.boids);
-        bind(gameSettings.flock);
         bind(camera);
     }
     

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameScene.Systems;
+using Services.Saves;
 using UnityEngine;
 using Utils;
 using Utils.Extensions;
@@ -12,14 +13,17 @@ public class SystemManager : MonoBehaviour {
     [SerializeField] GameObject localCenter;
     
     [Inject] new Camera camera;
-    [Inject] GameSettings settings;
-
-    public Boid[] boids;
+    [Inject] SaveService saveService;
+    
+    GameSettings settings;
     Dictionary<Type, Systems.System> systemDict;
     Systems.System[] systemArray;
+    
+    public Boid[] boids;
 
     void Awake() {
-        boids = new Boid[settings.flock.count];
+        settings = saveService.getSave().settings;
+        boids = new Boid[settings.count];
         systemDict = new Dictionary<Type, Systems.System>();
         createBoids();
         createSystems();
@@ -29,7 +33,7 @@ public class SystemManager : MonoBehaviour {
         var bottomLeft = camera.getBottomLeft();
         var topRight = camera.getTopRight();
         var offset = 0.5f;
-        var boidSize = settings.boids.size;
+        var boidSize = settings.size;
         for (var i = 0; i < boids.Length; i++) {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
             boid.name = $"boid_{i}";
@@ -43,7 +47,7 @@ public class SystemManager : MonoBehaviour {
             // rotation
             boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
             // view area size
-            var viewAreaDiameter = 2 * settings.flock.viewDistance / boidSize;
+            var viewAreaDiameter = 2 * settings.viewDistance / boidSize;
             boid.viewArea.transform.localScale = new Vector3(viewAreaDiameter, viewAreaDiameter);
             // misc
             if (i == 0) {
@@ -55,9 +59,9 @@ public class SystemManager : MonoBehaviour {
     }
 
     void createSystems() {
-        systemDict.Add(typeof(MovementSystem), new MovementSystem(boids, settings.boids.speed));
-        systemDict.Add(typeof(BorderSystem), new BorderSystem(boids, camera.getBottomLeft(), camera.getTopRight(), settings.boids.size));
-        systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings.flock, localCenter));
+        systemDict.Add(typeof(MovementSystem), new MovementSystem(boids, settings.speed));
+        systemDict.Add(typeof(BorderSystem), new BorderSystem(boids, camera.getBottomLeft(), camera.getTopRight(), settings.size));
+        systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings, localCenter));
         
         createSystemArray();
     }

@@ -1,10 +1,12 @@
 ﻿using System;
+using GameScene;
 using UnityEngine;
 
 namespace Services.Saves {
 [Serializable]
 public class PlayerSave {
     public AudioSave audio;
+    public GameSettings settings;
 
     public string toJson() => JsonUtility.ToJson(this);
 
