@@ -26,7 +26,7 @@ public class FlockingSystem : System {
                 currentBoid.arrow.transform.rotation = currentBoid.transform.rotation;
             }
             if (nearbyBoids.Count == 0) continue;
-            // find average vectors
+            // find average values
             var averageDirection = Vector3.zero;
             var averagePosition = Vector3.zero;
             var separationForce = Vector3.zero;
@@ -41,34 +41,33 @@ public class FlockingSystem : System {
             }
             averageDirection /= nearbyBoids.Count;
             averagePosition /= nearbyBoids.Count;
-            // add up the vectors
-            var resultingVector = Vector3.zero;
-            var count = 0;
-            if (settings.alignmentEnabled) {
-                resultingVector += averageDirection;
+            // apply the rules
+            if (settings.alignmentEnabled) { // alignment
+                var angle = Mathf.Atan2(averageDirection.y, averageDirection.x) * Mathf.Rad2Deg;
+                currentBoid.transform.rotation = Quaternion.RotateTowards(
+                    currentBoid.transform.rotation,
+                    Quaternion.Euler(0, 0, angle),
+                    angle * deltaTime * settings.alignmentForce);
                 if (i == 0) {
-                    var angle = Mathf.Atan2(averageDirection.y, averageDirection.x) * Mathf.Rad2Deg;
+                    angle = Mathf.Atan2(averageDirection.y, averageDirection.x) * Mathf.Rad2Deg;
                     currentBoid.arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
                 }
-                count++;
             }
-            if (settings.cohesionEnabled) {
-                resultingVector += averagePosition;
+            if (settings.cohesionEnabled) { // cohesion
+                var angle = Mathf.Atan2(averagePosition.y, averagePosition.x) * Mathf.Rad2Deg;
+                currentBoid.transform.rotation = Quaternion.RotateTowards(
+                    currentBoid.transform.rotation,
+                    Quaternion.Euler(0, 0, angle),
+                    angle * deltaTime * settings.cohesionForce);
                 if (i == 0) localCenter.transform.position = averagePosition;
-                count++;
             }
-            if (settings.separationEnabled) {
-                resultingVector += separationForce;
-                count++;
+            if (settings.separationEnabled) { // separation
+                var angle = Mathf.Atan2(separationForce.y, separationForce.x) * Mathf.Rad2Deg;
+                currentBoid.transform.rotation = Quaternion.RotateTowards(
+                    currentBoid.transform.rotation,
+                    Quaternion.Euler(0, 0, angle),
+                    angle * deltaTime * settings.separationForce);
             }
-            if (count == 0) continue;
-            // find and apply the target angle
-            resultingVector /= count;
-            var targetAngle = Mathf.Atan2(resultingVector.y, resultingVector.x) * Mathf.Rad2Deg;
-            currentBoid.transform.rotation = Quaternion.RotateTowards(
-                currentBoid.transform.rotation,
-                Quaternion.Euler(0, 0, targetAngle),
-                targetAngle * deltaTime * settings.alignmentForce);
         }
     }
 
