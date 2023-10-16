@@ -124,10 +124,12 @@ public class SettingsPanel : MonoBehaviour {
     }
     #endregion
 
+    #region button listeners
     void onReset() {
         settings.reset();
         initializeValues();
     }
+    #endregion
 
     public void onMousePositionChanged(Vector3 screenMousePosition) {
         gameObject.SetActive(screenMousePosition.x > minX);

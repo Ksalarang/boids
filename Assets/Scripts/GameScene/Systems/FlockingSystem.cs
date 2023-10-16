@@ -8,12 +8,16 @@ public class FlockingSystem : System {
     readonly GameSettings settings;
     readonly List<Boid> nearbyBoids;
     readonly GameObject localCenter;
+    readonly GameObject alignmentArrow;
+    readonly GameObject separationArrow;
 
-    public FlockingSystem(Boid[] boids, GameSettings settings, GameObject localCenter) {
+    public FlockingSystem(Boid[] boids, GameSettings settings, GameObject localCenter, GameObject alignmentArrow, GameObject separationArrow) {
         this.boids = boids;
         this.settings = settings;
-        this.localCenter = localCenter;
         nearbyBoids = new List<Boid>(settings.count);
+        this.localCenter = localCenter;
+        this.alignmentArrow = alignmentArrow;
+        this.separationArrow = separationArrow;
     }
 
     public void update(float deltaTime) {
@@ -21,20 +25,24 @@ public class FlockingSystem : System {
             var currentBoid = boids[i];
             findNearbyBoids(currentBoid);
             if (i == 0) {
-                localCenter.transform.position = currentBoid.transform.position;
-                currentBoid.arrow.transform.rotation = currentBoid.transform.rotation;
+                var currentBoidPosition = currentBoid.transform.position;
+                var currentBoidRotation = currentBoid.transform.rotation;
+                localCenter.transform.position = currentBoidPosition;
+                alignmentArrow.transform.position = currentBoidPosition;
+                separationArrow.transform.position = currentBoidPosition;
+                alignmentArrow.transform.rotation = currentBoidRotation;
+                separationArrow.transform.rotation = currentBoidRotation;
             }
             if (nearbyBoids.Count == 0) continue;
             // find average values
             var averageDirection = Vector3.zero;
             var averagePosition = Vector3.zero;
             var separationForce = Vector3.zero;
-            var currentBoidPosition = currentBoid.transform.position;
             foreach (var boid in nearbyBoids) {
                 averageDirection += boid.velocity;
                 averagePosition += boid.transform.position;
                 if (boid.distanceTemp < settings.separationDistance) {
-                    var toNeighbor = currentBoidPosition - boid.transform.position;
+                    var toNeighbor = currentBoid.transform.position - boid.transform.position;
                     separationForce += toNeighbor.normalized / toNeighbor.magnitude;
                 }
             }
@@ -47,10 +55,7 @@ public class FlockingSystem : System {
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     angle * deltaTime * settings.alignmentForce);
-                if (i == 0) {
-                    angle = Mathf.Atan2(averageDirection.y, averageDirection.x) * Mathf.Rad2Deg;
-                    currentBoid.arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
-                }
+                if (i == 0) alignmentArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             if (settings.cohesionEnabled) { // cohesion
                 var angle = Mathf.Atan2(averagePosition.y, averagePosition.x) * Mathf.Rad2Deg;
@@ -66,6 +71,7 @@ public class FlockingSystem : System {
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     angle * deltaTime * settings.separationForce);
+                if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
         }
     }

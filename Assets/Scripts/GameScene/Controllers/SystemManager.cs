@@ -11,6 +11,8 @@ namespace GameScene.Controllers {
 public class SystemManager : MonoBehaviour {
     [SerializeField] GameObject boidPrefab;
     [SerializeField] GameObject localCenter;
+    [SerializeField] GameObject alignmentArrow;
+    [SerializeField] GameObject separationArrow;
     
     [Inject] new Camera camera;
     [Inject] SaveService saveService;
@@ -19,7 +21,7 @@ public class SystemManager : MonoBehaviour {
     Dictionary<Type, Systems.System> systemDict;
     Systems.System[] systemArray;
     
-    public Boid[] boids;
+    [HideInInspector] public Boid[] boids;
 
     void Awake() {
         settings = saveService.getSave().settings;
@@ -27,6 +29,7 @@ public class SystemManager : MonoBehaviour {
         systemDict = new Dictionary<Type, Systems.System>();
         createBoids();
         createSystems();
+        initializeDebugViews();
     }
 
     void createBoids() {
@@ -52,7 +55,6 @@ public class SystemManager : MonoBehaviour {
             // misc
             if (i == 0) {
                 boid.GetComponent<SpriteRenderer>().color = Color.black;
-                boid.arrow.gameObject.SetActive(true);
             }
             boids[i] = boid;
         }
@@ -61,7 +63,7 @@ public class SystemManager : MonoBehaviour {
     void createSystems() {
         systemDict.Add(typeof(MovementSystem), new MovementSystem(boids, settings.speed));
         systemDict.Add(typeof(BorderSystem), new BorderSystem(boids, camera.getBottomLeft(), camera.getTopRight(), settings.size));
-        systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings, localCenter));
+        systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings, localCenter, alignmentArrow, separationArrow));
         
         createSystemArray();
     }
@@ -74,8 +76,11 @@ public class SystemManager : MonoBehaviour {
         }
     }
 
-    T getSystem<T>() where T : Systems.System {
-        return (T) systemDict[typeof(T)];
+    void initializeDebugViews() {
+        localCenter.transform.localScale *= settings.size;
+        alignmentArrow.transform.localScale *= settings.size;
+        separationArrow.transform.localScale *= settings.size;
+        onToggleLocalCenter(settings.showLocalCenter);
     }
 
     void Update() {
@@ -87,6 +92,8 @@ public class SystemManager : MonoBehaviour {
 
     public void onToggleLocalCenter(bool value) {
         localCenter.gameObject.SetActive(value);
+        alignmentArrow.gameObject.SetActive(value);
+        separationArrow.gameObject.SetActive(value);
     }
 }
 }
