@@ -1,4 +1,5 @@
 ﻿using Services.Saves;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -15,11 +16,16 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
-    [Header("Slider")]
+    [Header("Sliders")]
     [SerializeField] Slider alignmentForceSlider;
     [SerializeField] Slider cohesionForceSlider;
     [SerializeField] Slider separationForceSlider;
-    
+    [SerializeField] TMP_Text alignmentForceLabel;
+    [SerializeField] TMP_Text cohesionForceLabel;
+    [SerializeField] TMP_Text separationForceLabel;
+
+    [SerializeField] Button resetButton;
+
     [Inject] SystemManager systemManager;
     [Inject] InputController inputController;
     [Inject] SaveService saveService;
@@ -33,7 +39,7 @@ public class SettingsPanel : MonoBehaviour {
         minX = rectTransform.position.x - rectTransform.rect.width / 2;
         settings = saveService.getSave().settings;
         addListeners();
-        initializeFromSave();
+        initializeValues();
     }
 
     void addListeners() {
@@ -48,9 +54,11 @@ public class SettingsPanel : MonoBehaviour {
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
         cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
         separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
+        
+        resetButton.onClick.AddListener(onReset);
     }
 
-    void initializeFromSave() {
+    void initializeValues() {
         // toggles
         mousePositionToggle.isOn = settings.showMousePosition;
         viewAreaToggle.isOn = settings.showViewArea;
@@ -62,6 +70,9 @@ public class SettingsPanel : MonoBehaviour {
         alignmentForceSlider.value = settings.alignmentForce;
         cohesionForceSlider.value = settings.cohesionForce;
         separationForceSlider.value = settings.separationForce;
+        alignmentForceLabel.text = settings.alignmentForce.ToString("F");
+        cohesionForceLabel.text = settings.cohesionForce.ToString("F");
+        separationForceLabel.text = settings.separationForce.ToString("F");
     }
     
     #region toggle listeners
@@ -99,16 +110,24 @@ public class SettingsPanel : MonoBehaviour {
     #region slider listeners
     void onAlignmentForceChanged(float value) {
         settings.alignmentForce = value;
+        alignmentForceLabel.text = value.ToString("F");
     }
 
     void onCohesionForceChanged(float value) {
         settings.cohesionForce = value;
+        cohesionForceLabel.text = value.ToString("F");
     }
 
     void onSeparationForceChanged(float value) {
         settings.separationForce = value;
+        separationForceLabel.text = value.ToString("F");
     }
     #endregion
+
+    void onReset() {
+        settings.reset();
+        initializeValues();
+    }
 
     public void onMousePositionChanged(Vector3 screenMousePosition) {
         gameObject.SetActive(screenMousePosition.x > minX);
