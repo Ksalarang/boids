@@ -5,7 +5,6 @@ namespace GameScene {
 public class GameSettings : MonoBehaviour {
     public BoidSettings boids;
     public FlockSettings flock;
-    public DebugSettings debug;
 }
 
 [Serializable]
@@ -24,11 +23,6 @@ public class FlockSettings {
     public float cohesionForce;
     public float separationForce;
     public float viewDistance;
-    public float avoidanceDistance;
-}
-
-[Serializable]
-public class DebugSettings {
-    public bool viewAreaEnabled;
+    public float separationDistance;
 }
 }

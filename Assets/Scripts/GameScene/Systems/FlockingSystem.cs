@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Utils.Extensions;
 
 namespace GameScene.Systems {
@@ -20,7 +21,10 @@ public class FlockingSystem : System {
         for (var i = 0; i < boids.Length; i++) {
             var currentBoid = boids[i];
             findNearbyBoids(currentBoid);
-            if (i == 0) localCenter.transform.position = currentBoid.transform.position;
+            if (i == 0) {
+                localCenter.transform.position = currentBoid.transform.position;
+                currentBoid.arrow.transform.rotation = currentBoid.transform.rotation;
+            }
             if (nearbyBoids.Count == 0) continue;
             // find average vectors
             var averageDirection = Vector3.zero;
@@ -30,7 +34,7 @@ public class FlockingSystem : System {
             foreach (var boid in nearbyBoids) {
                 averageDirection += boid.velocity;
                 averagePosition += boid.transform.position;
-                if (boid.distanceTemp < settings.avoidanceDistance) {
+                if (boid.distanceTemp < settings.separationDistance) {
                     var toNeighbor = currentBoidPosition - boid.transform.position;
                     separationForce += toNeighbor.normalized / toNeighbor.magnitude;
                 }
@@ -42,6 +46,10 @@ public class FlockingSystem : System {
             var count = 0;
             if (settings.alignmentEnabled) {
                 resultingVector += averageDirection;
+                if (i == 0) {
+                    var angle = Mathf.Atan2(averageDirection.y, averageDirection.x) * Mathf.Rad2Deg;
+                    currentBoid.arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
                 count++;
             }
             if (settings.cohesionEnabled) {

@@ -48,6 +48,7 @@ public class SystemManager : MonoBehaviour {
             // misc
             if (i == 0) {
                 boid.GetComponent<SpriteRenderer>().color = Color.black;
+                boid.arrow.gameObject.SetActive(true);
             }
             boids[i] = boid;
         }

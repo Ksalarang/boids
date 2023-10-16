@@ -27,7 +27,6 @@ public class GameInstaller : MonoInstaller {
         bind(gameSettings);
         bind(gameSettings.boids);
         bind(gameSettings.flock);
-        bind(gameSettings.debug);
         bind(camera);
     }
     
