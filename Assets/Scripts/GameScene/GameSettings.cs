@@ -29,7 +29,7 @@ public class GameSettings {
     }
     
     public void reset() {
-        count = 200;
+        count = 100;
         speed = 2f;
         alignmentEnabled = true;
         cohesionEnabled = true;

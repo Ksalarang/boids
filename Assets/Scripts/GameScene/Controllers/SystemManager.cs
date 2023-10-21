@@ -50,6 +50,7 @@ namespace GameScene.Controllers {
                 // view area size
                 var viewAreaDiameter = 2 * settings.viewDistance / boidSize;
                 boid.viewArea.transform.localScale = new Vector3(viewAreaDiameter, viewAreaDiameter);
+
                 boids[i] = boid;
             }
             // set up the debug boid

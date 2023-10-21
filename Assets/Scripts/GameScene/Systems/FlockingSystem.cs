@@ -8,7 +8,7 @@ namespace GameScene.Systems {
         readonly Log log;
         readonly Boid[] boids;
         readonly GameSettings settings;
-        readonly List<Boid> nearbyBoids;
+        readonly List<Boid> neighbors;
         readonly GameObject localCenter;
         readonly GameObject alignmentArrow;
         readonly GameObject separationArrow;
@@ -21,7 +21,7 @@ namespace GameScene.Systems {
             log = new Log(GetType());
             this.boids = boids;
             this.settings = settings;
-            nearbyBoids = new List<Boid>(settings.count);
+            neighbors = new List<Boid>(settings.count);
             this.localCenter = localCenter;
             this.alignmentArrow = alignmentArrow;
             this.separationArrow = separationArrow;
@@ -44,15 +44,16 @@ namespace GameScene.Systems {
                 // preparation
                 var currentBoid = boids[i];
                 var currentBoidPosition = currentBoid.transform.position;
-                findNearbyBoids(currentBoid);
-                if (nearbyBoids.Count == 0) continue;
+                findNeighbors(currentBoid);
+                var neighborCount = neighbors.Count;
+                if (neighborCount == 0) continue;
                 
                 // calculate average velocity, position and separation direction
                 var averageDirection = Vector3.zero;
                 var averagePosition = Vector3.zero;
                 var separationDirection = Vector3.zero;
                 var shouldSeparate = false;
-                foreach (var boid in nearbyBoids) {
+                foreach (var boid in neighbors) {
                     averageDirection += boid.velocity;
                     var boidPosition = boid.transform.position;
                     averagePosition += boidPosition;
@@ -63,8 +64,8 @@ namespace GameScene.Systems {
                         shouldSeparate = true;
                     }
                 }
-                averageDirection /= nearbyBoids.Count;
-                averagePosition /= nearbyBoids.Count;
+                averageDirection /= neighborCount;
+                averagePosition /= neighborCount;
 
                 // alignment
                 if (settings.alignmentEnabled) {
@@ -98,7 +99,7 @@ namespace GameScene.Systems {
                         currentBoid.transform.rotation,
                         Quaternion.Euler(0, 0, angle),
                         deltaTime * settings.separationForce);
-    
+
                     if (i == 0) {
                         separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
                     }
@@ -106,14 +107,14 @@ namespace GameScene.Systems {
             }
         }
         
-        void findNearbyBoids(Boid current) {
-            nearbyBoids.Clear();
+        void findNeighbors(Boid current) {
+            neighbors.Clear();
             var position = current.transform.position;
             foreach (var boid in boids) {
                 if (boid == current) continue;
                 boid.distanceTemp = boid.transform.position.distanceTo(position);
                 if (boid.distanceTemp < settings.viewDistance) {
-                    nearbyBoids.Add(boid);
+                    neighbors.Add(boid);
                 }
             }
         }
