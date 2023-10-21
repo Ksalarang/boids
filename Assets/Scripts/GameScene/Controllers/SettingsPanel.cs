@@ -41,7 +41,7 @@ namespace GameScene.Controllers {
             minX = rectTransform.position.x - rectTransform.rect.width / 2;
             settings = saveService.getSave().settings;
             addListeners();
-            initializeValues();
+            updateValues();
         }
     
         void addListeners() {
@@ -62,7 +62,7 @@ namespace GameScene.Controllers {
             randomizeBoidsButton.onClick.AddListener(onRandomizeBoids);
         }
 
-        void initializeValues() {
+        void updateValues() {
             // toggles
             mousePositionToggle.isOn = settings.showMousePosition;
             viewAreaToggle.isOn = settings.showViewArea;
@@ -138,14 +138,25 @@ namespace GameScene.Controllers {
         #region button listeners
         void onReset() {
             settings.reset();
-            initializeValues();
+            updateValues();
         }
 
         void onRandomizeBoids() {
             systemManager.onRandomizeBoids();
         }
         #endregion
-    
+
+        const float frequency = 0.2f;
+        float progress;
+
+        private void Update() {
+            progress += Time.deltaTime;
+            if (progress > frequency) {
+                progress = 0f;
+                updateValues();
+            }
+        }
+
         public void onMousePositionChanged(Vector3 screenMousePosition) {
             gameObject.SetActive(screenMousePosition.x > minX);
         }

@@ -14,6 +14,7 @@ namespace GameScene.Controllers {
         [SerializeField] GameObject localCenter;
         [SerializeField] GameObject alignmentArrow;
         [SerializeField] GameObject separationArrow;
+        [SerializeField] Vector2 angles;
         
         [Inject] new Camera camera;
         [Inject] SaveService saveService;
@@ -49,12 +50,10 @@ namespace GameScene.Controllers {
                 // view area size
                 var viewAreaDiameter = 2 * settings.viewDistance / boidSize;
                 boid.viewArea.transform.localScale = new Vector3(viewAreaDiameter, viewAreaDiameter);
-                // misc
-                if (i == 0) {
-                    boid.GetComponent<SpriteRenderer>().color = Color.black;
-                }
                 boids[i] = boid;
             }
+            // set up the debug boid
+            boids[0].GetComponent<SpriteRenderer>().color = Color.black;
         }
 
         void randomizePositionAndDirection(Boid boid) {
@@ -64,7 +63,8 @@ namespace GameScene.Controllers {
                 RandomUtils.nextFloat(cameraBottomLeft.y, cameraTopRight.y)
             );
             // rotation
-            boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
+            var angle = RandomUtils.nextFloat(angles.x, angles.y);
+            boid.transform.rotation = Quaternion.Euler(0, 0, angle);
         }
     
         void createSystems() {

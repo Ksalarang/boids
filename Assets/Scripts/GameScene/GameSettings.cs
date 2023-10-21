@@ -34,9 +34,9 @@ public class GameSettings {
         alignmentEnabled = true;
         cohesionEnabled = true;
         separationEnabled = true;
-        alignmentForce = 1f;
-        cohesionForce = 1f;
-        separationForce = 1f;
+        alignmentForce = 30f;
+        cohesionForce = 20f;
+        separationForce = 50f;
         size = 0.2f;
         separationDistance = 0.25f;
         viewDistance = 0.4f;
