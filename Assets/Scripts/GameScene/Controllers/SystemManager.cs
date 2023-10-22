@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using Assets.Scripts.GameScene;
 using GameScene.Systems;
 using Services.Saves;
 using UnityEngine;
@@ -18,12 +18,14 @@ namespace GameScene.Controllers {
         
         [Inject] new Camera camera;
         [Inject] SaveService saveService;
-        
+        [Inject] PredatorController predatorController;
+
         GameSettings settings;
         Dictionary<Type, Systems.System> systemDict;
         Systems.System[] systemArray;
         Vector3 cameraBottomLeft;
         Vector3 cameraTopRight;
+        Predator predator;
         
         [HideInInspector] public Boid[] boids;
     
@@ -34,6 +36,7 @@ namespace GameScene.Controllers {
             cameraBottomLeft = camera.getBottomLeft();
             cameraTopRight = camera.getTopRight();
             createBoids();
+            createPredator();
             createSystems();
             initializeDebugViews();
         }
@@ -64,14 +67,20 @@ namespace GameScene.Controllers {
                 RandomUtils.nextFloat(cameraBottomLeft.y, cameraTopRight.y)
             );
             // rotation
-            var angle = RandomUtils.nextFloat(angles.x, angles.y);
-            boid.transform.rotation = Quaternion.Euler(0, 0, angle);
+            boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
         }
-    
+
+        void createPredator() {
+            predator = predatorController.createPredator();
+            predator.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
+            predator.boids = boids;
+        }
+
         void createSystems() {
             systemDict.Add(typeof(MovementSystem), new MovementSystem(boids, settings.speed));
-            systemDict.Add(typeof(BorderSystem), new BorderSystem(boids, camera.getBottomLeft(), camera.getTopRight(), settings.size));
+            systemDict.Add(typeof(BorderSystem), new BorderSystem(boids, predator, camera.getBottomLeft(), camera.getTopRight(), settings.size));
             systemDict.Add(typeof(FlockingSystem), new FlockingSystem(boids, settings, localCenter, alignmentArrow, separationArrow));
+            systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, settings));
             
             createSystemArray();
         }
