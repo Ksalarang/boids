@@ -6,82 +6,80 @@ using Utils;
 using Zenject;
 
 namespace GameScene.Controllers {
-    public class SettingsPanel : MonoBehaviour {
-        [SerializeField] RectTransform rectTransform;
-        [Header("Toggles")]
-        [SerializeField] Toggle mousePositionToggle;
-        [SerializeField] Toggle viewAreaToggle;
-        [SerializeField] Toggle localCenterToggle;
-        [SerializeField] Toggle alignmentToggle;
-        [SerializeField] Toggle cohesionToggle;
-        [SerializeField] Toggle separationToggle;
-        [Header("Sliders")]
-        [SerializeField] Slider alignmentForceSlider;
-        [SerializeField] Slider cohesionForceSlider;
-        [SerializeField] Slider separationForceSlider;
-        [SerializeField] Slider gameSpeedSlider;
-        [SerializeField] TMP_Text alignmentForceLabel;
-        [SerializeField] TMP_Text cohesionForceLabel;
-        [SerializeField] TMP_Text separationForceLabel;
-        [SerializeField] TMP_Text gameSpeedLabel;
+public class SettingsPanel : MonoBehaviour {
+    [SerializeField] RectTransform rectTransform;
+    [Header("Toggles")] [SerializeField] Toggle mousePositionToggle;
+    [SerializeField] Toggle viewAreaToggle;
+    [SerializeField] Toggle localCenterToggle;
+    [SerializeField] Toggle alignmentToggle;
+    [SerializeField] Toggle cohesionToggle;
+    [SerializeField] Toggle separationToggle;
+    [Header("Sliders")] [SerializeField] Slider alignmentForceSlider;
+    [SerializeField] Slider cohesionForceSlider;
+    [SerializeField] Slider separationForceSlider;
+    [SerializeField] Slider gameSpeedSlider;
+    [SerializeField] TMP_Text alignmentForceLabel;
+    [SerializeField] TMP_Text cohesionForceLabel;
+    [SerializeField] TMP_Text separationForceLabel;
+    [SerializeField] TMP_Text gameSpeedLabel;
 
-        [SerializeField] Button resetButton;
-        [SerializeField] Button randomizeBoidsButton;
+    [SerializeField] Button resetButton;
+    [SerializeField] Button randomizeBoidsButton;
 
-        [Inject] SystemManager systemManager;
-        [Inject] InputController inputController;
-        [Inject] SaveService saveService;
-    
-        Log log;
-        float minX;
-        GameSettings settings;
-    
-        void Awake() {
-            log = new Log(GetType());
-            minX = rectTransform.position.x - rectTransform.rect.width / 2;
-            settings = saveService.getSave().settings;
-            addListeners();
-            updateValues();
-        }
-    
-        void addListeners() {
-            // toggles
-            mousePositionToggle.onValueChanged.AddListener(toggleMousePosition);
-            viewAreaToggle.onValueChanged.AddListener(toggleViewArea);
-            localCenterToggle.onValueChanged.AddListener(toggleLocalCenter);
-            alignmentToggle.onValueChanged.AddListener(toggleAlignment);
-            cohesionToggle.onValueChanged.AddListener(toggleCohesion);
-            separationToggle.onValueChanged.AddListener(toggleSeparation);
-            // sliders
-            alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
-            cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
-            separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
-            gameSpeedSlider.onValueChanged.AddListener(onGameSpeedChanged);
-            // buttons
-            resetButton.onClick.AddListener(onReset);
-            randomizeBoidsButton.onClick.AddListener(onRandomizeBoids);
-        }
+    [Inject] SystemManager systemManager;
+    [Inject] InputController inputController;
+    [Inject] SaveService saveService;
 
-        void updateValues() {
-            // toggles
-            mousePositionToggle.isOn = settings.showMousePosition;
-            viewAreaToggle.isOn = settings.showViewArea;
-            localCenterToggle.isOn = settings.showLocalCenter;
-            alignmentToggle.isOn = settings.alignmentEnabled;
-            cohesionToggle.isOn = settings.cohesionEnabled;
-            separationToggle.isOn = settings.separationEnabled;
-            // sliders
-            alignmentForceSlider.value = settings.alignmentForce;
-            cohesionForceSlider.value = settings.cohesionForce;
-            separationForceSlider.value = settings.separationForce;
-            gameSpeedSlider.value = settings.gameSpeed;
-            alignmentForceLabel.text = settings.alignmentForce.ToString("F");
-            cohesionForceLabel.text = settings.cohesionForce.ToString("F");
-            separationForceLabel.text = settings.separationForce.ToString("F");
-            gameSpeedLabel.text = settings.gameSpeed.ToString("F");
-        }
-        
-        #region toggle listeners
+    Log log;
+    float minX;
+    GameSettings settings;
+
+    void Awake() {
+        log = new Log(GetType());
+        minX = rectTransform.position.x - rectTransform.rect.width / 2;
+        settings = saveService.getSave().settings;
+        addListeners();
+        updateValues();
+    }
+
+    void addListeners() {
+        // toggles
+        mousePositionToggle.onValueChanged.AddListener(toggleMousePosition);
+        viewAreaToggle.onValueChanged.AddListener(toggleViewArea);
+        localCenterToggle.onValueChanged.AddListener(toggleLocalCenter);
+        alignmentToggle.onValueChanged.AddListener(toggleAlignment);
+        cohesionToggle.onValueChanged.AddListener(toggleCohesion);
+        separationToggle.onValueChanged.AddListener(toggleSeparation);
+        // sliders
+        alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
+        cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
+        separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
+        gameSpeedSlider.onValueChanged.AddListener(onGameSpeedChanged);
+        // buttons
+        resetButton.onClick.AddListener(onReset);
+        randomizeBoidsButton.onClick.AddListener(onRandomizeBoids);
+    }
+
+    void updateValues() {
+        // toggles
+        mousePositionToggle.isOn = settings.showMousePosition;
+        viewAreaToggle.isOn = settings.showViewArea;
+        localCenterToggle.isOn = settings.showLocalCenter;
+        alignmentToggle.isOn = settings.alignmentEnabled;
+        cohesionToggle.isOn = settings.cohesionEnabled;
+        separationToggle.isOn = settings.separationEnabled;
+        // sliders
+        alignmentForceSlider.value = settings.alignmentForce;
+        cohesionForceSlider.value = settings.cohesionForce;
+        separationForceSlider.value = settings.separationForce;
+        gameSpeedSlider.value = settings.gameSpeed;
+        alignmentForceLabel.text = settings.alignmentForce.ToString("F");
+        cohesionForceLabel.text = settings.cohesionForce.ToString("F");
+        separationForceLabel.text = settings.separationForce.ToString("F");
+        gameSpeedLabel.text = settings.gameSpeed.ToString("F");
+    }
+
+    #region toggle listeners
     void toggleMousePosition(bool value) {
         settings.showMousePosition = value;
         inputController.onToggleShowMousePosition(value);
@@ -90,9 +88,7 @@ namespace GameScene.Controllers {
     void toggleViewArea(bool value) {
         settings.showViewArea = value;
         var boids = systemManager.boids;
-        foreach (var boid in boids) {
-            boid.viewArea.gameObject.SetActive(value);
-        }
+        foreach (var boid in boids) boid.viewArea.gameObject.SetActive(value);
     }
 
     void toggleLocalCenter(bool value) {
@@ -107,13 +103,13 @@ namespace GameScene.Controllers {
     void toggleCohesion(bool value) {
         settings.cohesionEnabled = value;
     }
-    
+
     void toggleSeparation(bool value) {
         settings.separationEnabled = value;
     }
     #endregion
-    
-        #region slider listeners
+
+    #region slider listeners
     void onAlignmentForceChanged(float value) {
         settings.alignmentForce = value;
         alignmentForceLabel.text = value.ToString("F");
@@ -134,31 +130,31 @@ namespace GameScene.Controllers {
         gameSpeedLabel.text = value.ToString("F");
     }
     #endregion
-    
-        #region button listeners
-        void onReset() {
-            settings.reset();
+
+    #region button listeners
+    void onReset() {
+        settings.reset();
+        updateValues();
+    }
+
+    void onRandomizeBoids() {
+        systemManager.onRandomizeBoids();
+    }
+    #endregion
+
+    const float frequency = 0.2f;
+    float progress;
+
+    void Update() {
+        progress += Time.deltaTime;
+        if (progress > frequency) {
+            progress = 0f;
             updateValues();
         }
-
-        void onRandomizeBoids() {
-            systemManager.onRandomizeBoids();
-        }
-        #endregion
-
-        const float frequency = 0.2f;
-        float progress;
-
-        private void Update() {
-            progress += Time.deltaTime;
-            if (progress > frequency) {
-                progress = 0f;
-                updateValues();
-            }
-        }
-
-        public void onMousePositionChanged(Vector3 screenMousePosition) {
-            gameObject.SetActive(screenMousePosition.x > minX);
-        }
     }
+
+    public void onMousePositionChanged(Vector3 screenMousePosition) {
+        gameObject.SetActive(screenMousePosition.x > minX);
+    }
+}
 }
