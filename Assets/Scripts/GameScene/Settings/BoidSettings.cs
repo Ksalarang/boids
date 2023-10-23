@@ -19,5 +19,24 @@ public class BoidSettings {
     public float cohesionForce;
     public float separationForce;
     public float predatorEvasionForce;
+
+    public void reset(BoidSettings defaultSettings) {
+        count = defaultSettings.count;
+        speed = defaultSettings.speed;
+        size = defaultSettings.size;
+        
+        separationDistance = defaultSettings.separationDistance;
+        viewDistance = defaultSettings.viewDistance;
+        predatorDistance = defaultSettings.predatorDistance;
+        
+        alignmentEnabled = defaultSettings.alignmentEnabled;
+        cohesionEnabled = defaultSettings.cohesionEnabled;
+        separationEnabled = defaultSettings.separationEnabled;
+        
+        alignmentForce = defaultSettings.alignmentForce;
+        cohesionForce = defaultSettings.cohesionForce;
+        separationForce = defaultSettings.separationForce;
+        predatorEvasionForce = defaultSettings.predatorEvasionForce;
+    }
 }
 }

@@ -12,11 +12,14 @@ public class GameSettings {
 
     public float dragDeceleration;
 
-    public BoidSettings boidSettings;
-    public PredatorSettings predatorSettings;
+    public BoidSettings boidSettings = new();
+    public PredatorSettings predatorSettings = new();
 
-    [NonSerialized]
-    public GameSettings defaultSettings;
+    GameSettings defaultSettings;
+
+    public void setDefaultSettings(GameSettings settings) {
+        defaultSettings = settings;
+    }
 
     public void reset() {
         if (defaultSettings == null) {
@@ -32,8 +35,8 @@ public class GameSettings {
 
         dragDeceleration = defaultSettings.dragDeceleration;
 
-        boidSettings = defaultSettings.boidSettings;
-        predatorSettings = defaultSettings.predatorSettings;
+        boidSettings.reset(defaultSettings.boidSettings);
+        predatorSettings.reset(defaultSettings.predatorSettings);
     }
 }
 }

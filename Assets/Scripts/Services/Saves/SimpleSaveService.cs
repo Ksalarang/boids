@@ -1,5 +1,4 @@
-﻿using GameScene;
-using GameScene.Settings;
+﻿using GameScene.Settings;
 using Services.ServiceManager;
 using UnityEngine;
 using Utils;
@@ -15,9 +14,13 @@ public class SimpleSaveService : SaveService, AppLifecycleListener {
     public SimpleSaveService(LogConfig logConfig, GameSettings defaultSettings) {
         log = new(GetType(), logConfig.saveService);
         save = new();
-        save.settings.defaultSettings = defaultSettings;
-        save.settings.reset();
+        resetSettings(defaultSettings);
         loadData();
+    }
+
+    void resetSettings(GameSettings defaultSettings) {
+        save.settings.setDefaultSettings(defaultSettings);
+        save.settings.reset();
     }
 
     void loadData() {

@@ -148,8 +148,10 @@ public class SettingsPanel : MonoBehaviour {
 
     const float frequency = 0.2f;
     float progress;
+    bool b = true;
 
     void Update() {
+        if (b) return;
         progress += Time.deltaTime;
         if (progress > frequency) {
             progress = 0f;

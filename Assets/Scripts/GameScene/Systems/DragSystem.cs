@@ -1,5 +1,4 @@
 ﻿using GameScene.Settings;
-using Utils;
 
 namespace GameScene.Systems {
 public class DragSystem : System {

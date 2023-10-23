@@ -1,5 +1,4 @@
-﻿using GameScene;
-using GameScene.Settings;
+﻿using GameScene.Settings;
 using Services;
 using Services.Saves;
 using Services.Scenes;
@@ -8,7 +7,6 @@ using Services.Sounds;
 using Services.Vibrations;
 using UnityEngine;
 using Zenject;
-using SystemInfo = UnityEngine.Device.SystemInfo;
 
 // ReSharper disable All
 
