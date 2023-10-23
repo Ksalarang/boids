@@ -81,6 +81,30 @@ MonoBehaviour:
       soundService: 0
       vibrationService: 0
       saveService: 0
+  defaultSettings:
+    count: 100
+    speed: 2
+    alignmentEnabled: 1
+    cohesionEnabled: 1
+    separationEnabled: 1
+    alignmentForce: 50
+    cohesionForce: 30
+    separationForce: 70
+    size: 0.25
+    separationDistance: 0.3
+    viewDistance: 0.9
+    predatorDistance: 2.5
+    predatorEvasionForce: 200
+    showMousePosition: 0
+    showViewArea: 0
+    showLocalCenter: 0
+    gameSpeed: 1
+    predatorSettings:
+      restingSpeed: 1
+      huntingSpeed: 2
+      viewDistance: 5
+      chaseSteeringSpeed: 200
+      restPeriod: 3
   audioSources:
     sounds: []
     soundtracks: []

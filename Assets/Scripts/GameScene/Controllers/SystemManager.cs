@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameScene.Settings;
 using GameScene.Systems;
 using Services.Saves;
 using UnityEngine;
@@ -13,7 +14,6 @@ public class SystemManager : MonoBehaviour {
     [SerializeField] GameObject localCenter;
     [SerializeField] GameObject alignmentArrow;
     [SerializeField] GameObject separationArrow;
-    [SerializeField] Vector2 angles;
 
     [Inject] new Camera camera;
     [Inject] SaveService saveService;
@@ -70,9 +70,7 @@ public class SystemManager : MonoBehaviour {
     }
 
     void createPredator() {
-        predator = predatorController.createPredator();
-        predator.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
-        predator.boids = boids;
+        predator = predatorController.createPredator(settings.predatorSettings);
     }
 
     void createSystems() {

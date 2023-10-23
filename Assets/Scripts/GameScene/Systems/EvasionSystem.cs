@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameScene.Settings;
+using UnityEngine;
 using Utils;
 using Utils.Extensions;
 

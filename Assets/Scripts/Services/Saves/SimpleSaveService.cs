@@ -1,4 +1,6 @@
-﻿using Services.ServiceManager;
+﻿using GameScene;
+using GameScene.Settings;
+using Services.ServiceManager;
 using UnityEngine;
 using Utils;
 using Zenject;
@@ -10,9 +12,11 @@ public class SimpleSaveService : SaveService, AppLifecycleListener {
     PlayerSave save;
 
     [Inject]
-    public SimpleSaveService(LogConfig logConfig) {
+    public SimpleSaveService(LogConfig logConfig, GameSettings defaultSettings) {
         log = new(GetType(), logConfig.saveService);
         save = new();
+        save.settings.defaultSettings = defaultSettings;
+        save.settings.reset();
         loadData();
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using GameScene;
+using GameScene.Settings;
 using UnityEngine;
 
 namespace Services.Saves {
@@ -8,7 +9,7 @@ public class PlayerSave {
     public AudioSave audio = new();
     public GameSettings settings = new();
 
-    public string toJson() => JsonUtility.ToJson(this);
+    public string toJson() => JsonUtility.ToJson(this, true);
 
     public void fromJson(string json) => JsonUtility.FromJsonOverwrite(json, this);
 }

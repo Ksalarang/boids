@@ -1,17 +1,12 @@
 ﻿using System.Collections.Generic;
+using GameScene.Settings;
 using UnityEngine;
 using Utils;
 using Utils.Extensions;
 
 namespace GameScene {
 public class Predator : MonoBehaviour {
-    [SerializeField] State state;
-    [SerializeField] float restingSpeed;
-    [SerializeField] float huntingSpeed;
-    [SerializeField] float viewDistance;
-    [SerializeField] float chaseRotationSpeed;
-    [SerializeField] float restPeriod;
-
+    State state;
     Vector3 velocity;
     float speed;
     List<Boid> nearestBoids;
@@ -19,19 +14,24 @@ public class Predator : MonoBehaviour {
 
     [HideInInspector] public new Transform transform;
     [HideInInspector] public Boid[] boids;
+    [HideInInspector] public PredatorSettings settings;
 
-    private void Awake() {
+    void Awake() {
         transform = base.transform;
         nearestBoids = new List<Boid>();
-        speed = state == State.Resting ? restingSpeed : huntingSpeed;
     }
 
-    private void Update() {
+    void Start() {
+        state = State.Resting;
+        speed = settings.restingSpeed;
+    }
+
+    void Update() {
         var delta = Time.deltaTime;
         updateRestProgress(delta);
         updateRotation(delta);
         updateMovement(delta);
-        updateHuntingProgress(delta);
+        updateHuntingProgress();
     }
 
     float restProgress;
@@ -39,10 +39,10 @@ public class Predator : MonoBehaviour {
     void updateRestProgress(float delta) {
         if (state == State.Hunting) return;
         restProgress += delta;
-        if (restProgress > restPeriod) {
+        if (restProgress > settings.restPeriod) {
             restProgress = 0;
             state = State.Hunting;
-            speed = huntingSpeed;
+            speed = settings.huntingSpeed;
         }
     }
 
@@ -67,7 +67,7 @@ public class Predator : MonoBehaviour {
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             Quaternion.Euler(0, 0, angle),
-            delta * chaseRotationSpeed);
+            delta * settings.chaseSteeringSpeed);
     }
 
     void findNearestBoids() {
@@ -75,7 +75,7 @@ public class Predator : MonoBehaviour {
         var position = transform.position;
         foreach (var boid in boids) {
             boid.distanceTemp = boid.transform.position.distanceTo(position);
-            if (boid.distanceTemp < viewDistance) {
+            if (boid.distanceTemp < settings.viewDistance) {
                 nearestBoids.Add(boid);
             }
         }
@@ -89,12 +89,13 @@ public class Predator : MonoBehaviour {
         transform.position += velocity * delta;
     }
 
-    void updateHuntingProgress(float delta) {
-        if (state == State.Resting || target == null) return;
+    void updateHuntingProgress() {
+        if (state == State.Resting || target is null) return;
         var distance = transform.position.distanceTo(target.transform.position);
         if (distance < transform.localScale.x / 2 + target.transform.localScale.y / 2) {
             state = State.Resting;
-            speed = restingSpeed;
+            target = null;
+            speed = settings.restingSpeed;
         }
     }
 

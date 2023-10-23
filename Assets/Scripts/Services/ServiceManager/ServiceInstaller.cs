@@ -1,4 +1,6 @@
-﻿using Services;
+﻿using GameScene;
+using GameScene.Settings;
+using Services;
 using Services.Saves;
 using Services.Scenes;
 using Services.ServiceManager;
@@ -6,12 +8,14 @@ using Services.Sounds;
 using Services.Vibrations;
 using UnityEngine;
 using Zenject;
+using SystemInfo = UnityEngine.Device.SystemInfo;
 
 // ReSharper disable All
 
 namespace init_scene {
 public class ServiceInstaller : MonoInstaller {
     [SerializeField] GlobalConfig globalConfig;
+    [SerializeField] GameSettings defaultSettings;
     [SerializeField] AudioSources audioSources;
     [SerializeField] ServiceManager serviceManager;
     
@@ -19,6 +23,7 @@ public class ServiceInstaller : MonoInstaller {
         // settings
         bind(globalConfig);
         bind(globalConfig.logConfig);
+        bind(defaultSettings);
         bind(audioSources);
         // services
         bind<SceneService>();

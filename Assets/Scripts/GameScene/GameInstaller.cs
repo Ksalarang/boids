@@ -24,7 +24,7 @@ public class GameInstaller : MonoInstaller {
         bind(predatorController);
         // views
         bind(settingsPanel);
-        // settings
+        // misc
         bind(camera);
     }
 

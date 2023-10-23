@@ -1,4 +1,5 @@
-﻿using Services.Saves;
+﻿using GameScene.Settings;
+using Services.Saves;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
