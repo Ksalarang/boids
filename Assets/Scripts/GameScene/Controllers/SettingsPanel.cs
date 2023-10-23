@@ -33,12 +33,14 @@ public class SettingsPanel : MonoBehaviour {
 
     Log log;
     float minX;
-    GameSettings settings;
+    GameSettings gameSettings;
+    BoidSettings boidSettings;
 
     void Awake() {
         log = new Log(GetType());
         minX = rectTransform.position.x - rectTransform.rect.width / 2;
-        settings = saveService.getSave().settings;
+        gameSettings = saveService.getSave().settings;
+        boidSettings = gameSettings.boidSettings;
         addListeners();
         updateValues();
     }
@@ -63,78 +65,79 @@ public class SettingsPanel : MonoBehaviour {
 
     void updateValues() {
         // toggles
-        mousePositionToggle.isOn = settings.showMousePosition;
-        viewAreaToggle.isOn = settings.showViewArea;
-        localCenterToggle.isOn = settings.showLocalCenter;
-        alignmentToggle.isOn = settings.alignmentEnabled;
-        cohesionToggle.isOn = settings.cohesionEnabled;
-        separationToggle.isOn = settings.separationEnabled;
+        mousePositionToggle.isOn = gameSettings.showMousePosition;
+        viewAreaToggle.isOn = gameSettings.showViewArea;
+        localCenterToggle.isOn = gameSettings.showLocalCenter;
+        alignmentToggle.isOn = boidSettings.alignmentEnabled;
+        cohesionToggle.isOn = boidSettings.cohesionEnabled;
+        separationToggle.isOn = boidSettings.separationEnabled;
         // sliders
-        alignmentForceSlider.value = settings.alignmentForce;
-        cohesionForceSlider.value = settings.cohesionForce;
-        separationForceSlider.value = settings.separationForce;
-        gameSpeedSlider.value = settings.gameSpeed;
-        alignmentForceLabel.text = settings.alignmentForce.ToString("F");
-        cohesionForceLabel.text = settings.cohesionForce.ToString("F");
-        separationForceLabel.text = settings.separationForce.ToString("F");
-        gameSpeedLabel.text = settings.gameSpeed.ToString("F");
+        alignmentForceSlider.value = boidSettings.alignmentForce;
+        cohesionForceSlider.value = boidSettings.cohesionForce;
+        separationForceSlider.value = boidSettings.separationForce;
+        gameSpeedSlider.value = gameSettings.gameSpeed;
+        // slider labels
+        alignmentForceLabel.text = boidSettings.alignmentForce.ToString("F");
+        cohesionForceLabel.text = boidSettings.cohesionForce.ToString("F");
+        separationForceLabel.text = boidSettings.separationForce.ToString("F");
+        gameSpeedLabel.text = gameSettings.gameSpeed.ToString("F");
     }
 
     #region toggle listeners
     void toggleMousePosition(bool value) {
-        settings.showMousePosition = value;
+        gameSettings.showMousePosition = value;
         inputController.onToggleShowMousePosition(value);
     }
 
     void toggleViewArea(bool value) {
-        settings.showViewArea = value;
+        gameSettings.showViewArea = value;
         var boids = systemManager.boids;
         foreach (var boid in boids) boid.viewArea.gameObject.SetActive(value);
     }
 
     void toggleLocalCenter(bool value) {
-        settings.showLocalCenter = value;
+        gameSettings.showLocalCenter = value;
         systemManager.onToggleLocalCenter(value);
     }
 
     void toggleAlignment(bool value) {
-        settings.alignmentEnabled = value;
+        boidSettings.alignmentEnabled = value;
     }
 
     void toggleCohesion(bool value) {
-        settings.cohesionEnabled = value;
+        boidSettings.cohesionEnabled = value;
     }
 
     void toggleSeparation(bool value) {
-        settings.separationEnabled = value;
+        boidSettings.separationEnabled = value;
     }
     #endregion
 
     #region slider listeners
     void onAlignmentForceChanged(float value) {
-        settings.alignmentForce = value;
+        boidSettings.alignmentForce = value;
         alignmentForceLabel.text = value.ToString("F");
     }
 
     void onCohesionForceChanged(float value) {
-        settings.cohesionForce = value;
+        boidSettings.cohesionForce = value;
         cohesionForceLabel.text = value.ToString("F");
     }
 
     void onSeparationForceChanged(float value) {
-        settings.separationForce = value;
+        boidSettings.separationForce = value;
         separationForceLabel.text = value.ToString("F");
     }
 
     void onGameSpeedChanged(float value) {
-        settings.gameSpeed = value;
+        gameSettings.gameSpeed = value;
         gameSpeedLabel.text = value.ToString("F");
     }
     #endregion
 
     #region button listeners
     void onReset() {
-        settings.reset();
+        gameSettings.reset();
         updateValues();
     }
 

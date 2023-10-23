@@ -7,9 +7,9 @@ namespace GameScene.Systems {
 public class EvasionSystem : System {
     readonly Boid[] boids;
     readonly Predator predator;
-    readonly GameSettings settings;
+    readonly BoidSettings settings;
 
-    public EvasionSystem(Boid[] boids, Predator predator, GameSettings settings) {
+    public EvasionSystem(Boid[] boids, Predator predator, BoidSettings settings) {
         this.boids = boids;
         this.predator = predator;
         this.settings = settings;

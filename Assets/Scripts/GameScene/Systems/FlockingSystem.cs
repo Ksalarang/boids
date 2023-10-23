@@ -8,21 +8,24 @@ namespace GameScene.Systems {
 public class FlockingSystem : System {
     readonly Log log;
     readonly Boid[] boids;
-    readonly GameSettings settings;
+    readonly GameSettings gameSettings;
+    readonly BoidSettings boidSettings;
     readonly List<Boid> neighbors;
     readonly GameObject localCenter;
     readonly GameObject alignmentArrow;
     readonly GameObject separationArrow;
 
     public FlockingSystem(Boid[] boids,
-        GameSettings settings,
+        GameSettings gameSettings,
+        BoidSettings boidSettings,
         GameObject localCenter,
         GameObject alignmentArrow,
         GameObject separationArrow) {
         log = new Log(GetType());
         this.boids = boids;
-        this.settings = settings;
-        neighbors = new List<Boid>(settings.count);
+        this.gameSettings = gameSettings;
+        this.boidSettings = boidSettings;
+        neighbors = new List<Boid>(this.boidSettings.count);
         this.localCenter = localCenter;
         this.alignmentArrow = alignmentArrow;
         this.separationArrow = separationArrow;
@@ -30,7 +33,7 @@ public class FlockingSystem : System {
 
     public void update(float deltaTime) {
         // reset the debug boid indicators
-        if (settings.showLocalCenter) {
+        if (gameSettings.showLocalCenter) {
             var debugBoid = boids[0];
             var debugBoidPosition = debugBoid.transform.position;
             var debugBoidRotation = debugBoid.transform.rotation;
@@ -58,7 +61,7 @@ public class FlockingSystem : System {
                 averageDirection += boid.velocity;
                 var boidPosition = boid.transform.position;
                 averagePosition += boidPosition;
-                if (boid.distanceTemp < settings.separationDistance) {
+                if (boid.distanceTemp < boidSettings.separationDistance) {
                     var fromNeighbor = currentBoidPosition - boidPosition;
                     if (fromNeighbor == Vector3.zero) continue;
                     separationDirection += fromNeighbor.normalized / fromNeighbor.magnitude;
@@ -69,33 +72,33 @@ public class FlockingSystem : System {
             averagePosition /= neighborCount;
 
             // alignment
-            if (settings.alignmentEnabled) {
+            if (boidSettings.alignmentEnabled) {
                 var angle = MathUtils.vectorToAngle(averageDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * settings.alignmentForce);
+                    deltaTime * boidSettings.alignmentForce);
 
                 if (i == 0) alignmentArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             // cohesion
-            if (settings.cohesionEnabled) {
+            if (boidSettings.cohesionEnabled) {
                 var cohesionDirection = averagePosition - currentBoidPosition;
                 var angle = MathUtils.vectorToAngle(cohesionDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * settings.cohesionForce);
+                    deltaTime * boidSettings.cohesionForce);
 
                 if (i == 0) localCenter.transform.position = averagePosition;
             }
             // separation
-            if (settings.separationEnabled && shouldSeparate) {
+            if (boidSettings.separationEnabled && shouldSeparate) {
                 var angle = MathUtils.vectorToAngle(separationDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * settings.separationForce);
+                    deltaTime * boidSettings.separationForce);
 
                 if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
@@ -108,7 +111,7 @@ public class FlockingSystem : System {
         foreach (var boid in boids) {
             if (boid == current) continue;
             boid.distanceTemp = boid.transform.position.distanceTo(position);
-            if (boid.distanceTemp < settings.viewDistance) neighbors.Add(boid);
+            if (boid.distanceTemp < boidSettings.viewDistance) neighbors.Add(boid);
         }
     }
 }
