@@ -86,10 +86,11 @@ MonoBehaviour:
     showViewArea: 0
     showLocalCenter: 0
     gameSpeed: 1
+    dragDeceleration: 0.1
     boidSettings:
       count: 50
       speed: 2
-      size: 0.25
+      size: 0.3
       separationDistance: 0.3
       viewDistance: 0.9
       predatorDistance: 2.5
@@ -102,10 +103,11 @@ MonoBehaviour:
       predatorEvasionForce: 100
     predatorSettings:
       restingSpeed: 1
-      huntingSpeed: 2
+      maxSpeed: 2.2
+      acceleration: 2
       viewDistance: 5
       chaseSteeringSpeed: 200
-      restPeriod: 3
+      restPeriod: 10
   audioSources:
     sounds: []
     soundtracks: []

@@ -10,6 +10,8 @@ public class GameSettings {
 
     public float gameSpeed;
 
+    public float dragDeceleration;
+
     public BoidSettings boidSettings;
     public PredatorSettings predatorSettings;
 
@@ -27,6 +29,8 @@ public class GameSettings {
         showLocalCenter = defaultSettings.showLocalCenter;
 
         gameSpeed = defaultSettings.gameSpeed;
+
+        dragDeceleration = defaultSettings.dragDeceleration;
 
         boidSettings = defaultSettings.boidSettings;
         predatorSettings = defaultSettings.predatorSettings;

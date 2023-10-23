@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameScene.Settings;
 using UnityEngine;
 using Utils;
@@ -8,13 +9,14 @@ namespace GameScene {
 public class Predator : MonoBehaviour {
     State state;
     Vector3 velocity;
-    float speed;
+    bool isAccelerating;
     List<Boid> nearestBoids;
     Boid target;
 
     [HideInInspector] public new Transform transform;
     [HideInInspector] public Boid[] boids;
     [HideInInspector] public PredatorSettings settings;
+    [HideInInspector] public float speed;
 
     void Awake() {
         transform = base.transform;
@@ -22,14 +24,15 @@ public class Predator : MonoBehaviour {
     }
 
     void Start() {
-        state = State.Resting;
         speed = settings.restingSpeed;
+        setState(State.Hunting);
     }
 
     void Update() {
         var delta = Time.deltaTime;
         updateRestProgress(delta);
         updateRotation(delta);
+        updateSpeed(delta);
         updateMovement(delta);
         updateHuntingProgress();
     }
@@ -41,8 +44,7 @@ public class Predator : MonoBehaviour {
         restProgress += delta;
         if (restProgress > settings.restPeriod) {
             restProgress = 0;
-            state = State.Hunting;
-            speed = settings.huntingSpeed;
+            setState(State.Hunting);
         }
     }
 
@@ -82,6 +84,13 @@ public class Predator : MonoBehaviour {
     }
     #endregion
 
+    void updateSpeed(float delta) {
+        if (isAccelerating) {
+            speed += settings.acceleration * delta;
+            if (speed > settings.maxSpeed) speed = settings.maxSpeed;
+        }
+    }
+    
     void updateMovement(float delta) {
         var angleRadians = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
         velocity.x = speed * Mathf.Cos(angleRadians);
@@ -93,9 +102,20 @@ public class Predator : MonoBehaviour {
         if (state == State.Resting || target is null) return;
         var distance = transform.position.distanceTo(target.transform.position);
         if (distance < transform.localScale.x / 2 + target.transform.localScale.y / 2) {
-            state = State.Resting;
-            target = null;
-            speed = settings.restingSpeed;
+            setState(State.Resting);
+        }
+    }
+
+    void setState(State newState) {
+        state = newState;
+        switch (newState) {
+            case State.Resting:
+                isAccelerating = false;
+                target = null;
+                break;
+            case State.Hunting:
+                isAccelerating = true;
+                break;
         }
     }
 

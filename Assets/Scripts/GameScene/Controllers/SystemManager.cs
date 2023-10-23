@@ -58,7 +58,7 @@ public class SystemManager : MonoBehaviour {
             boids[i] = boid;
         }
         // set up the debug boid
-        boids[0].GetComponent<SpriteRenderer>().color = Color.black;
+        // boids[0].GetComponent<SpriteRenderer>().color = Color.black;
     }
 
     void randomizePositionAndDirection(Boid boid) {
@@ -82,6 +82,7 @@ public class SystemManager : MonoBehaviour {
         systemDict.Add(typeof(FlockingSystem),
             new FlockingSystem(boids, gameSettings, boidSettings, localCenter, alignmentArrow, separationArrow));
         systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, boidSettings));
+        systemDict.Add(typeof(DragSystem), new DragSystem(predator, gameSettings));
 
         createSystemArray();
     }
@@ -97,6 +98,7 @@ public class SystemManager : MonoBehaviour {
         alignmentArrow.transform.localScale *= boidSettings.size;
         separationArrow.transform.localScale *= boidSettings.size;
         onToggleLocalCenter(gameSettings.showLocalCenter);
+        foreach (var boid in boids) boid.viewArea.gameObject.SetActive(gameSettings.showViewArea);
     }
 
     void Update() {
