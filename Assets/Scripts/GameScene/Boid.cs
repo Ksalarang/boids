@@ -4,9 +4,11 @@ namespace GameScene {
 public class Boid : MonoBehaviour {
     [SerializeField] public GameObject viewArea;
 
-    [HideInInspector] public new Transform transform;
-    [HideInInspector] public Vector3 velocity;
-    [HideInInspector] public float distanceTemp;
+    public new Transform transform;
+    public Vector3 velocity;
+    public float speed;
+    public float distanceTemp;
+    public bool isEscapingPredator;
     
     void Awake() {
         transform = base.transform;

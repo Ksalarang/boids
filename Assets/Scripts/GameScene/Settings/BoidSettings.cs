@@ -4,16 +4,22 @@ namespace GameScene.Settings {
 [Serializable]
 public class BoidSettings {
     public int count;
-    public float speed;
-    public float size;
     
+    public float targetSpeed;
+    public float minSpeed;
+    public float maxSpeed;
+    public float defaultAcceleration;
+    public float maxAcceleration;
+    
+    public float size;
     public float separationDistance;
     public float viewDistance;
-    public float predatorDistance;
+    public float predatorViewDistance;
     
     public bool alignmentEnabled;
     public bool cohesionEnabled;
     public bool separationEnabled;
+    public bool evasionEnabled;
 
     public float alignmentForce;
     public float cohesionForce;
@@ -22,16 +28,22 @@ public class BoidSettings {
 
     public void reset(BoidSettings defaultSettings) {
         count = defaultSettings.count;
-        speed = defaultSettings.speed;
-        size = defaultSettings.size;
         
+        targetSpeed = defaultSettings.targetSpeed;
+        minSpeed = defaultSettings.minSpeed;
+        maxSpeed = defaultSettings.maxSpeed;
+        defaultAcceleration = defaultSettings.defaultAcceleration;
+        maxAcceleration = defaultSettings.maxAcceleration;
+        
+        size = defaultSettings.size;
         separationDistance = defaultSettings.separationDistance;
         viewDistance = defaultSettings.viewDistance;
-        predatorDistance = defaultSettings.predatorDistance;
+        predatorViewDistance = defaultSettings.predatorViewDistance;
         
         alignmentEnabled = defaultSettings.alignmentEnabled;
         cohesionEnabled = defaultSettings.cohesionEnabled;
         separationEnabled = defaultSettings.separationEnabled;
+        evasionEnabled = defaultSettings.evasionEnabled;
         
         alignmentForce = defaultSettings.alignmentForce;
         cohesionForce = defaultSettings.cohesionForce;

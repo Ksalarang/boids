@@ -88,26 +88,31 @@ MonoBehaviour:
     gameSpeed: 1
     dragDeceleration: 0.2
     boidSettings:
-      count: 200
-      speed: 2
+      count: 400
+      targetSpeed: 2
+      minSpeed: 1
+      maxSpeed: 3
+      defaultAcceleration: 0.5
+      maxAcceleration: 5
       size: 0.3
       separationDistance: 0.3
-      viewDistance: 0.9
-      predatorDistance: 3
+      viewDistance: 1.5
+      predatorViewDistance: 3
       alignmentEnabled: 1
       cohesionEnabled: 1
       separationEnabled: 1
+      evasionEnabled: 1
       alignmentForce: 200
       cohesionForce: 80
       separationForce: 200
-      evasionForce: 250
+      evasionForce: 400
     predatorSettings:
       restingSpeed: 1
-      maxSpeed: 2.2
-      acceleration: 4
+      maxSpeed: 3
+      acceleration: 5
       viewDistance: 5
       chaseSteeringSpeed: 200
-      restPeriod: 5
+      restPeriod: 10
   audioSources:
     sounds: []
     soundtracks: []

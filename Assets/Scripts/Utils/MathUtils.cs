@@ -37,5 +37,13 @@ namespace Utils {
             vector.y = Mathf.Sin(angle);
             return vector;
         }
+
+        /// <summary>
+        /// Returns the opposite of the angle that must be in range [0, 360]. 
+        /// </summary>
+        public static float oppositeAngle(float angle) {
+            if (angle < 180f) return angle + 180f;
+            return angle - 180f;
+        }
     }
 }

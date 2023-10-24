@@ -44,6 +44,11 @@ public class FlockingSystem : System {
             separationArrow.transform.rotation = debugBoidRotation;
         }
 
+        // cache values
+        var minSpeed = boidSettings.minSpeed;
+        var maxSpeed = boidSettings.maxSpeed;
+        var acceleration = boidSettings.defaultAcceleration * deltaTime;
+        
         for (var i = 0; i < boids.Length; i++) {
             // preparation
             var currentBoid = boids[i];
@@ -52,15 +57,17 @@ public class FlockingSystem : System {
             var neighborCount = neighbors.Count;
             if (neighborCount == 0) continue;
 
-            // calculate average velocity, position and separation direction
+            // calculate average values
             var averageDirection = Vector3.zero;
             var averagePosition = Vector3.zero;
             var separationDirection = Vector3.zero;
+            var averageSpeed = 0f;
             var shouldSeparate = false;
             foreach (var boid in neighbors) {
                 averageDirection += boid.velocity;
                 var boidPosition = boid.transform.position;
                 averagePosition += boidPosition;
+                averageSpeed += boid.speed;
                 if (boid.distanceTemp < boidSettings.separationDistance) {
                     var fromNeighbor = currentBoidPosition - boidPosition;
                     if (fromNeighbor == Vector3.zero) continue;
@@ -70,7 +77,8 @@ public class FlockingSystem : System {
             }
             averageDirection /= neighborCount;
             averagePosition /= neighborCount;
-
+            averageSpeed /= neighborCount;
+            
             // alignment
             if (boidSettings.alignmentEnabled) {
                 var angle = MathUtils.vectorToAngle(averageDirection);
@@ -85,23 +93,49 @@ public class FlockingSystem : System {
             if (boidSettings.cohesionEnabled) {
                 var cohesionDirection = averagePosition - currentBoidPosition;
                 var angle = MathUtils.vectorToAngle(cohesionDirection);
+                var currentRotation = currentBoid.transform.rotation;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
-                    currentBoid.transform.rotation,
+                    currentRotation,
                     Quaternion.Euler(0, 0, angle),
                     deltaTime * boidSettings.cohesionForce);
+
+                // adjust speed for cohesion
+                var currentAngle = currentRotation.eulerAngles.z;
+                if (currentAngle < 0) currentAngle += 360f;
+                if (Mathf.Abs(angle - currentAngle) < 45f) {
+                    currentBoid.speed += acceleration;
+                }
 
                 if (i == 0) localCenter.transform.position = averagePosition;
             }
             // separation
             if (boidSettings.separationEnabled && shouldSeparate) {
                 var angle = MathUtils.vectorToAngle(separationDirection);
+                var currentRotation = currentBoid.transform.rotation;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
-                    currentBoid.transform.rotation,
+                    currentRotation,
                     Quaternion.Euler(0, 0, angle),
                     deltaTime * boidSettings.separationForce);
-
+                
+                // adjust speed for separation
+                var currentAngle = currentRotation.eulerAngles.z;
+                if (currentAngle < 0) currentAngle += 360f;
+                if (Mathf.Abs(angle - currentAngle) < 45f) {
+                    currentBoid.speed += acceleration;
+                } else if (Mathf.Abs(angle - MathUtils.oppositeAngle(currentAngle)) < 45f) {
+                    currentBoid.speed -= acceleration;
+                }
+                
                 if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
+            // speed alignment
+            var currentSpeed = currentBoid.speed;
+            if (currentSpeed < averageSpeed) {
+                currentSpeed += acceleration;
+            } else if (currentSpeed > averageSpeed) {
+                currentSpeed -= acceleration;
+            }
+            currentBoid.speed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
         }
     }
 

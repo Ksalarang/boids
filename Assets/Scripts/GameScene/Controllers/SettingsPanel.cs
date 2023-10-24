@@ -16,6 +16,7 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
+    [SerializeField] Toggle evasionToggle;
     [Header("Sliders")]
     [SerializeField] Slider alignmentForceSlider;
     [SerializeField] Slider cohesionForceSlider;
@@ -60,6 +61,7 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.onValueChanged.AddListener(toggleAlignment);
         cohesionToggle.onValueChanged.AddListener(toggleCohesion);
         separationToggle.onValueChanged.AddListener(toggleSeparation);
+        evasionToggle.onValueChanged.AddListener(toggleEvasion);
         // sliders
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
         cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
@@ -80,6 +82,7 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.isOn = boidSettings.alignmentEnabled;
         cohesionToggle.isOn = boidSettings.cohesionEnabled;
         separationToggle.isOn = boidSettings.separationEnabled;
+        evasionToggle.isOn = boidSettings.evasionEnabled;
         // sliders
         alignmentForceSlider.value = boidSettings.alignmentForce;
         cohesionForceSlider.value = boidSettings.cohesionForce;
@@ -123,6 +126,10 @@ public class SettingsPanel : MonoBehaviour {
 
     void toggleSeparation(bool value) {
         boidSettings.separationEnabled = value;
+    }
+    
+    void toggleEvasion(bool value) {
+        boidSettings.evasionEnabled = value;
     }
     #endregion
 

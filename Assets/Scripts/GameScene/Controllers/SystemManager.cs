@@ -49,8 +49,8 @@ public class SystemManager : MonoBehaviour {
             boid.name = $"boid_{i}";
             // size
             boid.transform.localScale = new Vector3(boidSize, boidSize);
-            // position and direction
-            randomizePositionAndDirection(boid);
+            // position and velocity
+            randomizePositionAndVelocity(boid);
             // view area size
             var viewAreaDiameter = 2 * boidSettings.viewDistance / boidSize;
             boid.viewArea.transform.localScale = new Vector3(viewAreaDiameter, viewAreaDiameter);
@@ -61,14 +61,16 @@ public class SystemManager : MonoBehaviour {
         // boids[0].GetComponent<SpriteRenderer>().color = Color.black;
     }
 
-    void randomizePositionAndDirection(Boid boid) {
+    void randomizePositionAndVelocity(Boid boid) {
         // position
         boid.transform.position = new Vector3(
             RandomUtils.nextFloat(cameraBottomLeft.x, cameraTopRight.x),
             RandomUtils.nextFloat(cameraBottomLeft.y, cameraTopRight.y)
         );
-        // rotation
+        // direction
         boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
+        // speed
+        boid.speed = RandomUtils.nextFloat(boidSettings.minSpeed, boidSettings.maxSpeed);
     }
 
     void createPredator() {
@@ -76,13 +78,14 @@ public class SystemManager : MonoBehaviour {
     }
 
     void createSystems() {
-        systemDict.Add(typeof(MovementSystem), new MovementSystem(boids, boidSettings.speed));
+        systemDict.Add(typeof(MovementSystem), new MovementSystem(boids));
         systemDict.Add(typeof(BorderSystem),
             new BorderSystem(boids, predator, camera.getBottomLeft(), camera.getTopRight(), boidSettings.size));
         systemDict.Add(typeof(FlockingSystem),
             new FlockingSystem(boids, gameSettings, boidSettings, localCenter, alignmentArrow, separationArrow));
         systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, boidSettings));
-        systemDict.Add(typeof(DragSystem), new DragSystem(predator, gameSettings));
+        systemDict.Add(typeof(DragSystem), new DragSystem(boids, predator, gameSettings));
+        systemDict.Add(typeof(SpeedSystem), new SpeedSystem(boids, boidSettings));
 
         createSystemArray();
     }
@@ -113,7 +116,7 @@ public class SystemManager : MonoBehaviour {
     }
 
     public void onRandomizeBoids() {
-        foreach (var boid in boids) randomizePositionAndDirection(boid);
+        foreach (var boid in boids) randomizePositionAndVelocity(boid);
     }
 }
 }
