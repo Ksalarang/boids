@@ -72,7 +72,7 @@ public class SystemManager : MonoBehaviour {
     }
 
     void createPredator() {
-        predator = predatorController.createPredator(gameSettings.predatorSettings);
+        predator = predatorController.createPredator(gameSettings);
     }
 
     void createSystems() {

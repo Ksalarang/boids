@@ -93,14 +93,14 @@ MonoBehaviour:
       size: 0.3
       separationDistance: 0.3
       viewDistance: 0.9
-      predatorDistance: 2.5
+      predatorDistance: 3
       alignmentEnabled: 1
       cohesionEnabled: 1
       separationEnabled: 1
-      alignmentForce: 180
+      alignmentForce: 200
       cohesionForce: 80
-      separationForce: 180
-      evasionForce: 200
+      separationForce: 200
+      evasionForce: 250
     predatorSettings:
       restingSpeed: 1
       maxSpeed: 2.2

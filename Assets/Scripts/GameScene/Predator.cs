@@ -14,6 +14,7 @@ public class Predator : MonoBehaviour {
 
     [HideInInspector] public new Transform transform;
     [HideInInspector] public Boid[] boids;
+    [HideInInspector] public GameSettings gameSettings;
     [HideInInspector] public PredatorSettings settings;
     [HideInInspector] public float speed;
 
@@ -28,7 +29,7 @@ public class Predator : MonoBehaviour {
     }
 
     void Update() {
-        var delta = Time.deltaTime;
+        var delta = Time.deltaTime * gameSettings.gameSpeed;
         updateRestProgress(delta);
         updateRotation(delta);
         updateSpeed(delta);
@@ -99,10 +100,20 @@ public class Predator : MonoBehaviour {
 
     void updateHuntingProgress() {
         if (state == State.Resting || target is null) return;
-        var distance = transform.position.distanceTo(target.transform.position);
-        if (distance < transform.localScale.x / 2 + target.transform.localScale.y / 2) {
+        if (hasCaughtTarget(target)) {
             setState(State.Resting);
         }
+    }
+
+    bool hasCaughtTarget(Boid target) {
+        // the collider here is a circle positioned about where the predator's mouth is.
+        // if the target's position is inside that circle, then it's considered caught.
+        const float colliderRadius = 0.2f;
+        var centerToColliderDistance = transform.localScale.x / 2 - colliderRadius / 2;
+        var toCollider = MathUtils.angleToVector(transform.eulerAngles.z);
+        var colliderPosition = transform.position + centerToColliderDistance * toCollider;
+        var distance = colliderPosition.distanceTo(target.transform.position);
+        return distance < colliderRadius;
     }
 
     void setState(State newState) {

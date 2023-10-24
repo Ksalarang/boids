@@ -10,11 +10,12 @@ public class PredatorController : MonoBehaviour {
     [Inject] DiContainer diContainer;
     [Inject] SystemManager systemManager;
 
-    public Predator createPredator(PredatorSettings predatorSettings) {
+    public Predator createPredator(GameSettings settings) {
         var predator = diContainer.InstantiatePrefabForComponent<Predator>(predatorPrefab);
         predator.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
         predator.boids = systemManager.boids;
-        predator.settings = predatorSettings;
+        predator.gameSettings = settings;
+        predator.settings = settings.predatorSettings;
         return predator;
     }
 }

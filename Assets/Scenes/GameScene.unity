@@ -2297,6 +2297,10 @@ PrefabInstance:
       propertyPath: m_MaxValue
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4535361021526084503, guid: c6d97b3dd85c8d14d9bd81f7b1c794c1, type: 3}
+      propertyPath: m_WholeNumbers
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4615184169668336295, guid: c6d97b3dd85c8d14d9bd81f7b1c794c1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

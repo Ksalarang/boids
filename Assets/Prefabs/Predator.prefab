@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6ab4a242e418b244489465055b12d6ad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -99,6 +99,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform: {fileID: 0}
   boids: []
+  gameSettings:
+    showMousePosition: 0
+    showViewArea: 0
+    showLocalCenter: 0
+    gameSpeed: 0
+    dragDeceleration: 0
+    boidSettings:
+      count: 0
+      speed: 0
+      size: 0
+      separationDistance: 0
+      viewDistance: 0
+      predatorDistance: 0
+      alignmentEnabled: 0
+      cohesionEnabled: 0
+      separationEnabled: 0
+      alignmentForce: 0
+      cohesionForce: 0
+      separationForce: 0
+      evasionForce: 0
+    predatorSettings:
+      restingSpeed: 0
+      maxSpeed: 0
+      acceleration: 0
+      viewDistance: 0
+      chaseSteeringSpeed: 0
+      restPeriod: 0
   settings:
     restingSpeed: 0
     maxSpeed: 0

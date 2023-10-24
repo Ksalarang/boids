@@ -29,5 +29,13 @@ namespace Utils {
             if (angle < 0f) angle += 360f;
             return angle;
         }
+
+        public static Vector3 angleToVector(float angle) {
+            var vector = Vector3.zero;
+            angle *= Mathf.Deg2Rad;
+            vector.x = Mathf.Cos(angle);
+            vector.y = Mathf.Sin(angle);
+            return vector;
+        }
     }
 }
