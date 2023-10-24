@@ -9,19 +9,26 @@ using Zenject;
 namespace GameScene.Controllers {
 public class SettingsPanel : MonoBehaviour {
     [SerializeField] RectTransform rectTransform;
-    [Header("Toggles")] [SerializeField] Toggle mousePositionToggle;
+    [Header("Toggles")]
+    [SerializeField] Toggle mousePositionToggle;
     [SerializeField] Toggle viewAreaToggle;
     [SerializeField] Toggle localCenterToggle;
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
-    [Header("Sliders")] [SerializeField] Slider alignmentForceSlider;
+    [Header("Sliders")]
+    [SerializeField] Slider alignmentForceSlider;
     [SerializeField] Slider cohesionForceSlider;
     [SerializeField] Slider separationForceSlider;
+    [SerializeField] Slider evasionForceSlider;
+    
     [SerializeField] Slider gameSpeedSlider;
+    
     [SerializeField] TMP_Text alignmentForceLabel;
     [SerializeField] TMP_Text cohesionForceLabel;
     [SerializeField] TMP_Text separationForceLabel;
+    [SerializeField] TMP_Text evasionForceLabel;
+    
     [SerializeField] TMP_Text gameSpeedLabel;
 
     [SerializeField] Button resetButton;
@@ -57,6 +64,8 @@ public class SettingsPanel : MonoBehaviour {
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
         cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
         separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
+        evasionForceSlider.onValueChanged.AddListener(onEvasionForceChanged);
+        
         gameSpeedSlider.onValueChanged.AddListener(onGameSpeedChanged);
         // buttons
         resetButton.onClick.AddListener(onReset);
@@ -75,11 +84,15 @@ public class SettingsPanel : MonoBehaviour {
         alignmentForceSlider.value = boidSettings.alignmentForce;
         cohesionForceSlider.value = boidSettings.cohesionForce;
         separationForceSlider.value = boidSettings.separationForce;
+        evasionForceSlider.value = boidSettings.evasionForce;
+        
         gameSpeedSlider.value = gameSettings.gameSpeed;
         // slider labels
         alignmentForceLabel.text = boidSettings.alignmentForce.ToString("F");
         cohesionForceLabel.text = boidSettings.cohesionForce.ToString("F");
         separationForceLabel.text = boidSettings.separationForce.ToString("F");
+        evasionForceLabel.text = boidSettings.evasionForce.ToString("F");
+        
         gameSpeedLabel.text = gameSettings.gameSpeed.ToString("F");
     }
 
@@ -127,6 +140,11 @@ public class SettingsPanel : MonoBehaviour {
     void onSeparationForceChanged(float value) {
         boidSettings.separationForce = value;
         separationForceLabel.text = value.ToString("F");
+    }
+    
+    void onEvasionForceChanged(float value) {
+        boidSettings.evasionForce = value;
+        evasionForceLabel.text = value.ToString("F");
     }
 
     void onGameSpeedChanged(float value) {

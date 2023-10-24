@@ -97,10 +97,10 @@ MonoBehaviour:
       alignmentEnabled: 1
       cohesionEnabled: 1
       separationEnabled: 1
-      alignmentForce: 200
+      alignmentForce: 180
       cohesionForce: 80
-      separationForce: 200
-      predatorEvasionForce: 240
+      separationForce: 180
+      evasionForce: 200
     predatorSettings:
       restingSpeed: 1
       maxSpeed: 2.2

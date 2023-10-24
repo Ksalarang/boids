@@ -25,7 +25,7 @@ public class EvasionSystem : System {
                 boid.transform.rotation = Quaternion.RotateTowards(
                     boid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * settings.predatorEvasionForce);
+                    deltaTime * settings.evasionForce);
             }
         }
     }

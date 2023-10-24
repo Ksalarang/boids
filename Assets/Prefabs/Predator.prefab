@@ -97,11 +97,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c21fec826e5a6449b8696c6a8203049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  restingSpeed: 1
-  huntingSpeed: 2
-  viewDistance: 3
-  chaseRotationSpeed: 200
-  restPeriod: 5
   transform: {fileID: 0}
   boids: []
+  settings:
+    restingSpeed: 0
+    maxSpeed: 0
+    acceleration: 0
+    viewDistance: 0
+    chaseSteeringSpeed: 0
+    restPeriod: 0
+  speed: 0

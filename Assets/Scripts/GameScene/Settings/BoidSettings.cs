@@ -18,7 +18,7 @@ public class BoidSettings {
     public float alignmentForce;
     public float cohesionForce;
     public float separationForce;
-    public float predatorEvasionForce;
+    public float evasionForce;
 
     public void reset(BoidSettings defaultSettings) {
         count = defaultSettings.count;
@@ -36,7 +36,7 @@ public class BoidSettings {
         alignmentForce = defaultSettings.alignmentForce;
         cohesionForce = defaultSettings.cohesionForce;
         separationForce = defaultSettings.separationForce;
-        predatorEvasionForce = defaultSettings.predatorEvasionForce;
+        evasionForce = defaultSettings.evasionForce;
     }
 }
 }
