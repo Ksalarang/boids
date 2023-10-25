@@ -79,7 +79,7 @@ public class FlockingSystem : System {
             averagePosition /= neighborCount;
             averageSpeed /= neighborCount;
             
-            // alignment
+            // direction alignment
             if (boidSettings.alignmentEnabled) {
                 var angle = MathUtils.vectorToAngle(averageDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(

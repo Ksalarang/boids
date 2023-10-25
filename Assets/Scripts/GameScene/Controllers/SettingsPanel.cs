@@ -82,19 +82,19 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.isOn = boidSettings.alignmentEnabled;
         cohesionToggle.isOn = boidSettings.cohesionEnabled;
         separationToggle.isOn = boidSettings.separationEnabled;
-        evasionToggle.isOn = boidSettings.evasionEnabled;
+        evasionToggle.isOn = boidSettings.predatorEvasionEnabled;
         // sliders
         alignmentForceSlider.value = boidSettings.alignmentForce;
         cohesionForceSlider.value = boidSettings.cohesionForce;
         separationForceSlider.value = boidSettings.separationForce;
-        evasionForceSlider.value = boidSettings.evasionForce;
+        evasionForceSlider.value = boidSettings.predatorEvasionForce;
         
         gameSpeedSlider.value = gameSettings.gameSpeed;
         // slider labels
         alignmentForceLabel.text = boidSettings.alignmentForce.ToString("F");
         cohesionForceLabel.text = boidSettings.cohesionForce.ToString("F");
         separationForceLabel.text = boidSettings.separationForce.ToString("F");
-        evasionForceLabel.text = boidSettings.evasionForce.ToString("F");
+        evasionForceLabel.text = boidSettings.predatorEvasionForce.ToString("F");
         
         gameSpeedLabel.text = gameSettings.gameSpeed.ToString("F");
     }
@@ -129,7 +129,7 @@ public class SettingsPanel : MonoBehaviour {
     }
     
     void toggleEvasion(bool value) {
-        boidSettings.evasionEnabled = value;
+        boidSettings.predatorEvasionEnabled = value;
     }
     #endregion
 
@@ -150,7 +150,7 @@ public class SettingsPanel : MonoBehaviour {
     }
     
     void onEvasionForceChanged(float value) {
-        boidSettings.evasionForce = value;
+        boidSettings.predatorEvasionForce = value;
         evasionForceLabel.text = value.ToString("F");
     }
 

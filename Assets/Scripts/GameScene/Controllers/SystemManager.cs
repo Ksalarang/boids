@@ -83,7 +83,7 @@ public class SystemManager : MonoBehaviour {
             new BorderSystem(boids, predator, camera.getBottomLeft(), camera.getTopRight(), boidSettings.size));
         systemDict.Add(typeof(FlockingSystem),
             new FlockingSystem(boids, gameSettings, boidSettings, localCenter, alignmentArrow, separationArrow));
-        systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, boidSettings));
+        systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, boidSettings, camera));
         systemDict.Add(typeof(DragSystem), new DragSystem(boids, predator, gameSettings));
         systemDict.Add(typeof(SpeedSystem), new SpeedSystem(boids, boidSettings));
 
