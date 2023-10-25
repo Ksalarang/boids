@@ -88,7 +88,7 @@ MonoBehaviour:
     gameSpeed: 1
     dragDeceleration: 0.2
     boidSettings:
-      count: 400
+      count: 200
       targetSpeed: 2
       minSpeed: 1
       maxSpeed: 3

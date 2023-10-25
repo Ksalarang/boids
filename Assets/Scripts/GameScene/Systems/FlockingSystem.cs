@@ -99,13 +99,6 @@ public class FlockingSystem : System {
                     Quaternion.Euler(0, 0, angle),
                     deltaTime * boidSettings.cohesionForce);
 
-                // adjust speed for cohesion
-                var currentAngle = currentRotation.eulerAngles.z;
-                if (currentAngle < 0) currentAngle += 360f;
-                if (Mathf.Abs(angle - currentAngle) < 45f) {
-                    currentBoid.speed += acceleration;
-                }
-
                 if (i == 0) localCenter.transform.position = averagePosition;
             }
             // separation
@@ -116,15 +109,6 @@ public class FlockingSystem : System {
                     currentRotation,
                     Quaternion.Euler(0, 0, angle),
                     deltaTime * boidSettings.separationForce);
-                
-                // adjust speed for separation
-                var currentAngle = currentRotation.eulerAngles.z;
-                if (currentAngle < 0) currentAngle += 360f;
-                if (Mathf.Abs(angle - currentAngle) < 45f) {
-                    currentBoid.speed += acceleration;
-                } else if (Mathf.Abs(angle - MathUtils.oppositeAngle(currentAngle)) < 45f) {
-                    currentBoid.speed -= acceleration;
-                }
                 
                 if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
