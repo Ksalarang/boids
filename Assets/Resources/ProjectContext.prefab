@@ -102,12 +102,12 @@ MonoBehaviour:
       cohesionEnabled: 1
       separationEnabled: 1
       predatorEvasionEnabled: 1
-      obstacleAvoidanceEnabled: 1
+      wallAvoidanceEnabled: 1
       alignmentForce: 200
-      cohesionForce: 100
+      cohesionForce: 80
       separationForce: 200
       predatorEvasionForce: 400
-      obstacleAvoidanceForce: 700
+      wallAvoidanceForce: 600
     predatorSettings:
       restingSpeed: 1
       maxSpeed: 3

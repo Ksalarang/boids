@@ -24,9 +24,11 @@ public class EvasionSystem : System {
 
     public void update(float deltaTime) {
         var predatorPosition = predator.transform.position;
+        var wallAvoidanceEnabled = settings.wallAvoidanceEnabled;
+        var predatorEvasionEnabled = settings.predatorEvasionEnabled;
         foreach (var boid in boids) {
-            avoidWalls(boid, deltaTime);
-            if (settings.predatorEvasionEnabled) evadePredator(boid, predatorPosition, deltaTime);
+            if (wallAvoidanceEnabled) avoidWalls(boid, deltaTime);
+            if (predatorEvasionEnabled) evadePredator(boid, predatorPosition, deltaTime);
         }
     }
 
@@ -64,7 +66,7 @@ public class EvasionSystem : System {
         boid.transform.rotation = Quaternion.RotateTowards(
             boid.transform.rotation,
             Quaternion.Euler(0, 0, newAngle),
-            settings.obstacleAvoidanceForce * deltaTime);
+            settings.wallAvoidanceForce * deltaTime);
     }
 
     void evadePredator(Boid boid, Vector3 predatorPosition, float deltaTime) {

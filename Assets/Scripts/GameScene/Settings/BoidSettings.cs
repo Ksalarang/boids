@@ -20,13 +20,13 @@ public class BoidSettings {
     public bool cohesionEnabled;
     public bool separationEnabled;
     public bool predatorEvasionEnabled;
-    public bool obstacleAvoidanceEnabled;
+    public bool wallAvoidanceEnabled;
 
     public float alignmentForce;
     public float cohesionForce;
     public float separationForce;
     public float predatorEvasionForce;
-    public float obstacleAvoidanceForce;
+    public float wallAvoidanceForce;
 
     public void reset(BoidSettings defaultSettings) {
         count = defaultSettings.count;
@@ -46,13 +46,13 @@ public class BoidSettings {
         cohesionEnabled = defaultSettings.cohesionEnabled;
         separationEnabled = defaultSettings.separationEnabled;
         predatorEvasionEnabled = defaultSettings.predatorEvasionEnabled;
-        obstacleAvoidanceEnabled = defaultSettings.obstacleAvoidanceEnabled;
+        wallAvoidanceEnabled = defaultSettings.wallAvoidanceEnabled;
         
         alignmentForce = defaultSettings.alignmentForce;
         cohesionForce = defaultSettings.cohesionForce;
         separationForce = defaultSettings.separationForce;
         predatorEvasionForce = defaultSettings.predatorEvasionForce;
-        obstacleAvoidanceForce = defaultSettings.obstacleAvoidanceForce;
+        wallAvoidanceForce = defaultSettings.wallAvoidanceForce;
     }
 }
 }

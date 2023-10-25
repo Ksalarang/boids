@@ -9,6 +9,7 @@ using Zenject;
 namespace GameScene.Controllers {
 public class SettingsPanel : MonoBehaviour {
     [SerializeField] RectTransform rectTransform;
+    [SerializeField] GameObject scrollView;
     [Header("Toggles")]
     [SerializeField] Toggle mousePositionToggle;
     [SerializeField] Toggle viewAreaToggle;
@@ -16,19 +17,22 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
-    [SerializeField] Toggle evasionToggle;
+    [SerializeField] Toggle predatorEvasionToggle;
+    [SerializeField] Toggle wallAvoidanceToggle;
     [Header("Sliders")]
     [SerializeField] Slider alignmentForceSlider;
     [SerializeField] Slider cohesionForceSlider;
     [SerializeField] Slider separationForceSlider;
-    [SerializeField] Slider evasionForceSlider;
+    [SerializeField] Slider predatorEvasionForceSlider;
+    [SerializeField] Slider wallAvoidanceForceSlider;
     
     [SerializeField] Slider gameSpeedSlider;
     
     [SerializeField] TMP_Text alignmentForceLabel;
     [SerializeField] TMP_Text cohesionForceLabel;
     [SerializeField] TMP_Text separationForceLabel;
-    [SerializeField] TMP_Text evasionForceLabel;
+    [SerializeField] TMP_Text predatorEvasionForceLabel;
+    [SerializeField] TMP_Text wallAvoidanceForceLabel;
     
     [SerializeField] TMP_Text gameSpeedLabel;
 
@@ -61,12 +65,14 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.onValueChanged.AddListener(toggleAlignment);
         cohesionToggle.onValueChanged.AddListener(toggleCohesion);
         separationToggle.onValueChanged.AddListener(toggleSeparation);
-        evasionToggle.onValueChanged.AddListener(toggleEvasion);
+        predatorEvasionToggle.onValueChanged.AddListener(toggleEvasion);
+        wallAvoidanceToggle.onValueChanged.AddListener(toggleWallAvoidance);
         // sliders
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
         cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
         separationForceSlider.onValueChanged.AddListener(onSeparationForceChanged);
-        evasionForceSlider.onValueChanged.AddListener(onEvasionForceChanged);
+        predatorEvasionForceSlider.onValueChanged.AddListener(onEvasionForceChanged);
+        wallAvoidanceForceSlider.onValueChanged.AddListener(onWallAvoidanceForceChanged);
         
         gameSpeedSlider.onValueChanged.AddListener(onGameSpeedChanged);
         // buttons
@@ -82,19 +88,22 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.isOn = boidSettings.alignmentEnabled;
         cohesionToggle.isOn = boidSettings.cohesionEnabled;
         separationToggle.isOn = boidSettings.separationEnabled;
-        evasionToggle.isOn = boidSettings.predatorEvasionEnabled;
+        predatorEvasionToggle.isOn = boidSettings.predatorEvasionEnabled;
+        wallAvoidanceToggle.isOn = boidSettings.wallAvoidanceEnabled;
         // sliders
         alignmentForceSlider.value = boidSettings.alignmentForce;
         cohesionForceSlider.value = boidSettings.cohesionForce;
         separationForceSlider.value = boidSettings.separationForce;
-        evasionForceSlider.value = boidSettings.predatorEvasionForce;
+        predatorEvasionForceSlider.value = boidSettings.predatorEvasionForce;
+        wallAvoidanceForceSlider.value = boidSettings.wallAvoidanceForce;
         
         gameSpeedSlider.value = gameSettings.gameSpeed;
         // slider labels
         alignmentForceLabel.text = boidSettings.alignmentForce.ToString("F");
         cohesionForceLabel.text = boidSettings.cohesionForce.ToString("F");
         separationForceLabel.text = boidSettings.separationForce.ToString("F");
-        evasionForceLabel.text = boidSettings.predatorEvasionForce.ToString("F");
+        predatorEvasionForceLabel.text = boidSettings.predatorEvasionForce.ToString("F");
+        wallAvoidanceForceLabel.text = boidSettings.wallAvoidanceForce.ToString("F");
         
         gameSpeedLabel.text = gameSettings.gameSpeed.ToString("F");
     }
@@ -131,6 +140,10 @@ public class SettingsPanel : MonoBehaviour {
     void toggleEvasion(bool value) {
         boidSettings.predatorEvasionEnabled = value;
     }
+    
+    void toggleWallAvoidance(bool value) {
+        boidSettings.wallAvoidanceEnabled = value;
+    }
     #endregion
 
     #region slider listeners
@@ -151,7 +164,12 @@ public class SettingsPanel : MonoBehaviour {
     
     void onEvasionForceChanged(float value) {
         boidSettings.predatorEvasionForce = value;
-        evasionForceLabel.text = value.ToString("F");
+        predatorEvasionForceLabel.text = value.ToString("F");
+    }
+    
+    void onWallAvoidanceForceChanged(float value) {
+        boidSettings.wallAvoidanceForce = value;
+        wallAvoidanceForceLabel.text = value.ToString("F");
     }
 
     void onGameSpeedChanged(float value) {
@@ -185,7 +203,7 @@ public class SettingsPanel : MonoBehaviour {
     }
 
     public void onMousePositionChanged(Vector3 screenMousePosition) {
-        gameObject.SetActive(screenMousePosition.x > minX);
+        scrollView.SetActive(screenMousePosition.x > minX);
     }
 }
 }
