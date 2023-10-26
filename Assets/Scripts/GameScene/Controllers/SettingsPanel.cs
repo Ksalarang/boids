@@ -17,6 +17,7 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
+    [SerializeField] Toggle speedAlignmentToggle;
     [SerializeField] Toggle predatorEvasionToggle;
     [SerializeField] Toggle wallAvoidanceToggle;
     [Header("Sliders")]
@@ -65,7 +66,8 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.onValueChanged.AddListener(toggleAlignment);
         cohesionToggle.onValueChanged.AddListener(toggleCohesion);
         separationToggle.onValueChanged.AddListener(toggleSeparation);
-        predatorEvasionToggle.onValueChanged.AddListener(toggleEvasion);
+        speedAlignmentToggle.onValueChanged.AddListener(toggleSpeedAlignment);
+        predatorEvasionToggle.onValueChanged.AddListener(togglePredatorEvasion);
         wallAvoidanceToggle.onValueChanged.AddListener(toggleWallAvoidance);
         // sliders
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
@@ -88,6 +90,7 @@ public class SettingsPanel : MonoBehaviour {
         alignmentToggle.isOn = boidSettings.alignmentEnabled;
         cohesionToggle.isOn = boidSettings.cohesionEnabled;
         separationToggle.isOn = boidSettings.separationEnabled;
+        speedAlignmentToggle.isOn = boidSettings.speedAlignmentEnabled;
         predatorEvasionToggle.isOn = boidSettings.predatorEvasionEnabled;
         wallAvoidanceToggle.isOn = boidSettings.wallAvoidanceEnabled;
         // sliders
@@ -136,8 +139,12 @@ public class SettingsPanel : MonoBehaviour {
     void toggleSeparation(bool value) {
         boidSettings.separationEnabled = value;
     }
+
+    void toggleSpeedAlignment(bool value) {
+        boidSettings.speedAlignmentEnabled = value;
+    }
     
-    void toggleEvasion(bool value) {
+    void togglePredatorEvasion(bool value) {
         boidSettings.predatorEvasionEnabled = value;
     }
     
@@ -191,10 +198,8 @@ public class SettingsPanel : MonoBehaviour {
 
     const float frequency = 0.2f;
     float progress;
-    bool b = true;
 
     void Update() {
-        if (b) return;
         progress += Time.deltaTime;
         if (progress > frequency) {
             progress = 0f;

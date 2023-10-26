@@ -18,7 +18,6 @@ public class DragSystem : System {
             boid.speed -= deceleration;
             if (boid.speed < 0) boid.speed = 0;
         }
-        // predator
         predator.speed -= deceleration;
         if (predator.speed < 0) predator.speed = 0;
     }

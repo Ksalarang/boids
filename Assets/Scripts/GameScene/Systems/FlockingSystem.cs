@@ -113,13 +113,15 @@ public class FlockingSystem : System {
                 if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             // speed alignment
-            var currentSpeed = currentBoid.speed;
-            if (currentSpeed < averageSpeed) {
-                currentSpeed += acceleration;
-            } else if (currentSpeed > averageSpeed) {
-                currentSpeed -= acceleration;
+            if (boidSettings.speedAlignmentEnabled) {
+                var currentSpeed = currentBoid.speed;
+                if (currentSpeed < averageSpeed) {
+                    currentSpeed += acceleration;
+                } else if (currentSpeed > averageSpeed) {
+                    currentSpeed -= acceleration;
+                }
+                currentBoid.speed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
             }
-            currentBoid.speed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed);
         }
     }
 

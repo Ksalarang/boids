@@ -19,6 +19,7 @@ public class BoidSettings {
     public bool alignmentEnabled;
     public bool cohesionEnabled;
     public bool separationEnabled;
+    public bool speedAlignmentEnabled;
     public bool predatorEvasionEnabled;
     public bool wallAvoidanceEnabled;
 
@@ -45,6 +46,7 @@ public class BoidSettings {
         alignmentEnabled = defaultSettings.alignmentEnabled;
         cohesionEnabled = defaultSettings.cohesionEnabled;
         separationEnabled = defaultSettings.separationEnabled;
+        speedAlignmentEnabled = defaultSettings.speedAlignmentEnabled;
         predatorEvasionEnabled = defaultSettings.predatorEvasionEnabled;
         wallAvoidanceEnabled = defaultSettings.wallAvoidanceEnabled;
         
