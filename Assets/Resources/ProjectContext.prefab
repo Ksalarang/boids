@@ -105,17 +105,17 @@ MonoBehaviour:
       predatorEvasionEnabled: 1
       wallAvoidanceEnabled: 1
       alignmentForce: 200
-      cohesionForce: 80
-      separationForce: 200
+      cohesionForce: 70
+      separationForce: 250
       predatorEvasionForce: 400
-      wallAvoidanceForce: 600
+      wallAvoidanceForce: 700
     predatorSettings:
       restingSpeed: 1
       maxSpeed: 3
       acceleration: 5
       viewDistance: 5
       chaseSteeringForce: 200
-      wallAvoidanceForce: 200
+      wallAvoidanceForce: 500
       restPeriod: 10
   audioSources:
     sounds: []
