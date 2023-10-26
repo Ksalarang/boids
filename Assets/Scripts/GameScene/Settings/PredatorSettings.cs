@@ -7,7 +7,8 @@ public class PredatorSettings {
     public float maxSpeed;
     public float acceleration;
     public float viewDistance;
-    public float chaseSteeringSpeed;
+    public float chaseSteeringForce;
+    public float wallAvoidanceForce;
     public float restPeriod;
 
     public void reset(PredatorSettings defaultSettings) {
@@ -15,7 +16,8 @@ public class PredatorSettings {
         maxSpeed = defaultSettings.maxSpeed;
         acceleration = defaultSettings.acceleration;
         viewDistance = defaultSettings.viewDistance;
-        chaseSteeringSpeed = defaultSettings.chaseSteeringSpeed;
+        chaseSteeringForce = defaultSettings.chaseSteeringForce;
+        wallAvoidanceForce = defaultSettings.wallAvoidanceForce;
         restPeriod = defaultSettings.restPeriod;
     }
 }

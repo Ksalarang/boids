@@ -113,7 +113,8 @@ MonoBehaviour:
       maxSpeed: 3
       acceleration: 5
       viewDistance: 5
-      chaseSteeringSpeed: 200
+      chaseSteeringForce: 200
+      wallAvoidanceForce: 200
       restPeriod: 10
   audioSources:
     sounds: []

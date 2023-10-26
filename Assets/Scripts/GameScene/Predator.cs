@@ -69,7 +69,7 @@ public class Predator : MonoBehaviour {
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             Quaternion.Euler(0, 0, angle),
-            delta * settings.chaseSteeringSpeed);
+            delta * settings.chaseSteeringForce);
     }
 
     void findNearestBoids() {
