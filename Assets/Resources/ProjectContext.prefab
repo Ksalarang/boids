@@ -117,6 +117,9 @@ MonoBehaviour:
       chaseSteeringForce: 200
       wallAvoidanceForce: 500
       restPeriod: 10
+    boidControlSettings:
+      attractingForce: 500
+      repellingForce: 500
   audioSources:
     sounds: []
     soundtracks: []

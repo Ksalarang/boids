@@ -86,6 +86,7 @@ public class SystemManager : MonoBehaviour {
         systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, gameSettings, camera));
         systemDict.Add(typeof(DragSystem), new DragSystem(boids, predator, gameSettings));
         systemDict.Add(typeof(SpeedSystem), new SpeedSystem(boids, boidSettings));
+        systemDict.Add(typeof(BoidControlSystem), new BoidControlSystem(boids, gameSettings, camera));
 
         createSystemArray();
     }

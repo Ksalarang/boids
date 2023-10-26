@@ -49,7 +49,7 @@ public class BoidSettings {
         speedAlignmentEnabled = defaultSettings.speedAlignmentEnabled;
         predatorEvasionEnabled = defaultSettings.predatorEvasionEnabled;
         wallAvoidanceEnabled = defaultSettings.wallAvoidanceEnabled;
-        
+
         alignmentForce = defaultSettings.alignmentForce;
         cohesionForce = defaultSettings.cohesionForce;
         separationForce = defaultSettings.separationForce;

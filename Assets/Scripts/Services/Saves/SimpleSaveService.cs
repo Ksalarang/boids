@@ -19,7 +19,7 @@ public class SimpleSaveService : SaveService, AppLifecycleListener {
     }
 
     void resetSettings(GameSettings defaultSettings) {
-        save.settings.setDefaultSettings(defaultSettings);
+        save.settings.defaultSettings = defaultSettings;
         save.settings.reset();
     }
 

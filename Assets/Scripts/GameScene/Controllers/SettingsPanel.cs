@@ -208,7 +208,9 @@ public class SettingsPanel : MonoBehaviour {
     }
 
     public void onMousePositionChanged(Vector3 screenMousePosition) {
-        scrollView.SetActive(screenMousePosition.x > minX);
+        var panelEnabled = screenMousePosition.x > minX;
+        gameSettings.settingsPanelEnabled = panelEnabled;
+        scrollView.SetActive(panelEnabled);
     }
 }
 }

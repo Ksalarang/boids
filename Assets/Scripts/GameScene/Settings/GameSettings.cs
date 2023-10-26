@@ -14,12 +14,13 @@ public class GameSettings {
 
     public BoidSettings boidSettings = new();
     public PredatorSettings predatorSettings = new();
+    public BoidControlSettings boidControlSettings = new();
 
-    GameSettings defaultSettings;
-
-    public void setDefaultSettings(GameSettings settings) {
-        defaultSettings = settings;
-    }
+    [NonSerialized]
+    public GameSettings defaultSettings;
+    
+    [NonSerialized]
+    public bool settingsPanelEnabled;
 
     public void reset() {
         if (defaultSettings == null) {
@@ -37,6 +38,7 @@ public class GameSettings {
 
         boidSettings.reset(defaultSettings.boidSettings);
         predatorSettings.reset(defaultSettings.predatorSettings);
+        boidControlSettings.reset(defaultSettings.boidControlSettings);
     }
 }
 }
