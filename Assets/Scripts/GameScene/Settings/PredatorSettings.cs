@@ -6,6 +6,7 @@ public class PredatorSettings {
     public float restingSpeed;
     public float maxSpeed;
     public float acceleration;
+    public float size;
     public float viewDistance;
     public float chaseSteeringForce;
     public float wallAvoidanceForce;
@@ -15,6 +16,7 @@ public class PredatorSettings {
         restingSpeed = defaultSettings.restingSpeed;
         maxSpeed = defaultSettings.maxSpeed;
         acceleration = defaultSettings.acceleration;
+        size = defaultSettings.size;
         viewDistance = defaultSettings.viewDistance;
         chaseSteeringForce = defaultSettings.chaseSteeringForce;
         wallAvoidanceForce = defaultSettings.wallAvoidanceForce;

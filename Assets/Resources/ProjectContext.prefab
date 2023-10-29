@@ -83,8 +83,8 @@ MonoBehaviour:
       saveService: 0
   defaultSettings:
     showMousePosition: 0
-    showViewArea: 0
-    showLocalCenter: 0
+    showViewAreas: 0
+    showBoidForces: 0
     gameSpeed: 1
     dragDeceleration: 0.2
     boidSettings:
@@ -113,6 +113,7 @@ MonoBehaviour:
       restingSpeed: 1
       maxSpeed: 3
       acceleration: 5
+      size: 1
       viewDistance: 5
       chaseSteeringForce: 200
       wallAvoidanceForce: 500

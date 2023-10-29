@@ -6,6 +6,8 @@ using Utils.Extensions;
 
 namespace GameScene {
 public class Predator : MonoBehaviour {
+    [SerializeField] public GameObject viewArea;
+    
     State state;
     Vector3 velocity;
     bool isAccelerating;

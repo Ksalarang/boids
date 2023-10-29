@@ -60,7 +60,7 @@ public class SettingsPanel : MonoBehaviour {
     void addListeners() {
         // toggles
         mousePositionToggle.onValueChanged.AddListener(toggleMousePosition);
-        viewAreaToggle.onValueChanged.AddListener(toggleViewArea);
+        viewAreaToggle.onValueChanged.AddListener(toggleViewAreas);
         showForcesToggle.onValueChanged.AddListener(toggleBoidForces);
         alignmentToggle.onValueChanged.AddListener(toggleAlignment);
         cohesionToggle.onValueChanged.AddListener(toggleCohesion);
@@ -84,7 +84,7 @@ public class SettingsPanel : MonoBehaviour {
     void updateValues() {
         // toggles
         mousePositionToggle.isOn = gameSettings.showMousePosition;
-        viewAreaToggle.isOn = gameSettings.showViewArea;
+        viewAreaToggle.isOn = gameSettings.showViewAreas;
         showForcesToggle.isOn = gameSettings.showBoidForces;
         alignmentToggle.isOn = boidSettings.alignmentEnabled;
         cohesionToggle.isOn = boidSettings.cohesionEnabled;
@@ -116,10 +116,9 @@ public class SettingsPanel : MonoBehaviour {
         inputController.onToggleShowMousePosition(value);
     }
 
-    void toggleViewArea(bool value) {
-        gameSettings.showViewArea = value;
-        var boids = systemManager.boids;
-        foreach (var boid in boids) boid.viewArea.gameObject.SetActive(value);
+    void toggleViewAreas(bool value) {
+        gameSettings.showViewAreas = value;
+        systemManager.onToggleViewAreas(value);
     }
 
     void toggleBoidForces(bool value) {

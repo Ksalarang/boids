@@ -21,6 +21,7 @@ public class SystemManager : MonoBehaviour {
 
     GameSettings gameSettings;
     BoidSettings boidSettings;
+    PredatorSettings predatorSettings;
     Dictionary<Type, Systems.System> systemDict;
     Systems.System[] systemArray;
     Vector3 cameraBottomLeft;
@@ -32,6 +33,7 @@ public class SystemManager : MonoBehaviour {
     void Awake() {
         gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
+        predatorSettings = gameSettings.predatorSettings;
         boids = new Boid[boidSettings.count];
         systemDict = new Dictionary<Type, Systems.System>();
         cameraBottomLeft = camera.getBottomLeft();
@@ -44,6 +46,8 @@ public class SystemManager : MonoBehaviour {
 
     void createBoids() {
         var boidSize = boidSettings.size;
+        var viewAreaDiameter = 2 * boidSettings.viewDistance / boidSize;
+        var viewAreaSize = new Vector3(viewAreaDiameter, viewAreaDiameter);
         for (var i = 0; i < boids.Length; i++) {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
             boid.name = $"boid_{i}";
@@ -52,9 +56,8 @@ public class SystemManager : MonoBehaviour {
             // position and velocity
             randomizePositionAndVelocity(boid);
             // view area size
-            var viewAreaDiameter = 2 * boidSettings.viewDistance / boidSize;
-            boid.viewArea.transform.localScale = new Vector3(viewAreaDiameter, viewAreaDiameter);
-
+            boid.viewArea.transform.localScale = viewAreaSize;
+            
             boids[i] = boid;
         }
         // set up the debug boid
@@ -75,7 +78,11 @@ public class SystemManager : MonoBehaviour {
 
     void createPredator() {
         predator = predatorController.createPredator(gameSettings);
-        predator.gameObject.SetActive(gameSettings.boidSettings.predatorEvasionEnabled);
+        var size = predatorSettings.size;
+        predator.transform.localScale = new Vector3(size, size);
+        var viewAreaSize = 2 * predatorSettings.viewDistance / size;
+        predator.viewArea.transform.localScale = new Vector3(viewAreaSize, viewAreaSize);
+        predator.gameObject.SetActive(boidSettings.predatorEvasionEnabled);
     }
 
     void createSystems() {
@@ -99,16 +106,24 @@ public class SystemManager : MonoBehaviour {
     }
 
     void initializeDebugViews() {
+        // scale views
         localCenter.transform.localScale *= boidSettings.size;
         alignmentArrow.transform.localScale *= boidSettings.size;
         separationArrow.transform.localScale *= boidSettings.size;
+        // toggle views
+        onToggleViewAreas(gameSettings.showViewAreas);
         onToggleBoidForces(gameSettings.showBoidForces);
-        foreach (var boid in boids) boid.viewArea.gameObject.SetActive(gameSettings.showViewArea);
+        onTogglePredatorEvasion(boidSettings.predatorEvasionEnabled);
     }
 
     void Update() {
         var delta = Time.deltaTime * gameSettings.gameSpeed;
         foreach (var system in systemArray) system.update(delta);
+    }
+
+    public void onToggleViewAreas(bool value) {
+        predator.viewArea.SetActive(value);
+        foreach (var boid in boids) boid.viewArea.gameObject.SetActive(value);
     }
 
     public void onToggleBoidForces(bool value) {

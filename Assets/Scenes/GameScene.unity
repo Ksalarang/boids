@@ -2653,7 +2653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8898669417210969803, guid: c9084dcc3efaf4248ba65bb435a2205b, type: 3}
       propertyPath: m_Text
-      value: show view area
+      value: show view areas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
