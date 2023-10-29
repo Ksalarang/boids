@@ -13,10 +13,8 @@ public class EvasionSystem : System {
     readonly float boidSize;
     readonly float predatorSize;
     // camera rectangle corners
-    Vector3 boidBottomLeft;
-    Vector3 boidTopRight;
-    Vector3 predatorBottomLeft;
-    Vector3 predatorTopRight;
+    Vector3 bottomLeft;
+    Vector3 topRight;
 
     public EvasionSystem(Boid[] boids, Predator predator, GameSettings settings, Camera camera) {
         this.boids = boids;
@@ -25,20 +23,16 @@ public class EvasionSystem : System {
         boidSettings = settings.boidSettings;
         boidSize = boids[0].transform.localScale.x;
         predatorSize = predator.transform.localScale.x;
-        setWallBorders(camera, predatorSize / 3);
+        setWallCorners(camera, predatorSize / 3);
     }
 
-    void setWallBorders(Camera camera, float offset) {
-        boidBottomLeft = predatorBottomLeft = camera.getBottomLeft();
-        boidTopRight = predatorTopRight = camera.getTopRight();
-        boidBottomLeft.x += offset;
-        boidBottomLeft.y += offset;
-        boidTopRight.x -= offset;
-        boidTopRight.y -= offset;
-        predatorBottomLeft.x += offset;
-        predatorBottomLeft.y += offset;
-        predatorTopRight.x -= offset;
-        predatorTopRight.y -= offset;
+    void setWallCorners(Camera camera, float offset) {
+        bottomLeft = camera.getBottomLeft();
+        topRight = camera.getTopRight();
+        bottomLeft.x += offset;
+        bottomLeft.y += offset;
+        topRight.x -= offset;
+        topRight.y -= offset;
     }
 
     public void update(float deltaTime) {
@@ -46,24 +40,23 @@ public class EvasionSystem : System {
         var wallAvoidanceEnabled = boidSettings.wallAvoidanceEnabled;
         var predatorEvasionEnabled = boidSettings.predatorEvasionEnabled;
         var wallAvoidanceForce = boidSettings.wallAvoidanceForce;
-        var boidBottomLeft = this.boidBottomLeft;
-        var boidTopRight = this.boidTopRight;
         var boidSize = this.boidSize;
+        var boidRayLength = 2 * boidSize;
         foreach (var boid in boids) {
             if (wallAvoidanceEnabled) {
-                avoidWalls(boid.transform, boidSize, deltaTime, wallAvoidanceForce, boidBottomLeft, boidTopRight);
+                avoidWalls(boid.transform, boidSize, boidRayLength, deltaTime, wallAvoidanceForce);
             }
             if (predatorEvasionEnabled) {
                 evadePredator(boid, predatorPosition, deltaTime);
             }
         }
-        avoidWalls(predator.transform, predatorSize, deltaTime, predatorSettings.wallAvoidanceForce, predatorBottomLeft, predatorTopRight);
+        avoidWalls(predator.transform, predatorSize, predatorSize, deltaTime, predatorSettings.wallAvoidanceForce);
     }
 
-    void avoidWalls(Transform transform, float bodySize, float deltaTime, float avoidanceForce, Vector3 bottomLeft, Vector3 topRight) {
+    void avoidWalls(Transform transform, float bodySize, float rayLength, float deltaTime, float avoidanceForce) {
         var currentAngle = transform.eulerAngles.z;
         if (currentAngle < 0) currentAngle += 360;
-        var newAngle = findAngleToAvoidWalls(currentAngle, transform.position, bodySize, bottomLeft, topRight);
+        var newAngle = findAngleToAvoidWalls(currentAngle, transform.position, bodySize, rayLength);
         if (Math.Abs(currentAngle - newAngle) < 0.1f) return;
         
         transform.rotation = Quaternion.RotateTowards(
@@ -72,14 +65,14 @@ public class EvasionSystem : System {
             avoidanceForce * deltaTime);
     }
 
-    float findAngleToAvoidWalls(float currentAngle, Vector3 position, float bodySize, Vector3 bottomLeft, Vector3 topRight) {
+    float findAngleToAvoidWalls(float currentAngle, Vector3 position, float bodySize, float rayLength) {
         var newAngle = currentAngle;
         var frontPosition = position + 0.5f * bodySize * MathUtils.angleToVector(currentAngle);
         const int maxRayCount = 19;
         const float angleStep = 10f;
         const float stepLengthFraction = 0.2f;
-        var stepLength = bodySize * stepLengthFraction;
-        var stepCount = bodySize / stepLength;
+        var stepLength = rayLength * stepLengthFraction;
+        var stepCount = rayLength / stepLength;
         var isPathClear = true;
         // cast rays to determine clear path
         for (var i = 0; i < maxRayCount; i++) {
@@ -101,8 +94,7 @@ public class EvasionSystem : System {
             // path in front is clear
             if (isPathClear) break;
         }
-        newAngle = isPathClear ? newAngle : currentAngle;
-        return newAngle;
+        return isPathClear ? newAngle : currentAngle;
     }
 
     void evadePredator(Boid boid, Vector3 predatorPosition, float deltaTime) {

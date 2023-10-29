@@ -108,7 +108,7 @@ MonoBehaviour:
       cohesionForce: 70
       separationForce: 250
       predatorEvasionForce: 400
-      wallAvoidanceForce: 700
+      wallAvoidanceForce: 800
     predatorSettings:
       restingSpeed: 1
       maxSpeed: 3
