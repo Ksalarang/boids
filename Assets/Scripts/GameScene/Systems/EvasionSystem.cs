@@ -63,20 +63,31 @@ public class EvasionSystem : System {
     void avoidWalls(Transform transform, float bodySize, float deltaTime, float avoidanceForce, Vector3 bottomLeft, Vector3 topRight) {
         var currentAngle = transform.eulerAngles.z;
         if (currentAngle < 0) currentAngle += 360;
+        var newAngle = findAngleToAvoidWalls(currentAngle, transform.position, bodySize, bottomLeft, topRight);
+        if (Math.Abs(currentAngle - newAngle) < 0.1f) return;
+        
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            Quaternion.Euler(0, 0, newAngle),
+            avoidanceForce * deltaTime);
+    }
+
+    float findAngleToAvoidWalls(float currentAngle, Vector3 position, float bodySize, Vector3 bottomLeft, Vector3 topRight) {
         var newAngle = currentAngle;
-        var frontPosition = transform.position + 0.5f * bodySize * MathUtils.angleToVector(currentAngle);
-        const int maxRayCount = 18;
+        var frontPosition = position + 0.5f * bodySize * MathUtils.angleToVector(currentAngle);
+        const int maxRayCount = 19;
         const float angleStep = 10f;
         const float stepLengthFraction = 0.2f;
         var stepLength = bodySize * stepLengthFraction;
         var stepCount = bodySize / stepLength;
+        var isPathClear = true;
         // cast rays to determine clear path
         for (var i = 0; i < maxRayCount; i++) {
             var sign = i % 2 == 0 ? -1f : 1f;
             newAngle += angleStep * i * sign;
             if (newAngle < 0) newAngle += 360;
             var direction = MathUtils.angleToVector(newAngle);
-            var isPathClear = true;
+            isPathClear = true;
             // follow along the ray to check if the ray collided with a wall
             for (var j = 1; j <= stepCount; j++) {
                 var stepPosition = frontPosition + j * stepLength * direction;
@@ -87,13 +98,11 @@ public class EvasionSystem : System {
                     break;
                 }
             }
+            // path in front is clear
             if (isPathClear) break;
         }
-        if (Math.Abs(currentAngle - newAngle) < 0.1f) return;
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            Quaternion.Euler(0, 0, newAngle),
-            avoidanceForce * deltaTime);
+        newAngle = isPathClear ? newAngle : currentAngle;
+        return newAngle;
     }
 
     void evadePredator(Boid boid, Vector3 predatorPosition, float deltaTime) {

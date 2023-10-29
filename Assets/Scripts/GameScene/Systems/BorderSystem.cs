@@ -19,37 +19,23 @@ public class BorderSystem : System {
     }
 
     public void update(float deltaTime) {
-        updateBoids();
-        updatePredator();
-    }
-
-    void updateBoids() {
         foreach (var boid in boids) {
-            var position = boid.transform.position;
-            if (position.x + boidOffset < bottomLeft.x) {
-                boid.transform.position = new Vector3(topRight.x, position.y, position.z);
-            } else if (position.x - boidOffset > topRight.x) {
-                boid.transform.position = new Vector3(bottomLeft.x, position.y, position.z);
-            }
-            if (position.y + boidOffset < bottomLeft.y) {
-                boid.transform.position = new Vector3(position.x, topRight.y, position.z);
-            } else if (position.y - boidOffset > topRight.y) {
-                boid.transform.position = new Vector3(position.x, bottomLeft.y, position.z);
-            }
+            teleportToOppositeBorderIfOutside(boid.transform, boidOffset);
         }
+        teleportToOppositeBorderIfOutside(predator.transform, predatorOffset);
     }
 
-    void updatePredator() {
-        var position = predator.transform.position;
-        if (position.x + predatorOffset < bottomLeft.x) {
-            predator.transform.position = new Vector3(topRight.x, position.y, position.z);
-        } else if (position.x - predatorOffset > topRight.x) {
-            predator.transform.position = new Vector3(bottomLeft.x, position.y, position.z);
+    void teleportToOppositeBorderIfOutside(Transform transform, float offset) {
+        var position = transform.position;
+        if (position.x + offset < bottomLeft.x) {
+            transform.position = new Vector3(topRight.x, position.y, position.z);
+        } else if (position.x - offset > topRight.x) {
+            transform.position = new Vector3(bottomLeft.x, position.y, position.z);
         }
-        if (position.y + predatorOffset < bottomLeft.y) {
-            predator.transform.position = new Vector3(position.x, topRight.y, position.z);
-        } else if (position.y - predatorOffset > topRight.y) {
-            predator.transform.position = new Vector3(position.x, bottomLeft.y, position.z);
+        if (position.y + offset < bottomLeft.y) {
+            transform.position = new Vector3(position.x, topRight.y, position.z);
+        } else if (position.y - offset > topRight.y) {
+            transform.position = new Vector3(position.x, bottomLeft.y, position.z);
         }
     }
 }

@@ -66,9 +66,10 @@ public class SystemManager : MonoBehaviour {
 
     void randomizePositionAndVelocity(Boid boid) {
         // position
+        const float offset = 0.5f;
         boid.transform.position = new Vector3(
-            RandomUtils.nextFloat(cameraBottomLeft.x, cameraTopRight.x),
-            RandomUtils.nextFloat(cameraBottomLeft.y, cameraTopRight.y)
+            RandomUtils.nextFloat(cameraBottomLeft.x + offset, cameraTopRight.x - offset),
+            RandomUtils.nextFloat(cameraBottomLeft.y + offset, cameraTopRight.y - offset)
         );
         // direction
         boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
