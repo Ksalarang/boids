@@ -13,7 +13,7 @@ public class SettingsPanel : MonoBehaviour {
     [Header("Toggles")]
     [SerializeField] Toggle mousePositionToggle;
     [SerializeField] Toggle viewAreaToggle;
-    [SerializeField] Toggle localCenterToggle;
+    [SerializeField] Toggle showForcesToggle;
     [SerializeField] Toggle alignmentToggle;
     [SerializeField] Toggle cohesionToggle;
     [SerializeField] Toggle separationToggle;
@@ -55,14 +55,13 @@ public class SettingsPanel : MonoBehaviour {
         gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
         addListeners();
-        updateValues();
     }
 
     void addListeners() {
         // toggles
         mousePositionToggle.onValueChanged.AddListener(toggleMousePosition);
         viewAreaToggle.onValueChanged.AddListener(toggleViewArea);
-        localCenterToggle.onValueChanged.AddListener(toggleLocalCenter);
+        showForcesToggle.onValueChanged.AddListener(toggleBoidForces);
         alignmentToggle.onValueChanged.AddListener(toggleAlignment);
         cohesionToggle.onValueChanged.AddListener(toggleCohesion);
         separationToggle.onValueChanged.AddListener(toggleSeparation);
@@ -86,7 +85,7 @@ public class SettingsPanel : MonoBehaviour {
         // toggles
         mousePositionToggle.isOn = gameSettings.showMousePosition;
         viewAreaToggle.isOn = gameSettings.showViewArea;
-        localCenterToggle.isOn = gameSettings.showLocalCenter;
+        showForcesToggle.isOn = gameSettings.showBoidForces;
         alignmentToggle.isOn = boidSettings.alignmentEnabled;
         cohesionToggle.isOn = boidSettings.cohesionEnabled;
         separationToggle.isOn = boidSettings.separationEnabled;
@@ -123,9 +122,9 @@ public class SettingsPanel : MonoBehaviour {
         foreach (var boid in boids) boid.viewArea.gameObject.SetActive(value);
     }
 
-    void toggleLocalCenter(bool value) {
-        gameSettings.showLocalCenter = value;
-        systemManager.onToggleLocalCenter(value);
+    void toggleBoidForces(bool value) {
+        gameSettings.showBoidForces = value;
+        systemManager.onToggleBoidForces(value);
     }
 
     void toggleAlignment(bool value) {
@@ -146,6 +145,7 @@ public class SettingsPanel : MonoBehaviour {
     
     void togglePredatorEvasion(bool value) {
         boidSettings.predatorEvasionEnabled = value;
+        systemManager.onTogglePredatorEvasion(value);
     }
     
     void toggleWallAvoidance(bool value) {

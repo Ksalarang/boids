@@ -75,6 +75,7 @@ public class SystemManager : MonoBehaviour {
 
     void createPredator() {
         predator = predatorController.createPredator(gameSettings);
+        predator.gameObject.SetActive(gameSettings.boidSettings.predatorEvasionEnabled);
     }
 
     void createSystems() {
@@ -101,7 +102,7 @@ public class SystemManager : MonoBehaviour {
         localCenter.transform.localScale *= boidSettings.size;
         alignmentArrow.transform.localScale *= boidSettings.size;
         separationArrow.transform.localScale *= boidSettings.size;
-        onToggleLocalCenter(gameSettings.showLocalCenter);
+        onToggleBoidForces(gameSettings.showBoidForces);
         foreach (var boid in boids) boid.viewArea.gameObject.SetActive(gameSettings.showViewArea);
     }
 
@@ -110,10 +111,14 @@ public class SystemManager : MonoBehaviour {
         foreach (var system in systemArray) system.update(delta);
     }
 
-    public void onToggleLocalCenter(bool value) {
+    public void onToggleBoidForces(bool value) {
         localCenter.gameObject.SetActive(value);
         alignmentArrow.gameObject.SetActive(value);
         separationArrow.gameObject.SetActive(value);
+    }
+
+    public void onTogglePredatorEvasion(bool value) {
+        predator.gameObject.SetActive(value);
     }
 
     public void onRandomizeBoids() {

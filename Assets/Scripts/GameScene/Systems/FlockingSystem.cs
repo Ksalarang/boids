@@ -33,7 +33,7 @@ public class FlockingSystem : System {
 
     public void update(float deltaTime) {
         // reset the debug boid indicators
-        if (gameSettings.showLocalCenter) {
+        if (gameSettings.showBoidForces) {
             var debugBoid = boids[0];
             var debugBoidPosition = debugBoid.transform.position;
             var debugBoidRotation = debugBoid.transform.rotation;

@@ -6,7 +6,7 @@ namespace GameScene.Settings {
 public class GameSettings {
     public bool showMousePosition;
     public bool showViewArea;
-    public bool showLocalCenter;
+    public bool showBoidForces;
 
     public float gameSpeed;
 
@@ -30,7 +30,7 @@ public class GameSettings {
 
         showMousePosition = defaultSettings.showMousePosition;
         showViewArea = defaultSettings.showViewArea;
-        showLocalCenter = defaultSettings.showLocalCenter;
+        showBoidForces = defaultSettings.showBoidForces;
 
         gameSpeed = defaultSettings.gameSpeed;
 
