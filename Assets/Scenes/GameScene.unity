@@ -1292,6 +1292,7 @@ MonoBehaviour:
   systemManager: {fileID: 647139681}
   inputController: {fileID: 647139679}
   predatorController: {fileID: 647139682}
+  boidFactory: {fileID: 647139683}
   settingsPanel: {fileID: 158613454}
   camera: {fileID: 519420031}
 --- !u!114 &386458090 stripped
@@ -2124,6 +2125,7 @@ GameObject:
   - component: {fileID: 647139681}
   - component: {fileID: 647139679}
   - component: {fileID: 647139682}
+  - component: {fileID: 647139683}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -2201,6 +2203,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   predatorPrefab: {fileID: 826227511408115621, guid: 84a5a3847c00a7e4bae04f0ebe410245, type: 3}
+--- !u!114 &647139683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647139675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9347d070cde41a4b07b1a268e55a204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionOffset: 0.5
+  boidPrefab: {fileID: 8451953710051100010, guid: c22e2c8d968b2bd489d3ef82eaa5e352, type: 3}
+  blueFishSprite: {fileID: 21300000, guid: 3df431e07312cb04f9bcf638098d1c82, type: 3}
+  greenFishSprite: {fileID: 21300000, guid: 83269f0bb46ef6f43ad963c386cab1c2, type: 3}
+  yellowFishSprite: {fileID: 21300000, guid: 670e71dd0a3ab574e9aee308312056a2, type: 3}
+  orangeFishSprite: {fileID: 21300000, guid: 452f1bb667aff2b4b99e33895c2ac115, type: 3}
 --- !u!1 &670553615
 GameObject:
   m_ObjectHideFlags: 0

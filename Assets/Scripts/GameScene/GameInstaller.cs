@@ -11,6 +11,7 @@ public class GameInstaller : MonoInstaller {
     [SerializeField] SystemManager systemManager;
     [SerializeField] InputController inputController;
     [SerializeField] PredatorController predatorController;
+    [SerializeField] BoidFactory boidFactory;
     [Header("Views")]
     [SerializeField] SettingsPanel settingsPanel;
     [Header("Misc")]
@@ -22,6 +23,7 @@ public class GameInstaller : MonoInstaller {
         bind(systemManager);
         bind(inputController);
         bind(predatorController);
+        bind(boidFactory);
         // views
         bind(settingsPanel);
         // misc

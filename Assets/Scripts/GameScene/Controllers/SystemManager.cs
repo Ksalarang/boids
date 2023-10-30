@@ -4,7 +4,6 @@ using GameScene.Settings;
 using GameScene.Systems;
 using Services.Saves;
 using UnityEngine;
-using Utils;
 using Utils.Extensions;
 using Zenject;
 
@@ -18,6 +17,7 @@ public class SystemManager : MonoBehaviour {
     [Inject] new Camera camera;
     [Inject] SaveService saveService;
     [Inject] PredatorController predatorController;
+    [Inject] BoidFactory boidFactory;
 
     GameSettings gameSettings;
     BoidSettings boidSettings;
@@ -38,6 +38,9 @@ public class SystemManager : MonoBehaviour {
         systemDict = new Dictionary<Type, Systems.System>();
         cameraBottomLeft = camera.getBottomLeft();
         cameraTopRight = camera.getTopRight();
+    }
+
+    void Start() {
         createBoids();
         createPredator();
         createSystems();
@@ -45,37 +48,7 @@ public class SystemManager : MonoBehaviour {
     }
 
     void createBoids() {
-        var boidSize = boidSettings.size;
-        var viewAreaDiameter = 2 * boidSettings.viewDistance / boidSize;
-        var viewAreaSize = new Vector3(viewAreaDiameter, viewAreaDiameter);
-        for (var i = 0; i < boidSettings.count; i++) {
-            var boid = Instantiate(boidPrefab).GetComponent<Boid>();
-            boid.name = $"boid_{i}";
-            // size
-            boid.transform.localScale = new Vector3(boidSize, boidSize);
-            // position and velocity
-            randomizePositionAndVelocity(boid);
-            // view area size
-            boid.viewArea.transform.localScale = viewAreaSize;
-            
-            boids.Add(boid);
-        }
-        if (boids.Count == 0) {
-            throw new Exception("no boid was created");
-        }
-    }
-
-    void randomizePositionAndVelocity(Boid boid) {
-        // position
-        const float offset = 0.5f;
-        boid.transform.position = new Vector3(
-            RandomUtils.nextFloat(cameraBottomLeft.x + offset, cameraTopRight.x - offset),
-            RandomUtils.nextFloat(cameraBottomLeft.y + offset, cameraTopRight.y - offset)
-        );
-        // direction
-        boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
-        // speed
-        boid.speed = RandomUtils.nextFloat(boidSettings.minSpeed, boidSettings.maxSpeed);
+        boids = boidFactory.createBoids();
     }
 
     void createPredator() {
@@ -139,7 +112,7 @@ public class SystemManager : MonoBehaviour {
     }
 
     public void onRandomizeBoids() {
-        foreach (var boid in boids) randomizePositionAndVelocity(boid);
+        foreach (var boid in boids) boidFactory.randomizePositionAndVelocity(boid);
     }
 }
 }
