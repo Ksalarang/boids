@@ -114,7 +114,7 @@ public class EvasionSystem : System {
             var currentAngle = rotation.eulerAngles.z;
             if (currentAngle < 0) currentAngle += 360f;
             if (Mathf.Abs(angle - currentAngle) < 45f) {
-                boid.speed += boidSettings.maxAcceleration * deltaTime;
+                boid.speed += boidSettings.escapeAcceleration * deltaTime;
                 boid.speed = Mathf.Min(boid.speed, boidSettings.maxSpeed);
             }
         }

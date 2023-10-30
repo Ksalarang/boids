@@ -8,8 +8,8 @@ public class BoidSettings {
     public float targetSpeed;
     public float minSpeed;
     public float maxSpeed;
-    public float defaultAcceleration;
-    public float maxAcceleration;
+    public float baseAcceleration;
+    public float escapeAcceleration;
     
     public float size;
     public float separationDistance;
@@ -35,8 +35,8 @@ public class BoidSettings {
         targetSpeed = defaultSettings.targetSpeed;
         minSpeed = defaultSettings.minSpeed;
         maxSpeed = defaultSettings.maxSpeed;
-        defaultAcceleration = defaultSettings.defaultAcceleration;
-        maxAcceleration = defaultSettings.maxAcceleration;
+        baseAcceleration = defaultSettings.baseAcceleration;
+        escapeAcceleration = defaultSettings.escapeAcceleration;
         
         size = defaultSettings.size;
         separationDistance = defaultSettings.separationDistance;

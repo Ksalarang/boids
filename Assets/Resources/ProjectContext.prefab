@@ -92,8 +92,8 @@ MonoBehaviour:
       targetSpeed: 2
       minSpeed: 1
       maxSpeed: 3
-      defaultAcceleration: 0.5
-      maxAcceleration: 5
+      baseAcceleration: 0.5
+      escapeAcceleration: 4.5
       size: 0.3
       separationDistance: 0.3
       viewDistance: 1.5

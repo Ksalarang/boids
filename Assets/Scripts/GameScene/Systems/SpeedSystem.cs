@@ -12,9 +12,8 @@ public class SpeedSystem : System {
 
     public void update(float deltaTime) {
         var targetSpeed = settings.targetSpeed;
-        var acceleration = settings.defaultAcceleration * deltaTime;
+        var acceleration = settings.baseAcceleration * deltaTime;
         foreach (var boid in boids) {
-            if (boid.isEscapingPredator) continue;
             var speed = boid.speed;
             if (speed < targetSpeed) {
                 boid.speed = speed + acceleration;

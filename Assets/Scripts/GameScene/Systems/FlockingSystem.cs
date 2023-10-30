@@ -47,7 +47,7 @@ public class FlockingSystem : System {
         // cache values
         var minSpeed = boidSettings.minSpeed;
         var maxSpeed = boidSettings.maxSpeed;
-        var acceleration = boidSettings.defaultAcceleration * deltaTime;
+        var acceleration = boidSettings.baseAcceleration * deltaTime;
         
         for (var i = 0; i < boids.Length; i++) {
             // preparation
