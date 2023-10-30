@@ -9,8 +9,7 @@ public class Boid : MonoBehaviour {
     public Vector3 velocity;
     public float speed;
     public float distanceTemp;
-    public bool isEscapingPredator;
-    public FishColor fishColor;
+    public FishType fishType;
     
     void Awake() {
         transform = base.transform;

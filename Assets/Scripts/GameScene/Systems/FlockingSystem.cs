@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
 using GameScene.Settings;
 using UnityEngine;
 using Utils;
@@ -47,10 +46,18 @@ public class FlockingSystem : System {
         }
 
         // cache values
-        //todo: refactor: cache values
         var minSpeed = boidSettings.minSpeed;
         var maxSpeed = boidSettings.maxSpeed;
         var acceleration = boidSettings.baseAcceleration * deltaTime;
+        var separationDistance = boidSettings.separationDistance;
+        var alignmentEnabled = boidSettings.alignmentEnabled;
+        var cohesionEnabled = boidSettings.cohesionEnabled;
+        var separationEnabled = boidSettings.separationEnabled;
+        var speedAlignmentEnabled = boidSettings.speedAlignmentEnabled;
+        var colorfulModeEnabled = boidSettings.colorfulModeEnabled;
+        var alignmentForce = boidSettings.alignmentForce * deltaTime;
+        var cohesionForce = boidSettings.cohesionForce * deltaTime;
+        var separationForce = boidSettings.separationForce * deltaTime;
 
         for (var i = 0; i < boidCount; i++) {
             // preparation
@@ -69,13 +76,13 @@ public class FlockingSystem : System {
             var shouldSeparate = false;
             foreach (var neighbor in neighbors) {
                 var neighborPosition = neighbor.transform.position;
-                if (neighbor.distanceTemp < boidSettings.separationDistance) {
+                if (neighbor.distanceTemp < separationDistance) {
                     var fromNeighbor = currentBoidPosition - neighborPosition;
                     if (fromNeighbor == Vector3.zero) continue;
                     separationDirection += fromNeighbor.normalized / fromNeighbor.magnitude;
                     shouldSeparate = true;
                 }
-                if (boidSettings.colorfulModeEnabled && currentBoid.fishColor != neighbor.fishColor) {
+                if (colorfulModeEnabled && currentBoid.fishType != neighbor.fishType) {
                     sameTypeCount--;
                     continue;
                 }
@@ -93,38 +100,38 @@ public class FlockingSystem : System {
             }
             
             // direction alignment
-            if (boidSettings.alignmentEnabled && hasSameTypeNeighbors) {
+            if (alignmentEnabled && hasSameTypeNeighbors) {
                 var angle = MathUtils.vectorToAngle(averageDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * boidSettings.alignmentForce);
+                    alignmentForce);
 
                 if (i == 0) alignmentArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             // cohesion
-            if (boidSettings.cohesionEnabled && hasSameTypeNeighbors) {
+            if (cohesionEnabled && hasSameTypeNeighbors) {
                 var cohesionDirection = averagePosition - currentBoidPosition;
                 var angle = MathUtils.vectorToAngle(cohesionDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * boidSettings.cohesionForce);
+                    cohesionForce);
 
                 if (i == 0) localCenter.transform.position = averagePosition;
             }
             // separation
-            if (boidSettings.separationEnabled && shouldSeparate) {
+            if (separationEnabled && shouldSeparate) {
                 var angle = MathUtils.vectorToAngle(separationDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
-                    deltaTime * boidSettings.separationForce);
+                    separationForce);
                 
                 if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             // speed alignment
-            if (boidSettings.speedAlignmentEnabled && hasSameTypeNeighbors) {
+            if (speedAlignmentEnabled && hasSameTypeNeighbors) {
                 var currentSpeed = currentBoid.speed;
                 if (currentSpeed < averageSpeed) {
                     currentSpeed += acceleration;

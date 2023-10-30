@@ -23,14 +23,14 @@ public class BoidFactory : MonoBehaviour {
     Vector3 cameraBottomLeft;
     Vector3 cameraTopRight;
     int boidCounter;
-    FishColor[] colorEnums;
+    FishType[] colorEnums;
 
     void Awake() {
         var gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
         cameraBottomLeft = camera.getBottomLeft();
         cameraTopRight = camera.getTopRight();
-        colorEnums = (FishColor[]) Enum.GetValues(typeof(FishColor));
+        colorEnums = (FishType[]) Enum.GetValues(typeof(FishType));
     }
 
     public List<Boid> createBoids() {
@@ -43,8 +43,8 @@ public class BoidFactory : MonoBehaviour {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
             boid.name = $"boid_{++boidCounter}";
             // sprite
-            boid.fishColor = boidSettings.colorfulModeEnabled ? getColorForBoidIndex(i, boidCount) : FishColor.Blue;
-            boid.GetComponent<SpriteRenderer>().sprite = getSpriteForColor(boid.fishColor);
+            boid.fishType = boidSettings.colorfulModeEnabled ? getColorForBoidIndex(i, boidCount) : FishType.Blue;
+            boid.GetComponent<SpriteRenderer>().sprite = getSpriteForColor(boid.fishType);
             // size
             boid.transform.localScale = new Vector3(boidSize, boidSize);
             // position and velocity
@@ -60,23 +60,23 @@ public class BoidFactory : MonoBehaviour {
         return boids;
     }
 
-    FishColor getColorForBoidIndex(int index, int count) {
+    FishType getColorForBoidIndex(int index, int count) {
         var colorGroupCount = count / colorEnums.Length;
-        if (colorGroupCount < colorEnums.Length) return FishColor.Blue;
+        if (colorGroupCount < colorEnums.Length) return FishType.Blue;
         
         for (var i = 0; i < colorEnums.Length; i++) {
             if (index < colorGroupCount * (i + 1)) return colorEnums[i];
         }
-        return FishColor.Blue;
+        return FishType.Blue;
     }
 
-    Sprite getSpriteForColor(FishColor color) {
-        return color switch {
-            FishColor.Blue => blueFishSprite,
-            FishColor.Green => greenFishSprite,
-            FishColor.Yellow => yellowFishSprite,
-            FishColor.Orange => orangeFishSprite,
-            _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
+    Sprite getSpriteForColor(FishType fishType) {
+        return fishType switch {
+            FishType.Blue => blueFishSprite,
+            FishType.Green => greenFishSprite,
+            FishType.Yellow => yellowFishSprite,
+            FishType.Orange => orangeFishSprite,
+            _ => throw new ArgumentOutOfRangeException(nameof(fishType), fishType, null)
         };
     }
 
@@ -93,8 +93,7 @@ public class BoidFactory : MonoBehaviour {
     }
 }
 
-//todo: rename
-public enum FishColor {
+public enum FishType {
     Blue, Green, Yellow, Orange,
 }
 }

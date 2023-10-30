@@ -100,9 +100,7 @@ public class EvasionSystem : System {
 
     void evadePredator(Boid boid, Vector3 predatorPosition, float deltaTime) {
         var distance = boid.transform.position.distanceTo(predatorPosition);
-        //todo: refactor
-        boid.isEscapingPredator = distance < boidSettings.predatorViewDistance;
-        if (boid.isEscapingPredator) {
+        if (distance < boidSettings.predatorViewDistance) {
             // steer away from predator
             var fromPredator = boid.transform.position - predatorPosition;
             var angle = MathUtils.vectorToAngle(fromPredator);
