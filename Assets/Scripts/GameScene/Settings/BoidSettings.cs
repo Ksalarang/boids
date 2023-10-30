@@ -13,6 +13,7 @@ public class BoidSettings {
     
     public float size;
     public float separationDistance;
+    public float typeSeparationDistanceFactor;
     public float viewDistance;
     public float predatorViewDistance;
     
@@ -42,6 +43,7 @@ public class BoidSettings {
         
         size = defaultSettings.size;
         separationDistance = defaultSettings.separationDistance;
+        typeSeparationDistanceFactor = defaultSettings.typeSeparationDistanceFactor;
         viewDistance = defaultSettings.viewDistance;
         predatorViewDistance = defaultSettings.predatorViewDistance;
         

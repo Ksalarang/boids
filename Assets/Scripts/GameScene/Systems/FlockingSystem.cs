@@ -50,6 +50,7 @@ public class FlockingSystem : System {
         var maxSpeed = boidSettings.maxSpeed;
         var acceleration = boidSettings.baseAcceleration * deltaTime;
         var separationDistance = boidSettings.separationDistance;
+        var typeSeparationDistance = separationDistance * boidSettings.typeSeparationDistanceFactor;
         var alignmentEnabled = boidSettings.alignmentEnabled;
         var cohesionEnabled = boidSettings.cohesionEnabled;
         var separationEnabled = boidSettings.separationEnabled;
@@ -76,7 +77,8 @@ public class FlockingSystem : System {
             var shouldSeparate = false;
             foreach (var neighbor in neighbors) {
                 var neighborPosition = neighbor.transform.position;
-                if (neighbor.distanceTemp < separationDistance) {
+                var distance = neighbor.fishType == currentBoid.fishType ? separationDistance : typeSeparationDistance;
+                if (neighbor.distanceTemp < distance) {
                     var fromNeighbor = currentBoidPosition - neighborPosition;
                     if (fromNeighbor == Vector3.zero) continue;
                     separationDirection += fromNeighbor.normalized / fromNeighbor.magnitude;

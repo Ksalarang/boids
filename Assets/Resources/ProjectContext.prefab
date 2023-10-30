@@ -95,7 +95,8 @@ MonoBehaviour:
       baseAcceleration: 0.5
       escapeAcceleration: 4.5
       size: 0.3
-      separationDistance: 0.6
+      separationDistance: 0.4
+      typeSeparationDistanceFactor: 2
       viewDistance: 1
       predatorViewDistance: 3
       alignmentEnabled: 1
@@ -105,11 +106,11 @@ MonoBehaviour:
       predatorEvasionEnabled: 1
       wallAvoidanceEnabled: 1
       alignmentForce: 200
-      cohesionForce: 70
+      cohesionForce: 100
       separationForce: 250
       predatorEvasionForce: 400
       wallAvoidanceForce: 800
-      colorfulModeEnabled: 1
+      typeBasedFlockingEnabled: 1
     predatorSettings:
       restingSpeed: 1
       maxSpeed: 3
