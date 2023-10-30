@@ -24,6 +24,7 @@ public class SystemManager : MonoBehaviour {
     PredatorSettings predatorSettings;
     Dictionary<Type, Systems.System> systemDict;
     Systems.System[] systemArray;
+    //todo: refactor
     Vector3 cameraBottomLeft;
     Vector3 cameraTopRight;
     Predator predator;
@@ -113,6 +114,12 @@ public class SystemManager : MonoBehaviour {
 
     public void onRandomizeBoids() {
         foreach (var boid in boids) boidFactory.randomizePositionAndVelocity(boid);
+    }
+
+    public void onToggleTypeBasedFlocking(bool value) {
+        for (var i = 0; i < boids.Count; i++) {
+            boidFactory.setBoidSprite(boids[i], value, i, boids.Count);
+        }
     }
 }
 }

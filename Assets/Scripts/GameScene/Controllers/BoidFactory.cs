@@ -43,8 +43,7 @@ public class BoidFactory : MonoBehaviour {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
             boid.name = $"boid_{++boidCounter}";
             // sprite
-            boid.fishType = boidSettings.colorfulModeEnabled ? getColorForBoidIndex(i, boidCount) : FishType.Blue;
-            boid.GetComponent<SpriteRenderer>().sprite = getSpriteForColor(boid.fishType);
+            setBoidSprite(boid, boidSettings.typeBasedFlockingEnabled, i, boidCount);
             // size
             boid.transform.localScale = new Vector3(boidSize, boidSize);
             // position and velocity
@@ -60,6 +59,23 @@ public class BoidFactory : MonoBehaviour {
         return boids;
     }
 
+    public void randomizePositionAndVelocity(Boid boid) {
+        // position
+        boid.transform.position = new Vector3(
+            RandomUtils.nextFloat(cameraBottomLeft.x + positionOffset, cameraTopRight.x - positionOffset),
+            RandomUtils.nextFloat(cameraBottomLeft.y + positionOffset, cameraTopRight.y - positionOffset)
+        );
+        // direction
+        boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
+        // speed
+        boid.speed = RandomUtils.nextFloat(boidSettings.minSpeed, boidSettings.maxSpeed);
+    }
+
+    public void setBoidSprite(Boid boid, bool typeBasedFlockingEnabled, int index, int boidCount) {
+        boid.fishType = typeBasedFlockingEnabled ? getColorForBoidIndex(index, boidCount) : FishType.Blue;
+        boid.GetComponent<SpriteRenderer>().sprite = getSpriteForColor(boid.fishType);
+    }
+    
     FishType getColorForBoidIndex(int index, int count) {
         var colorGroupCount = count / colorEnums.Length;
         if (colorGroupCount < colorEnums.Length) return FishType.Blue;
@@ -78,18 +94,6 @@ public class BoidFactory : MonoBehaviour {
             FishType.Orange => orangeFishSprite,
             _ => throw new ArgumentOutOfRangeException(nameof(fishType), fishType, null)
         };
-    }
-
-    public void randomizePositionAndVelocity(Boid boid) {
-        // position
-        boid.transform.position = new Vector3(
-            RandomUtils.nextFloat(cameraBottomLeft.x + positionOffset, cameraTopRight.x - positionOffset),
-            RandomUtils.nextFloat(cameraBottomLeft.y + positionOffset, cameraTopRight.y - positionOffset)
-        );
-        // direction
-        boid.transform.rotation = Quaternion.Euler(0, 0, RandomUtils.nextFloat(0, 359));
-        // speed
-        boid.speed = RandomUtils.nextFloat(boidSettings.minSpeed, boidSettings.maxSpeed);
     }
 }
 

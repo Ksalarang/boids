@@ -29,7 +29,7 @@ public class BoidSettings {
     public float predatorEvasionForce;
     public float wallAvoidanceForce;
 
-    public bool colorfulModeEnabled;
+    public bool typeBasedFlockingEnabled;
 
     public void reset(BoidSettings defaultSettings) {
         count = defaultSettings.count;
@@ -58,7 +58,7 @@ public class BoidSettings {
         predatorEvasionForce = defaultSettings.predatorEvasionForce;
         wallAvoidanceForce = defaultSettings.wallAvoidanceForce;
 
-        colorfulModeEnabled = defaultSettings.colorfulModeEnabled;
+        typeBasedFlockingEnabled = defaultSettings.typeBasedFlockingEnabled;
     }
 }
 }

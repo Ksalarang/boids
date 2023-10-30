@@ -20,6 +20,7 @@ public class SettingsPanel : MonoBehaviour {
     [SerializeField] Toggle speedAlignmentToggle;
     [SerializeField] Toggle predatorEvasionToggle;
     [SerializeField] Toggle wallAvoidanceToggle;
+    [SerializeField] Toggle typeBasedFlockingToggle;
     [Header("Sliders")]
     [SerializeField] Slider alignmentForceSlider;
     [SerializeField] Slider cohesionForceSlider;
@@ -68,6 +69,7 @@ public class SettingsPanel : MonoBehaviour {
         speedAlignmentToggle.onValueChanged.AddListener(toggleSpeedAlignment);
         predatorEvasionToggle.onValueChanged.AddListener(togglePredatorEvasion);
         wallAvoidanceToggle.onValueChanged.AddListener(toggleWallAvoidance);
+        typeBasedFlockingToggle.onValueChanged.AddListener(toggleTypeBasedFlocking);
         // sliders
         alignmentForceSlider.onValueChanged.AddListener(onAlignmentForceChanged);
         cohesionForceSlider.onValueChanged.AddListener(onCohesionForceChanged);
@@ -92,13 +94,13 @@ public class SettingsPanel : MonoBehaviour {
         speedAlignmentToggle.isOn = boidSettings.speedAlignmentEnabled;
         predatorEvasionToggle.isOn = boidSettings.predatorEvasionEnabled;
         wallAvoidanceToggle.isOn = boidSettings.wallAvoidanceEnabled;
+        typeBasedFlockingToggle.isOn = boidSettings.typeBasedFlockingEnabled;
         // sliders
         alignmentForceSlider.value = boidSettings.alignmentForce;
         cohesionForceSlider.value = boidSettings.cohesionForce;
         separationForceSlider.value = boidSettings.separationForce;
         predatorEvasionForceSlider.value = boidSettings.predatorEvasionForce;
         wallAvoidanceForceSlider.value = boidSettings.wallAvoidanceForce;
-        
         gameSpeedSlider.value = gameSettings.gameSpeed;
         // slider labels
         alignmentForceLabel.text = boidSettings.alignmentForce.ToString("F");
@@ -150,6 +152,11 @@ public class SettingsPanel : MonoBehaviour {
     void toggleWallAvoidance(bool value) {
         boidSettings.wallAvoidanceEnabled = value;
     }
+
+    void toggleTypeBasedFlocking(bool value) {
+        boidSettings.typeBasedFlockingEnabled = value;
+        systemManager.onToggleTypeBasedFlocking(value);
+    }
     #endregion
 
     #region slider listeners
@@ -198,6 +205,7 @@ public class SettingsPanel : MonoBehaviour {
     const float frequency = 0.2f;
     float progress;
 
+    //todo: update only on start
     void Update() {
         progress += Time.deltaTime;
         if (progress > frequency) {

@@ -54,7 +54,7 @@ public class FlockingSystem : System {
         var cohesionEnabled = boidSettings.cohesionEnabled;
         var separationEnabled = boidSettings.separationEnabled;
         var speedAlignmentEnabled = boidSettings.speedAlignmentEnabled;
-        var colorfulModeEnabled = boidSettings.colorfulModeEnabled;
+        var typeBasedFlockingEnabled = boidSettings.typeBasedFlockingEnabled;
         var alignmentForce = boidSettings.alignmentForce * deltaTime;
         var cohesionForce = boidSettings.cohesionForce * deltaTime;
         var separationForce = boidSettings.separationForce * deltaTime;
@@ -82,7 +82,7 @@ public class FlockingSystem : System {
                     separationDirection += fromNeighbor.normalized / fromNeighbor.magnitude;
                     shouldSeparate = true;
                 }
-                if (colorfulModeEnabled && currentBoid.fishType != neighbor.fishType) {
+                if (typeBasedFlockingEnabled && currentBoid.fishType != neighbor.fishType) {
                     sameTypeCount--;
                     continue;
                 }
@@ -90,9 +90,7 @@ public class FlockingSystem : System {
                 averagePosition += neighborPosition;
                 averageSpeed += neighbor.speed;
             }
-            // if (sameTypeCount == 0) return;
             var hasSameTypeNeighbors = sameTypeCount > 0;
-
             if (hasSameTypeNeighbors) {
                 averageDirection /= sameTypeCount;
                 averagePosition /= sameTypeCount;
