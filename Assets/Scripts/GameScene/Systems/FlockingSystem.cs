@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using GameScene.Settings;
 using UnityEngine;
 using Utils;
@@ -46,6 +47,7 @@ public class FlockingSystem : System {
         }
 
         // cache values
+        //todo: refactor: cache values
         var minSpeed = boidSettings.minSpeed;
         var maxSpeed = boidSettings.maxSpeed;
         var acceleration = boidSettings.baseAcceleration * deltaTime;
@@ -59,29 +61,39 @@ public class FlockingSystem : System {
             if (neighborCount == 0) continue;
 
             // calculate average values
+            var sameTypeCount = neighborCount;
             var averageDirection = Vector3.zero;
             var averagePosition = Vector3.zero;
             var separationDirection = Vector3.zero;
             var averageSpeed = 0f;
             var shouldSeparate = false;
-            foreach (var boid in neighbors) {
-                averageDirection += boid.velocity;
-                var boidPosition = boid.transform.position;
-                averagePosition += boidPosition;
-                averageSpeed += boid.speed;
-                if (boid.distanceTemp < boidSettings.separationDistance) {
-                    var fromNeighbor = currentBoidPosition - boidPosition;
+            foreach (var neighbor in neighbors) {
+                var neighborPosition = neighbor.transform.position;
+                if (neighbor.distanceTemp < boidSettings.separationDistance) {
+                    var fromNeighbor = currentBoidPosition - neighborPosition;
                     if (fromNeighbor == Vector3.zero) continue;
                     separationDirection += fromNeighbor.normalized / fromNeighbor.magnitude;
                     shouldSeparate = true;
                 }
+                if (boidSettings.colorfulModeEnabled && currentBoid.fishColor != neighbor.fishColor) {
+                    sameTypeCount--;
+                    continue;
+                }
+                averageDirection += neighbor.velocity;
+                averagePosition += neighborPosition;
+                averageSpeed += neighbor.speed;
             }
-            averageDirection /= neighborCount;
-            averagePosition /= neighborCount;
-            averageSpeed /= neighborCount;
+            // if (sameTypeCount == 0) return;
+            var hasSameTypeNeighbors = sameTypeCount > 0;
+
+            if (hasSameTypeNeighbors) {
+                averageDirection /= sameTypeCount;
+                averagePosition /= sameTypeCount;
+                averageSpeed /= sameTypeCount;
+            }
             
             // direction alignment
-            if (boidSettings.alignmentEnabled) {
+            if (boidSettings.alignmentEnabled && hasSameTypeNeighbors) {
                 var angle = MathUtils.vectorToAngle(averageDirection);
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
                     currentBoid.transform.rotation,
@@ -91,12 +103,11 @@ public class FlockingSystem : System {
                 if (i == 0) alignmentArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             // cohesion
-            if (boidSettings.cohesionEnabled) {
+            if (boidSettings.cohesionEnabled && hasSameTypeNeighbors) {
                 var cohesionDirection = averagePosition - currentBoidPosition;
                 var angle = MathUtils.vectorToAngle(cohesionDirection);
-                var currentRotation = currentBoid.transform.rotation;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
-                    currentRotation,
+                    currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     deltaTime * boidSettings.cohesionForce);
 
@@ -105,16 +116,15 @@ public class FlockingSystem : System {
             // separation
             if (boidSettings.separationEnabled && shouldSeparate) {
                 var angle = MathUtils.vectorToAngle(separationDirection);
-                var currentRotation = currentBoid.transform.rotation;
                 currentBoid.transform.rotation = Quaternion.RotateTowards(
-                    currentRotation,
+                    currentBoid.transform.rotation,
                     Quaternion.Euler(0, 0, angle),
                     deltaTime * boidSettings.separationForce);
                 
                 if (i == 0) separationArrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             }
             // speed alignment
-            if (boidSettings.speedAlignmentEnabled) {
+            if (boidSettings.speedAlignmentEnabled && hasSameTypeNeighbors) {
                 var currentSpeed = currentBoid.speed;
                 if (currentSpeed < averageSpeed) {
                     currentSpeed += acceleration;

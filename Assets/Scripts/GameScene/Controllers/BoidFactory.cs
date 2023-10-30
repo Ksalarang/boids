@@ -43,8 +43,8 @@ public class BoidFactory : MonoBehaviour {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
             boid.name = $"boid_{++boidCounter}";
             // sprite
-            var color = boidSettings.colorfulModeEnabled ? getColorForBoidIndex(i, boidCount) : FishColor.Blue;
-            boid.GetComponent<SpriteRenderer>().sprite = getSpriteForColor(color);
+            boid.fishColor = boidSettings.colorfulModeEnabled ? getColorForBoidIndex(i, boidCount) : FishColor.Blue;
+            boid.GetComponent<SpriteRenderer>().sprite = getSpriteForColor(boid.fishColor);
             // size
             boid.transform.localScale = new Vector3(boidSize, boidSize);
             // position and velocity
@@ -93,6 +93,7 @@ public class BoidFactory : MonoBehaviour {
     }
 }
 
+//todo: rename
 public enum FishColor {
     Blue, Green, Yellow, Orange,
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameScene.Controllers;
+using UnityEngine;
 
 namespace GameScene {
 public class Boid : MonoBehaviour {
@@ -9,6 +10,7 @@ public class Boid : MonoBehaviour {
     public float speed;
     public float distanceTemp;
     public bool isEscapingPredator;
+    public FishColor fishColor;
     
     void Awake() {
         transform = base.transform;
