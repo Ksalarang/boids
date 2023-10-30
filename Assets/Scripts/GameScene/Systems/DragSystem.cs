@@ -1,12 +1,13 @@
-﻿using GameScene.Settings;
+﻿using System.Collections.Generic;
+using GameScene.Settings;
 
 namespace GameScene.Systems {
 public class DragSystem : System {
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
     readonly Predator predator;
     readonly GameSettings settings;
 
-    public DragSystem(Boid[] boids, Predator predator, GameSettings settings) {
+    public DragSystem(List<Boid> boids, Predator predator, GameSettings settings) {
         this.boids = boids;
         this.predator = predator;
         this.settings = settings;

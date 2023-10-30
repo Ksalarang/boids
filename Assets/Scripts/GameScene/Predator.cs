@@ -15,7 +15,7 @@ public class Predator : MonoBehaviour {
     Boid target;
 
     [HideInInspector] public new Transform transform;
-    [HideInInspector] public Boid[] boids;
+    [HideInInspector] public List<Boid> boids;
     [HideInInspector] public GameSettings gameSettings;
     [HideInInspector] public PredatorSettings settings;
     [HideInInspector] public float speed;
@@ -103,6 +103,7 @@ public class Predator : MonoBehaviour {
     void updateHuntingProgress() {
         if (state == State.Resting || target is null) return;
         if (hasCaughtTarget(target)) {
+            killTarget();
             setState(State.Resting);
         }
     }
@@ -118,12 +119,17 @@ public class Predator : MonoBehaviour {
         return distance < colliderRadius;
     }
 
+    void killTarget() {
+        boids.Remove(target);
+        Destroy(target.gameObject);
+        target = null;
+    }
+
     void setState(State newState) {
         state = newState;
         switch (newState) {
             case State.Resting:
                 isAccelerating = false;
-                target = null;
                 break;
             case State.Hunting:
                 isAccelerating = true;

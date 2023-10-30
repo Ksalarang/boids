@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameScene.Systems {
 public class MovementSystem : System {
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
 
-    public MovementSystem(Boid[] boids) {
+    public MovementSystem(List<Boid> boids) {
         this.boids = boids;
     }
 

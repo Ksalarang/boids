@@ -1,15 +1,16 @@
-﻿using GameScene.Settings;
+﻿using System.Collections.Generic;
+using GameScene.Settings;
 using UnityEngine;
 using Utils;
 
 namespace GameScene.Systems {
 public class BoidControlSystem : System {
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
     readonly GameSettings gameSettings;
     readonly BoidControlSettings settings;
     readonly Camera camera;
 
-    public BoidControlSystem(Boid[] boids, GameSettings gameSettings, Camera camera) {
+    public BoidControlSystem(List<Boid> boids, GameSettings gameSettings, Camera camera) {
         this.boids = boids;
         this.gameSettings = gameSettings;
         settings = gameSettings.boidControlSettings;

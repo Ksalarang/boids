@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameScene.Settings;
 using UnityEngine;
 using Utils;
@@ -6,7 +7,7 @@ using Utils.Extensions;
 
 namespace GameScene.Systems {
 public class EvasionSystem : System {
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
     readonly Predator predator;
     readonly PredatorSettings predatorSettings;
     readonly BoidSettings boidSettings;
@@ -16,7 +17,7 @@ public class EvasionSystem : System {
     Vector3 bottomLeft;
     Vector3 topRight;
 
-    public EvasionSystem(Boid[] boids, Predator predator, GameSettings settings, Camera camera) {
+    public EvasionSystem(List<Boid> boids, Predator predator, GameSettings settings, Camera camera) {
         this.boids = boids;
         this.predator = predator;
         predatorSettings = settings.predatorSettings;

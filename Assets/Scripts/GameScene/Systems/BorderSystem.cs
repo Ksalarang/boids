@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameScene.Systems {
 public class BorderSystem : System {
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
     readonly Predator predator;
     readonly Vector3 bottomLeft;
     readonly Vector3 topRight;
     readonly float boidOffset;
     readonly float predatorOffset;
 
-    public BorderSystem(Boid[] boids, Predator predator, Vector3 bottomLeft, Vector3 topRight, float boidSize) {
+    public BorderSystem(List<Boid> boids, Predator predator, Vector3 bottomLeft, Vector3 topRight, float boidSize) {
         this.boids = boids;
         this.predator = predator;
         this.bottomLeft = bottomLeft;

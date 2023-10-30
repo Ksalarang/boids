@@ -7,7 +7,7 @@ using Utils.Extensions;
 namespace GameScene.Systems {
 public class FlockingSystem : System {
     readonly Log log;
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
     readonly GameSettings gameSettings;
     readonly BoidSettings boidSettings;
     readonly List<Boid> neighbors;
@@ -15,7 +15,7 @@ public class FlockingSystem : System {
     readonly GameObject alignmentArrow;
     readonly GameObject separationArrow;
 
-    public FlockingSystem(Boid[] boids,
+    public FlockingSystem(List<Boid> boids,
         GameSettings gameSettings,
         BoidSettings boidSettings,
         GameObject localCenter,
@@ -33,7 +33,8 @@ public class FlockingSystem : System {
 
     public void update(float deltaTime) {
         // reset the debug boid indicators
-        if (gameSettings.showBoidForces) {
+        var boidCount = boids.Count;
+        if (gameSettings.showBoidForces && boidCount > 0) {
             var debugBoid = boids[0];
             var debugBoidPosition = debugBoid.transform.position;
             var debugBoidRotation = debugBoid.transform.rotation;
@@ -48,8 +49,8 @@ public class FlockingSystem : System {
         var minSpeed = boidSettings.minSpeed;
         var maxSpeed = boidSettings.maxSpeed;
         var acceleration = boidSettings.baseAcceleration * deltaTime;
-        
-        for (var i = 0; i < boids.Length; i++) {
+
+        for (var i = 0; i < boidCount; i++) {
             // preparation
             var currentBoid = boids[i];
             var currentBoidPosition = currentBoid.transform.position;

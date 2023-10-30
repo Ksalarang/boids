@@ -28,13 +28,13 @@ public class SystemManager : MonoBehaviour {
     Vector3 cameraTopRight;
     Predator predator;
 
-    [HideInInspector] public Boid[] boids;
+    [HideInInspector] public List<Boid> boids;
 
     void Awake() {
         gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
         predatorSettings = gameSettings.predatorSettings;
-        boids = new Boid[boidSettings.count];
+        boids = new List<Boid>(boidSettings.count);
         systemDict = new Dictionary<Type, Systems.System>();
         cameraBottomLeft = camera.getBottomLeft();
         cameraTopRight = camera.getTopRight();
@@ -48,7 +48,7 @@ public class SystemManager : MonoBehaviour {
         var boidSize = boidSettings.size;
         var viewAreaDiameter = 2 * boidSettings.viewDistance / boidSize;
         var viewAreaSize = new Vector3(viewAreaDiameter, viewAreaDiameter);
-        for (var i = 0; i < boids.Length; i++) {
+        for (var i = 0; i < boidSettings.count; i++) {
             var boid = Instantiate(boidPrefab).GetComponent<Boid>();
             boid.name = $"boid_{i}";
             // size
@@ -58,10 +58,11 @@ public class SystemManager : MonoBehaviour {
             // view area size
             boid.viewArea.transform.localScale = viewAreaSize;
             
-            boids[i] = boid;
+            boids.Add(boid);
         }
-        // set up the debug boid
-        // boids[0].GetComponent<SpriteRenderer>().color = Color.black;
+        if (boids.Count == 0) {
+            throw new Exception("no boid was created");
+        }
     }
 
     void randomizePositionAndVelocity(Boid boid) {

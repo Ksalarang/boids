@@ -1,11 +1,12 @@
-﻿using GameScene.Settings;
+﻿using System.Collections.Generic;
+using GameScene.Settings;
 
 namespace GameScene.Systems {
 public class SpeedSystem : System {
-    readonly Boid[] boids;
+    readonly List<Boid> boids;
     readonly BoidSettings settings;
 
-    public SpeedSystem(Boid[] boids, BoidSettings settings) {
+    public SpeedSystem(List<Boid> boids, BoidSettings settings) {
         this.boids = boids;
         this.settings = settings;
     }
