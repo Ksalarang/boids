@@ -49,6 +49,7 @@ public class SettingsPanel : MonoBehaviour {
     float minX;
     GameSettings gameSettings;
     BoidSettings boidSettings;
+    bool hasStarted;
 
     void Awake() {
         log = new Log(GetType());
@@ -56,6 +57,10 @@ public class SettingsPanel : MonoBehaviour {
         gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
         addListeners();
+    }
+
+    void Start() {
+        hasStarted = true;
     }
 
     void addListeners() {
@@ -202,16 +207,8 @@ public class SettingsPanel : MonoBehaviour {
     }
     #endregion
 
-    const float frequency = 0.2f;
-    float progress;
-
-    //todo: update only on start
-    void Update() {
-        progress += Time.deltaTime;
-        if (progress > frequency) {
-            progress = 0f;
-            updateValues();
-        }
+    void OnEnable() {
+        if (hasStarted) updateValues();
     }
 
     public void onMousePositionChanged(Vector3 screenMousePosition) {

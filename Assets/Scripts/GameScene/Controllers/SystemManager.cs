@@ -9,7 +9,6 @@ using Zenject;
 
 namespace GameScene.Controllers {
 public class SystemManager : MonoBehaviour {
-    [SerializeField] GameObject boidPrefab;
     [SerializeField] GameObject localCenter;
     [SerializeField] GameObject alignmentArrow;
     [SerializeField] GameObject separationArrow;
@@ -24,9 +23,6 @@ public class SystemManager : MonoBehaviour {
     PredatorSettings predatorSettings;
     Dictionary<Type, Systems.System> systemDict;
     Systems.System[] systemArray;
-    //todo: refactor
-    Vector3 cameraBottomLeft;
-    Vector3 cameraTopRight;
     Predator predator;
 
     [HideInInspector] public List<Boid> boids;
@@ -37,8 +33,6 @@ public class SystemManager : MonoBehaviour {
         predatorSettings = gameSettings.predatorSettings;
         boids = new List<Boid>(boidSettings.count);
         systemDict = new Dictionary<Type, Systems.System>();
-        cameraBottomLeft = camera.getBottomLeft();
-        cameraTopRight = camera.getTopRight();
     }
 
     void Start() {
