@@ -10,6 +10,7 @@ namespace GameScene.Controllers {
 public class SettingsPanel : MonoBehaviour {
     [SerializeField] RectTransform rectTransform;
     [SerializeField] GameObject scrollView;
+    [SerializeField] float sliderMultiplier = 1f;
     [Header("Toggles")]
     [SerializeField] Toggle mousePositionToggle;
     [SerializeField] Toggle viewAreaToggle;
@@ -101,11 +102,11 @@ public class SettingsPanel : MonoBehaviour {
         wallAvoidanceToggle.isOn = boidSettings.wallAvoidanceEnabled;
         typeBasedFlockingToggle.isOn = boidSettings.typeBasedFlockingEnabled;
         // sliders
-        alignmentForceSlider.value = boidSettings.alignmentForce;
-        cohesionForceSlider.value = boidSettings.cohesionForce;
-        separationForceSlider.value = boidSettings.separationForce;
-        predatorEvasionForceSlider.value = boidSettings.predatorEvasionForce;
-        wallAvoidanceForceSlider.value = boidSettings.wallAvoidanceForce;
+        alignmentForceSlider.value = boidSettings.alignmentForce / sliderMultiplier;
+        cohesionForceSlider.value = boidSettings.cohesionForce / sliderMultiplier;
+        separationForceSlider.value = boidSettings.separationForce / sliderMultiplier;
+        predatorEvasionForceSlider.value = boidSettings.predatorEvasionForce / sliderMultiplier;
+        wallAvoidanceForceSlider.value = boidSettings.wallAvoidanceForce / sliderMultiplier;
         gameSpeedSlider.value = gameSettings.gameSpeed;
         // slider labels
         alignmentForceLabel.text = Mathf.RoundToInt(boidSettings.alignmentForce).ToString();
@@ -166,26 +167,31 @@ public class SettingsPanel : MonoBehaviour {
 
     #region slider listeners
     void onAlignmentForceChanged(float value) {
+        value *= sliderMultiplier;
         boidSettings.alignmentForce = value;
         alignmentForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
 
     void onCohesionForceChanged(float value) {
+        value *= sliderMultiplier;
         boidSettings.cohesionForce = value;
         cohesionForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
 
     void onSeparationForceChanged(float value) {
+        value *= sliderMultiplier;
         boidSettings.separationForce = value;
         separationForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
     
     void onEvasionForceChanged(float value) {
+        value *= sliderMultiplier;
         boidSettings.predatorEvasionForce = value;
         predatorEvasionForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
     
     void onWallAvoidanceForceChanged(float value) {
+        value *= sliderMultiplier;
         boidSettings.wallAvoidanceForce = value;
         wallAvoidanceForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
