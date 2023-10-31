@@ -103,12 +103,12 @@ public class SettingsPanel : MonoBehaviour {
         wallAvoidanceForceSlider.value = boidSettings.wallAvoidanceForce;
         gameSpeedSlider.value = gameSettings.gameSpeed;
         // slider labels
-        alignmentForceLabel.text = boidSettings.alignmentForce.ToString("F");
-        cohesionForceLabel.text = boidSettings.cohesionForce.ToString("F");
-        separationForceLabel.text = boidSettings.separationForce.ToString("F");
-        predatorEvasionForceLabel.text = boidSettings.predatorEvasionForce.ToString("F");
-        wallAvoidanceForceLabel.text = boidSettings.wallAvoidanceForce.ToString("F");
-        
+        alignmentForceLabel.text = Mathf.RoundToInt(boidSettings.alignmentForce).ToString();
+        cohesionForceLabel.text = Mathf.RoundToInt(boidSettings.cohesionForce).ToString();
+        separationForceLabel.text = Mathf.RoundToInt(boidSettings.separationForce).ToString();
+        predatorEvasionForceLabel.text = Mathf.RoundToInt(boidSettings.predatorEvasionForce).ToString();
+        wallAvoidanceForceLabel.text = Mathf.RoundToInt(boidSettings.wallAvoidanceForce).ToString();
+
         gameSpeedLabel.text = gameSettings.gameSpeed.ToString("F");
     }
 
@@ -162,27 +162,27 @@ public class SettingsPanel : MonoBehaviour {
     #region slider listeners
     void onAlignmentForceChanged(float value) {
         boidSettings.alignmentForce = value;
-        alignmentForceLabel.text = value.ToString("F");
+        alignmentForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
 
     void onCohesionForceChanged(float value) {
         boidSettings.cohesionForce = value;
-        cohesionForceLabel.text = value.ToString("F");
+        cohesionForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
 
     void onSeparationForceChanged(float value) {
         boidSettings.separationForce = value;
-        separationForceLabel.text = value.ToString("F");
+        separationForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
     
     void onEvasionForceChanged(float value) {
         boidSettings.predatorEvasionForce = value;
-        predatorEvasionForceLabel.text = value.ToString("F");
+        predatorEvasionForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
     
     void onWallAvoidanceForceChanged(float value) {
         boidSettings.wallAvoidanceForce = value;
-        wallAvoidanceForceLabel.text = value.ToString("F");
+        wallAvoidanceForceLabel.text = Mathf.RoundToInt(value).ToString();
     }
 
     void onGameSpeedChanged(float value) {
