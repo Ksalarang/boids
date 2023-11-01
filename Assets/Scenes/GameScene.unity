@@ -1304,6 +1304,7 @@ MonoBehaviour:
   inputController: {fileID: 647139679}
   predatorController: {fileID: 647139682}
   boidFactory: {fileID: 647139683}
+  cameraController: {fileID: 647139684}
   settingsPanel: {fileID: 158613454}
   camera: {fileID: 519420031}
 --- !u!114 &446662567 stripped
@@ -2120,6 +2121,7 @@ GameObject:
   - component: {fileID: 647139679}
   - component: {fileID: 647139682}
   - component: {fileID: 647139683}
+  - component: {fileID: 647139684}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -2214,6 +2216,22 @@ MonoBehaviour:
   greenFishSprite: {fileID: 21300000, guid: 83269f0bb46ef6f43ad963c386cab1c2, type: 3}
   yellowFishSprite: {fileID: 21300000, guid: 670e71dd0a3ab574e9aee308312056a2, type: 3}
   orangeFishSprite: {fileID: 21300000, guid: 452f1bb667aff2b4b99e33895c2ac115, type: 3}
+--- !u!114 &647139684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647139675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5275cd8b5014bac9567e5b3746c9834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollFactor: 10
+  scrollDuration: 0.2
+  minCameraSize: 1
+  maxCameraSize: 20
 --- !u!1 &670553615
 GameObject:
   m_ObjectHideFlags: 0

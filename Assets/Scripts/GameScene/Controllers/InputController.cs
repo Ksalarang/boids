@@ -18,11 +18,15 @@ public class InputController : MonoBehaviour {
     Log log;
     Vector3 previousScreenMousePosition;
     float previousGameSpeed = 1f;
+    // todo: rename
     GameSettings settings;
+
+    public event MouseScrollEvent mouseScrollEvent;
 
     void Awake() {
         log = new Log(GetType(), true);
         settings = saveService.getSave().settings;
+        mouseLabel.gameObject.SetActive(settings.showMousePosition);
     }
 
     void Update() {
@@ -35,7 +39,7 @@ public class InputController : MonoBehaviour {
             previousScreenMousePosition = screenMousePosition;
         }
         if (mouseLabel.enabled) updateMouseLabel(screenMousePosition, worldMousePosition);
-        updateInput();
+        updateInput(worldMousePosition);
     }
 
     void updateMouseLabel(Vector3 screenMousePosition, Vector3 worldMousePosition) {
@@ -43,7 +47,7 @@ public class InputController : MonoBehaviour {
         mouseLabel.text = $"{(Vector2) screenMousePosition}\n{(Vector2) worldMousePosition}";
     }
 
-    void updateInput() {
+    void updateInput(Vector3 worldMousePosition) {
         if (Input.GetKeyUp(KeyCode.R)) {
             systemManager.onRandomizeBoids();
         }
@@ -55,10 +59,16 @@ public class InputController : MonoBehaviour {
                 settings.gameSpeed = previousGameSpeed;
             }
         }
+        var wheelAxis = Input.GetAxis("Mouse ScrollWheel");
+        if (!settings.settingsPanelEnabled && wheelAxis != 0) {
+            mouseScrollEvent?.Invoke(wheelAxis, worldMousePosition);
+        }
     }
 
     public void onToggleShowMousePosition(bool value) {
         mouseLabel.gameObject.SetActive(value);
     }
 }
+
+public delegate void MouseScrollEvent(float scrollAmount, Vector3 mousePosition);
 }
