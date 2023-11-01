@@ -17,19 +17,19 @@ public class EvasionSystem : System {
     Vector3 bottomLeft;
     Vector3 topRight;
 
-    public EvasionSystem(List<Boid> boids, Predator predator, GameSettings settings, Camera camera) {
+    public EvasionSystem(List<Boid> boids, Predator predator, GameSettings settings) {
         this.boids = boids;
         this.predator = predator;
         predatorSettings = settings.predatorSettings;
         boidSettings = settings.boidSettings;
         boidSize = boids[0].transform.localScale.x;
         predatorSize = predator.transform.localScale.x;
-        setWallCorners(camera, predatorSize / 3);
+        setWallCorners(settings.worldRect, predatorSize / 3);
     }
 
-    void setWallCorners(Camera camera, float offset) {
-        bottomLeft = camera.getBottomLeft();
-        topRight = camera.getTopRight();
+    void setWallCorners(Rect worldRect, float offset) {
+        bottomLeft = worldRect.min;
+        topRight = worldRect.max;
         bottomLeft.x += offset;
         bottomLeft.y += offset;
         topRight.x -= offset;

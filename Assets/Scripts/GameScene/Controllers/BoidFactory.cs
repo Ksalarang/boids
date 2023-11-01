@@ -17,8 +17,8 @@ public class BoidFactory : MonoBehaviour {
     [SerializeField] Sprite orangeFishSprite;
 
     [Inject] SaveService saveService;
-    [Inject] new Camera camera;
 
+    GameSettings gameSettings;
     BoidSettings boidSettings;
     Vector3 cameraBottomLeft;
     Vector3 cameraTopRight;
@@ -26,11 +26,14 @@ public class BoidFactory : MonoBehaviour {
     FishType[] colorEnums;
 
     void Awake() {
-        var gameSettings = saveService.getSave().settings;
+        gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
-        cameraBottomLeft = camera.getBottomLeft();
-        cameraTopRight = camera.getTopRight();
         colorEnums = (FishType[]) Enum.GetValues(typeof(FishType));
+    }
+
+    void Start() {
+        cameraBottomLeft = gameSettings.worldRect.min;
+        cameraTopRight = gameSettings.worldRect.max;
     }
 
     public List<Boid> createBoids() {

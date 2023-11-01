@@ -4,20 +4,23 @@ using GameScene.Settings;
 using GameScene.Systems;
 using Services.Saves;
 using UnityEngine;
+using Utils;
 using Utils.Extensions;
 using Zenject;
 
 namespace GameScene.Controllers {
 public class SystemManager : MonoBehaviour {
+    [SerializeField] float boidAreaFactor = 10f;
     [SerializeField] GameObject localCenter;
     [SerializeField] GameObject alignmentArrow;
     [SerializeField] GameObject separationArrow;
 
-    [Inject] new Camera camera;
+    // [Inject] new Camera camera;
     [Inject] SaveService saveService;
     [Inject] PredatorController predatorController;
     [Inject] BoidFactory boidFactory;
 
+    Log log;
     GameSettings gameSettings;
     BoidSettings boidSettings;
     PredatorSettings predatorSettings;
@@ -28,6 +31,7 @@ public class SystemManager : MonoBehaviour {
     [HideInInspector] public List<Boid> boids;
 
     void Awake() {
+        log = new Log(GetType());
         gameSettings = saveService.getSave().settings;
         boidSettings = gameSettings.boidSettings;
         predatorSettings = gameSettings.predatorSettings;
@@ -36,10 +40,23 @@ public class SystemManager : MonoBehaviour {
     }
 
     void Start() {
+        calculateWorldSize();
         createBoids();
         createPredator();
         createSystems();
         initializeDebugViews();
+    }
+
+    void calculateWorldSize() {
+        var area = boidSettings.size * boidAreaFactor * boidSettings.count;
+        if (area == 0) {
+            throw new Exception("world area is 0");
+        }
+        var ratio = (float) Screen.width / Screen.height;
+        var height = Mathf.Sqrt(area / ratio);
+        var width = ratio * height;
+        gameSettings.worldRect = new Rect(-width / 2, -height / 2, width, height);
+        log.log($"world rect: {gameSettings.worldRect}, area: {area}, ratio: {ratio}");
     }
 
     void createBoids() {
@@ -58,13 +75,13 @@ public class SystemManager : MonoBehaviour {
     void createSystems() {
         systemDict.Add(typeof(MovementSystem), new MovementSystem(boids));
         systemDict.Add(typeof(BorderSystem),
-            new BorderSystem(boids, predator, camera.getBottomLeft(), camera.getTopRight(), boidSettings.size));
+            new BorderSystem(boids, predator, gameSettings));
         systemDict.Add(typeof(FlockingSystem),
             new FlockingSystem(boids, gameSettings, boidSettings, localCenter, alignmentArrow, separationArrow));
-        systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, gameSettings, camera));
+        systemDict.Add(typeof(EvasionSystem), new EvasionSystem(boids, predator, gameSettings));
         systemDict.Add(typeof(DragSystem), new DragSystem(boids, predator, gameSettings));
         systemDict.Add(typeof(SpeedSystem), new SpeedSystem(boids, boidSettings));
-        systemDict.Add(typeof(BoidControlSystem), new BoidControlSystem(boids, gameSettings, camera));
+        // systemDict.Add(typeof(BoidControlSystem), new BoidControlSystem(boids, gameSettings, camera));
 
         createSystemArray();
     }

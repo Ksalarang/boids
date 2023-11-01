@@ -2181,6 +2181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58c3e0b4a274c02840c06f56571595b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boidAreaFactor: 10
   localCenter: {fileID: 2129988233}
   alignmentArrow: {fileID: 86402833}
   separationArrow: {fileID: 670553615}
@@ -2228,10 +2229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5275cd8b5014bac9567e5b3746c9834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollFactor: 10
-  scrollDuration: 0.2
-  minCameraSize: 1
-  maxCameraSize: 20
+  zoomFactor: 1
+  zoomDuration: 0.2
+  minZoom: 1
+  maxZoom: 20
 --- !u!1 &670553615
 GameObject:
   m_ObjectHideFlags: 0

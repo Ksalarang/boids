@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Utils;
 
 namespace GameScene.Settings {
@@ -8,6 +9,7 @@ public class GameSettings {
     public bool showViewAreas;
     public bool showBoidForces;
 
+    //todo: do not save if zero
     public float gameSpeed;
 
     public float dragDeceleration;
@@ -16,11 +18,9 @@ public class GameSettings {
     public PredatorSettings predatorSettings = new();
     public BoidControlSettings boidControlSettings = new();
 
-    [NonSerialized]
-    public GameSettings defaultSettings;
-    
-    [NonSerialized]
-    public bool settingsPanelEnabled;
+    [NonSerialized] public GameSettings defaultSettings;
+    [NonSerialized] public bool settingsPanelEnabled;
+    [NonSerialized] public Rect worldRect;
 
     public void reset() {
         if (defaultSettings == null) {

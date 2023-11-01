@@ -29,7 +29,7 @@ public class InputController : MonoBehaviour {
         mouseLabel.gameObject.SetActive(settings.showMousePosition);
     }
 
-    void Update() {
+    void FixedUpdate() {
         var screenMousePosition = Input.mousePosition;
         var worldMousePosition = camera.ScreenToWorldPoint(screenMousePosition);
         worldMousePosition.z = 0;

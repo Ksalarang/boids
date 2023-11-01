@@ -7,8 +7,8 @@ namespace GameScene.Controllers {
 public class CameraController : MonoBehaviour {
     [SerializeField] float zoomFactor = 1f;
     [SerializeField] float zoomDuration = 0.2f;
-    [SerializeField] float minCameraSize = 1f;
-    [SerializeField] float maxCameraSize = 20f;
+    [SerializeField] float minZoom = 1f;
+    [SerializeField] float maxZoom = 20f;
     
     [Inject] new Camera camera;
     [Inject] InputController inputController;
@@ -27,15 +27,15 @@ public class CameraController : MonoBehaviour {
     }
 
     void onMouseScroll(float scrollAmount, Vector3 worldMousePosition) {
-        log.log($"onMouseScroll: {scrollAmount}, position: {worldMousePosition}");
-        var sizeDelta = -(scrollAmount * zoomFactor);
         var startSize = camera.orthographicSize;
+        var sizeDelta = -(scrollAmount * zoomFactor * startSize);
+        log.log($"onMouseScroll: {scrollAmount}, sizeDelta: {sizeDelta}, position: {worldMousePosition}");
         var endSize = startSize + sizeDelta;
         if (zoomCoroutine != null) {
             StopCoroutine(zoomCoroutine);
             endSize += lastEndSize - startSize;
         }
-        endSize = Mathf.Clamp(endSize, minCameraSize, maxCameraSize);
+        endSize = Mathf.Clamp(endSize, minZoom, maxZoom);
         zoomCoroutine = StartCoroutine(smoothZoom(startSize, endSize));
         lastEndSize = endSize;
     }

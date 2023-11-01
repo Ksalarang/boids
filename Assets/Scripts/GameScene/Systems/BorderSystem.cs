@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameScene.Settings;
 using UnityEngine;
 
 namespace GameScene.Systems {
@@ -10,12 +11,12 @@ public class BorderSystem : System {
     readonly float boidOffset;
     readonly float predatorOffset;
 
-    public BorderSystem(List<Boid> boids, Predator predator, Vector3 bottomLeft, Vector3 topRight, float boidSize) {
+    public BorderSystem(List<Boid> boids, Predator predator, GameSettings gameSettings) {
         this.boids = boids;
         this.predator = predator;
-        this.bottomLeft = bottomLeft;
-        this.topRight = topRight;
-        boidOffset = boidSize / 2;
+        bottomLeft = gameSettings.worldRect.min;
+        topRight = gameSettings.worldRect.max;
+        boidOffset = gameSettings.boidSettings.size / 2;
         predatorOffset = predator.transform.localScale.x / 2;
     }
 
